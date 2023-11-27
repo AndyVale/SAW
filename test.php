@@ -3,19 +3,17 @@
     require_once "dbFunctions.php";
     $conn = connect();
     if($conn == null) {
-        var_dump($conn);
-        die();
+        echo "connessione fallita<br>";
     }else{
-        var_dump($conn);
+        echo "connessione riuscita<br>";
     }
+    $_POST['email'] = "provfa.ricotti@gmail.com";
+    $_POST['pass'] = "123";
+    $_POST['confirm'] = "123";
+    $_POST['firstname'] = "prova";
+    $_POST['lastname'] = "ricotti";
 
-    $conn = connect();
-    if($conn == null) {
-        var_dump($conn);
-        die();
-    }else{
-        var_dump($conn);
-
-    }
-    $conn->close();
+    var_dump(register());
+    echo "<br>";
+    var_dump($_SESSION);
 ?>
