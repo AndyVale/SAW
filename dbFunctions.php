@@ -10,8 +10,8 @@
         }
         catch(Exception $e) {
             error_log("dbFunctions.php/Connect(): ".$e->getMessage()."\n", 3, "../Errors.log");
-            throw $e;
-            //return null;
+            //throw $e;
+            return null;
         }
     }
 
@@ -43,7 +43,8 @@
 
         try {
             $conn = connect();
-            
+            if($conn == null)
+                return false;
             //uso un prepared statement per evitare sql injection
             $stmt = $conn -> prepare("SELECT * FROM utenti WHERE email = ?");
             $stmt -> bind_param("s", $_POST['email']);
@@ -130,5 +131,34 @@
             error_log("dbFunctions.php/register(): ".var_dump($e)."\n", 3, "../Errors.log");
             return registerResult::DB_ERROR;
         }
+    }
+
+    function select(String $query, array $params, String $paramsType, bool $repeat = false){
+        //funzione che effettua una select dal db e restituisce il risultato sotto forma di array di oggetti
+        $conn = connect();
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param($paramsType,...$params);
+        $stmt -> execute();
+
+        $rows = []; $i = 0;
+        $result = $stmt->get_result();
+        while($row = $result->fetch_object())$rows[$i++] = $row;
+        $result->close();
+        if(!$repeat)
+            $stmt->close();
+        return $rows;
+    }
+
+    function setRememberMe(){
+        //funzione che setta i cookie per il rememberme
+        
+    }
+    function insert($table, $fields, $where, $order, $limit, $offset, $repeat){
+        //funzione che effettua una insert nel db, se repeat è true viene restituito lo statement della prepared stmt in modo da poterla riutilizzare, altrimetti viene distrutta.
+    }
+
+    function update(){
+        //funzione che effettua un update nel db, se repeat è true viene restituito lo statement della prepared stmt in modo da poterla riutilizzare, altrimetti viene distrutta.
+        
     }
 ?>
