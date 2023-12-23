@@ -1,4 +1,5 @@
 <?php
+    require_once "const.php";
     function connect() {
         /*La funzione restituisce l'oggetto mysqli connesso al db specificato se la connessione va a buon fine, null altrimenti*/
         static $conn;//variabile statica, la prima volta che viene chiamata la funzione la variabile viene inizializzata, le volte successive viene restituito il valore della variabile
@@ -22,6 +23,14 @@
         case DB_ERROR;
         case MISSING_FIELDS;
     }
+    function login($data){
+        //funzione che effettua il login, deve essere chiamata SOLO a seguito di esito positivo del controllo delle credenziali
+        if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+        $_SESSION[EMAIL] = $data[EMAIL];
+        $_SESSION[FIRSTNAME] = $data[FIRSTNAME];
+        $_SESSION[LASTNAME] = $data[LASTNAME];
+        $_SESSION[ROLE] = $data[ROLE];
+    }
     function cookieLogin(){
         //Funzione che effettua il login tramite cookie
         if(empty($_COOKIE[REMEMBERME]))//controllo che il cookie sia settato
@@ -33,7 +42,8 @@
                 return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
 
             $actualTime = time();
-            $query = "SELECT rememberMe FROM utenti WHERE email = ? and expireTime > $actualTime";
+            $fields = EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".ROLE;
+            $query = "SELECT $fields FROM utenti WHERE email = ? and expireTime > $actualTime";
             $stmt = $conn -> prepare($query);//TODO: è necessario usare un preperrd statement?L'email era già stata controllata in fase di registrazione e inserita in sessione in fase di login
             $stmt -> bind_param('s', $_POST[EMAIL]);
             $stmt -> execute();
@@ -45,6 +55,7 @@
                 $data = $result->fetch_assoc();
                 if(password_verify($_COOKIE[REMEMBERME], $data[REMEMBERME]))//cookie corretto
                 {
+                    login($data);
                     return loginResult::SUCCESSFUL_LOGIN;
                 }
             }
@@ -75,12 +86,7 @@
                 $data = $result->fetch_assoc();
                 if(password_verify($_POST[PASS], $data[PASS]))//credenziali corrette
                 {
-                    session_start();//nella sessione inserisco sempre i valori contenuti nel DB per evitare problemini
-                    $_SESSION[EMAIL] = $data[EMAIL];
-                    $_SESSION[FIRSTNAME] = $data[FIRSTNAME];
-                    $_SESSION[LASTNAME] = $data[LASTNAME];
-                    $_SESSION[ROLE] = $data[ROLE];
-                
+                    login($data);
                     if(isset($_POST[REMEMBERME])) {//se c'è il rememberme setto il cookie 
                         setRememberMe();//TODO: lo lasciamo qui o teniamo le funzioni separate?
                     }
@@ -132,9 +138,9 @@
     }
     function logout() {
         //funzione che distrugge la sessione e i cookie
-        session_unset();
-        session_destroy();
-        //TODO: distruggere i cookie
+        if(session_status() == PHP_SESSION_ACTIVE) session_destroy();
+        setcookie(REMEMBERME, "", time()-3600);
+        return true;
     }
     
     enum registerResult {
@@ -149,8 +155,10 @@
         //funzione che registra un utente
         if(empty($_POST[EMAIL]) || empty($_POST[PASS]) || empty($_POST[FIRSTNAME]) || empty($_POST[LASTNAME]) || empty($_POST[CONFIRM]))//controllo che i campi non siano vuoti
             return registerResult::MISSING_FIELDS;
+
         if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL))//controllo che l'email sia valida
             return registerResult::WRONG_EMAIL_FORMAT;
+
         if($_POST[PASS] != $_POST[CONFIRM])//controllo che le password coincidano
             return registerResult::DIFFERENT_PASSWORDS;
 
@@ -160,7 +168,7 @@
             //sanitizzo i dati per evitare attacchi XSS;
             //faccio il trim per evitare problemi con gli spazi;
             //passo a lowercase l'email per evitare problemi con la case sensitivity:
-                //TODO:Forse l'email posso evitare di passarla a htmlentities, tanto è già stata validata
+            //TODO:Forse l'email posso evitare di passarla a htmlentities, tanto è già stata validata
             $data = array(  FIRSTNAME => htmlentities(trim($_POST[FIRSTNAME])), 
                             LASTNAME => htmlentities(trim($_POST[LASTNAME])),
                             EMAIL => htmlentities(strtolower($_POST[EMAIL])),
@@ -184,7 +192,7 @@
         }
     }
 
-    function select(String $query, array $params, String $paramsType, bool $repeat = false){
+    function select(String $query, array $params, String $paramsType, bool $repeat = false){//TODO: DA CANCELLARE?
         //funzione che effettua una select dal db e restituisce il risultato sotto forma di array di oggetti
         $conn = connect();
         $stmt = $conn -> prepare($query);
@@ -199,13 +207,77 @@
             $stmt->close();
         return $rows;
     }
-
-    function insert($table, $fields, $where, $order, $limit, $offset, $repeat){
-        //funzione che effettua una insert nel db, se repeat è true viene restituito lo statement della prepared stmt in modo da poterla riutilizzare, altrimetti viene distrutta.
+    enum updateResult {
+        case SUCCESSFUL_UPDATE;
+        case ERROR_UPDATE;
+        case ERROR_NOTLOGGED;
+        case ERROR_DB;
     }
 
+    function showProfile(){
+        //funzione che restituisce i dati del profilo utente
+        if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
+        $conn = connect();
+        if($conn == null) return updateResult::ERROR_DB;
+        $query = "SELECT firstname, lastname, email FROM utenti WHERE email = ?";
+        try{
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param('s', $_SESSION[EMAIL]);
+            $stmt -> execute();
+            $result = $stmt->get_result();
+            $stmt -> close();
+            return $result->fetch_assoc();
+        }catch(Exception $e) {
+            error_log("dbFunctions.php/showProfile(): ".$e->getMessage()."\n", 3, ERROR_LOG);
+            return updateResult::ERROR_DB;
+        }
+    }
     function update(){
-        //funzione che effettua un update nel db, se repeat è true viene restituito lo statement della prepared stmt in modo da poterla riutilizzare, altrimetti viene distrutta.
+        //funzione che effettua un aggiornamento del profilo utente dai dati mandati in POST
+        if(!isLogged() && $_POST[UPDATEREQUEST]) return updateResult::ERROR_NOTLOGGED;
+        $conn = connect();
+        if($conn == null) return updateResult::ERROR_DB;
         
+        $SetFields = "";
+        $SetValues = array();
+        $SetTypes = "";
+        $updatableFields = array(FIRSTNAME, LASTNAME, EMAIL);
+
+        foreach($_POST as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
+            if(in_array($key, $updatableFields)) {//se ci sono campi in POST che rientrano tra quelli aggiornabili
+                $SetFields .= $key." = ?, ";//aggiungo la stringa al campo SET della query
+                $SetValues[] = $value;//aggiungo il valore all'array dei valori (su cui farò il bind)
+                $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
+            }
+        }
+        
+        //TODO: aggiungere altri campi FACOLTATIVI
+
+        $strLen = strlen($SetFields);
+        if($strLen > 0)
+            $SetFields = substr($SetFields, 0, $strLen-2);//tolgo l'ultima virgola e lo spazio
+
+        //var_dump($SetFields);
+        //var_dump($SetValues);
+
+        $query = "UPDATE utenti SET $SetFields WHERE email = ?";
+        $SetTypes .= "s";//per l'email come chiave 
+        try{
+            $stmt = $conn -> prepare($query);
+                /*   l'operatore "..." di unpacking serve per passare un array come parametri separati.
+                    PHP non permette di passare parametri "singoli" dopo aver eseguito l'operatore di unpacking,
+                    per questo anche l'email è stata inserita in un array:
+            */
+            $stmt -> bind_param($SetTypes, ...$SetValues, ...[$_SESSION[EMAIL]]);
+            $stmt -> execute();
+            $affectedRows = $conn->affected_rows;
+            $stmt -> close();
+            if($affectedRows == 1)
+                return updateResult::SUCCESSFUL_UPDATE;
+            return updateResult::ERROR_UPDATE;
+        }catch(Exception $e) {
+            error_log("dbFunctions.php/update(): ".$e->getMessage()."\n", 3, ERROR_LOG);
+            return updateResult::ERROR_DB;
+        }
     }
 ?>

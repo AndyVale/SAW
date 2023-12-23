@@ -6,5 +6,6 @@
     const PASS = 'pass';
     const CONFIRM = 'confirm';
     const ROLE = 'role';
-    const REMEMBERME = 'rememberme';
+    const REMEMBERME = 'rememberMe';
+    const UPDATEREQUEST = 'updateRequest';
 ?>
