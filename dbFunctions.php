@@ -18,24 +18,42 @@
     enum loginResult {
         case SUCCESSFUL_LOGIN;
         case WRONG_CREDENTIALS;
+        case WRONG_COOKIE;
         case DB_ERROR;
         case MISSING_FIELDS;
     }
-    function login(){
-        //funzione che effettua login tramite cookie o tramite email e password
-        /*La funzione restituisce:
-                loginResult::SUCCESSFUL_LOGIN se la connessione al db non riesce
-                loginResult::WRONG_CREDENTIALS se le credenziali sono corrette
-                loginResult::DB_ERROR se le credenziali sono errate 
-                loginResult::MISSING_FIELDS se i campi email e/o password sono vuoti    
-        */
-        //TODO:if(cookieLogin() non va a buon fine)
-        return credentialsLogin();
-    }
-
-    //function cookieLogin(){
+    function cookieLogin(){
         //Funzione che effettua il login tramite cookie
-    //}
+        if(empty($_COOKIE['rememberMe']))//controllo che il cookie sia settato
+            return loginResult::MISSING_FIELDS;
+        
+        try {//controllo che il cookie sia valido
+            $conn = connect();
+            if($conn == null)
+                return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
+
+            $actualTime = time();
+            $query = "SELECT rememberMe FROM utenti WHERE email = ? and expireTime > $actualTime";
+            $stmt = $conn -> prepare($query);//TODO: è necessario usare un preperrd statement?L'email era già stata controllata in fase di registrazione e inserita in sessione in fase di login
+            $stmt -> bind_param('s', $_POST['email']);
+            $stmt -> execute();
+            $result = $stmt->get_result();
+            $nAffectedRows = $conn->affected_rows;
+            $stmt->close();
+
+            if($nAffectedRows == 1) {//controllo credenziali
+                $data = $result->fetch_assoc();
+                if(password_verify($_COOKIE["rememberMe"], $data["rememberMe"]))//cookie corretto
+                {
+                    return loginResult::SUCCESSFUL_LOGIN;
+                }
+            }
+            return loginResult::WRONG_COOKIE;//cookie errato
+        }catch(Exception $e) {
+            error_log("dbFunctions.php/cookieLogin(): ".$e->getMessage()."\n", 3, "../Errors.log");
+            return loginResult::DB_ERROR;
+        }
+    }
     function credentialsLogin(){
         //Funzione che effettua il login tramite email e password
         if(empty($_POST['email']) || empty($_POST['pass']))//controllo che i campi non siano vuoti
@@ -44,32 +62,65 @@
         try {
             $conn = connect();
             if($conn == null)
-                return false;
+                return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
+            
             //uso un prepared statement per evitare sql injection
             $stmt = $conn -> prepare("SELECT * FROM utenti WHERE email = ?");
             $stmt -> bind_param("s", $_POST['email']);
             $stmt->execute();
 
-            $result = $stmt->get_result();
-            $stmt->close();
+            $result = $stmt->get_result();            
             if($conn->affected_rows == 1) {//controllo credenziali
+                $stmt->close();
                 $data = $result->fetch_assoc();
                 if(password_verify($_POST["pass"], $data["pass"]))//credenziali corrette
                 {
-                    session_start();
+                    session_start();//nella sessione inserisco sempre i valori contenuti nel DB per evitare problemini
                     $_SESSION["email"] = $data["email"];
                     $_SESSION["firstname"] = $data["firstname"];
                     $_SESSION["lastname"] = $data["lastname"];
                     $_SESSION["role"] = $data["role"];
-                    //TODO: Aggiungere i cookie per il rememberme
+                
+                    if(isset($_POST["rememberme"])) {//se c'è il rememberme setto il cookie 
+                        setRememberMe();//TODO: lo lasciamo qui o teniamo le funzioni separate?
+                    }
                     return loginResult::SUCCESSFUL_LOGIN;
                 }
             }
+            $stmt->close();
             return loginResult::WRONG_CREDENTIALS;//credenziali errate
 
         }catch(Exception $e) {
             error_log("dbFunctions.php/login(): ".$e->getMessage()."\n", 3, "../Errors.log");
             return loginResult::DB_ERROR;
+        }
+    }
+    function setRememberMe(){
+        /*funzione che setta i cookie per il rememberme, funziona solo se la sessione è già stata avviata.
+          Il controllo sul campo "rememberme" deve essere fatto prima di invocare la funzione.*/
+        if(empty($_SESSION['email'])) {//se la sessione non è stata avviata non posso settare il cookie
+            return false;
+        }
+        $cookieValue = random_int(PHP_INT_MIN,PHP_INT_MAX);//genero un cookie value "random" che rilascio in chiaro al client
+        $expireTime = time() + 60*60*24*30;//scade dopo 30 giorni
+        try{
+            setcookie("rememberMe", $cookieValue, $expireTime);//setto il cookie
+            $cookieValue = password_hash($cookieValue, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
+            $conn = connect();
+            $query = "UPDATE utenti SET rememberMe = ?, expireTime = ? WHERE email = ?";
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param('sis', $cookieValue, $expireTime, $_POST["email"]);
+            $stmt -> execute();
+            if($conn->affected_rows != 1) {
+                error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, "../Errors.log");
+                $stmt -> close();
+                return false;//errore nella query
+            }
+            $stmt -> close();
+            return true;//cookie settato correttamente
+        }catch(Exception $e) {
+            error_log("dbFunctions.php/setRememberMe(): ".$e->getMessage()."\n", 3, "../Errors.log");
+            return false;//errore di altro tipo dovuto al db o al setting del cookie
         }
     }
     function isLogged() {
@@ -85,7 +136,7 @@
         session_destroy();
         //TODO: distruggere i cookie
     }
-
+    
     enum registerResult {
         case SUCCESSFUL_REGISTER;
         case EMAIL_ALREADY_EXISTS;
@@ -149,10 +200,6 @@
         return $rows;
     }
 
-    function setRememberMe(){
-        //funzione che setta i cookie per il rememberme
-        
-    }
     function insert($table, $fields, $where, $order, $limit, $offset, $repeat){
         //funzione che effettua una insert nel db, se repeat è true viene restituito lo statement della prepared stmt in modo da poterla riutilizzare, altrimetti viene distrutta.
     }
