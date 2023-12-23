@@ -262,13 +262,14 @@
 
         $query = "UPDATE utenti SET $SetFields WHERE email = ?";
         $SetTypes .= "s";//per l'email come chiave 
+        $email = array($_SESSION[EMAIL]);
         try{
             $stmt = $conn -> prepare($query);
                 /*   l'operatore "..." di unpacking serve per passare un array come parametri separati.
                     PHP non permette di passare parametri "singoli" dopo aver eseguito l'operatore di unpacking,
                     per questo anche l'email è stata inserita in un array:
             */
-            $stmt -> bind_param($SetTypes, ...$SetValues, ...[$_SESSION[EMAIL]]);
+            $stmt -> bind_param($SetTypes, ...$SetValues, ...$email);
             $stmt -> execute();
             $affectedRows = $conn->affected_rows;
             $stmt -> close();
