@@ -1,7 +1,7 @@
 Progetto di SAW.
 
 Nome:
-    Da stabilire;
+    MemeBank;
 Funzionalità da implementare:
     login;
     registrazione;
