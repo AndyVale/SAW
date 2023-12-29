@@ -9,17 +9,19 @@
         echo "connessione riuscita<br>";
     }
     */
-    $_POST['email'] = "proXvfa.ricotti@gmail.com";
+    $_POST['email'] = "proXvfxa.ricotti@gmail.com";
     $_POST['pass'] = "123";
     $_POST['confirm'] = "123";
-    $_POST['firstname'] = "prXXoVa";
+    $_POST['firstname'] = "prXX>oVa";
     $_POST['lastname'] = "ricotti";
-    $_POST['role'] = "1";
     $_POST[UPDATEREQUEST] = "1";
     echo "<br><br><br>";
-    echo "<br><br><br>";
+    
+    
     var_dump(credentialsLogin());
-    var_dump(showProfile());
+    echo "<br><br><br>SESSIONE: ";
+    var_dump($_SESSION);
+    
     //var_dump(cookieLogin());
     //var_dump($_SESSION);
 ?>
