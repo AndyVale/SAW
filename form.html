@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Registrazione</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="display_logo">
+	<p style="display:inline-block;">
+		<img src="103213-84.png" alt="Descrizione dell'immagine">
+		<h2> MemeBank </h2>
+	</p>
+    </div>
+
+	<div class="secondclass">
+	<h2 class="firstclass">Registrazione</h2>
+    <form action="registration.php" method="post">
+
+		<fieldset>
+   			<legend>Informazioni personali</legend>
+    		<label for="firstname">Nome:</label> <br>
+			<input type="text" id="firstname" name="firstname" required> <br>
+			<label for="lastname">Cognome:</label> <br>
+			<input type="text" id="lastname" name="lastname" required> <br>
+		</fieldset>
+
+		<fieldset>
+			<legend>Informazioni di accesso</legend>
+			<label for="email">Email:</label> <br>
+			<input type="email" id="email" name="email" required> <br>
+			<label for="pass">Password:</label> <br>
+			<input type="password" id="pass" name="pass" required> <br>
+			<label for="confirm">Conferma password:</label> <br>
+			<input type="password" id="confirm" name="confirm" required> <br>
+		<div>
+			<label for="rememberme"> Remember Me:</label>
+			<input type="checkbox" id="rememberme" name="rememberme"> <br>
+		</div>
+   		</fieldset>
+		
+   			<input type="submit" value="Registrati">
+		<h3> Sei gi&agrave; registrato? <a href='login.html'> Accedi </a> </h3>
+    </form>
+
+	</div>
+</body>
+</html>
