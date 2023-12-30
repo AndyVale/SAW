@@ -4,25 +4,30 @@
     <title>Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="body">
     <div class="flex_container_logo">
 		<div><img class="logo_image" src="5338757-84.png" alt="Emoji sorridente"></div>
 		<div><h2 class="logo_text"> MemeBank </h2></div>
+    <div class="profile"><img class="logo_image" src="113116-84.png" alt="Imagine di profilo di default: silouette del busto di una persona"></div>
     </div>
+
+    <label for="search" class="hide_search_note"> Cerca nel sito </label>
+	  <input type="search" id="search" name="search" class="txt" size="20" placeholder="Cosa stai cercando?">
+   	<input type="submit" class="btn" value="Cerca">
 
     <div class="flex_container">
     <div class="form_border_login">
 
     <h2 class="firstclass">Login</h2>
-    <form action="login.php" method="post">
+    <form class="form" action="login.php" method="post">
     <fieldset>
 	    <legend>Informazioni di accesso</legend>
 	    <label for="email">Email:</label> <br>
-	    <input type="email" id="email" name="email" required> <br>
+	    <input type="email" id="email" name="email" placeholder="Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required> <br>
 	    <label for="pass">Password:</label> <br>
-	    <input type="password" id="pass" name="pass" required> <br>
+	    <input type="password" id="pass" name="pass" placeholder="Password" required> <br>
     </fieldset>
-    <div class="flex_container"><input type="submit" value="Accedi"></div>
+    <div class="flex_container"><input class="colored-button" type="submit" value="Accedi"></div>
     <h3 class="thirdclass"> Non sei registrato? <a href='form.html'> Iscriviti </a> </h3>
     </form>
 
