@@ -1,5 +1,5 @@
 -- Schema logico:
--- Utente(ID, email, firstname, lastname, pass, confirm)
+-- Utente(ID, email, firstname, lastname, pass)
 -- Post(ID, idUtente, oraPubblicazione)
 -- Liked(idUtente, idPost)
 -- Seguiti(idUtente, idUtenteSeguito)
@@ -13,7 +13,9 @@ create table Utente(
     firstname varchar(255) not null,
     lastname varchar(255) not null,
     pass varchar(255) not null,
-    confirm varchar(255) not null,
+    role int not null default 0,
+    rememberMe varchar(255),
+    expireTime timestamp,
     primary key(ID)
 );
 
