@@ -6,5 +6,5 @@
     const DBHOST = "localhost";
     const DBUSER = "utente1";
     const DBPASS = "123456789";
-    const DBNAME = "provautenti";
+    const DBNAME = "SAW";
 ?>

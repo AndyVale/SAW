@@ -9,12 +9,9 @@
         echo "connessione riuscita<br>";
     }
     */
-    $_POST['email'] = "proXvfxa.ricotti@gmail.com";
-    $_POST['pass'] = "123";
-    $_POST['confirm'] = "123";
-    $_POST['firstname'] = "prXX>oVa";
-    $_POST['lastname'] = "ricotti";
-    $_POST[UPDATEREQUEST] = "1";
+    $_POST['email'] = "email1@example.com";
+    $_POST['pass'] = "pass1";
+    $_POST['confirm'] = "pass1";
     echo "<br><br><br>";
     
     

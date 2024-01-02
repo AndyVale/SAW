@@ -80,8 +80,8 @@
             return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
 
         $actualTime = time();
-        $fields = EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".ROLE;
-        $query = "SELECT $fields FROM utenti WHERE email = ? and expireTime > $actualTime";
+        $fields = EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
+        $query = "SELECT $fields FROM Utente WHERE email = ? and expireTime > $actualTime";
         
         $result = safeQuery($query, array($_POST[EMAIL]), "s");
         if(!is_numeric($result)) {//controllo credenziali
@@ -100,8 +100,8 @@
         if($conn == null)
             return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
         
-        $fields = EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME.",".ROLE;
-        $query = "SELECT $fields FROM utenti WHERE email = ?";
+        $fields = EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
+        $query = "SELECT $fields FROM Utente WHERE email = ?";
         $result = safeQuery($query, array($_POST[EMAIL]), "s");
         
         if(!is_numeric($result)) {//controllo che safeQuery abbia restituito un solo oggetto
@@ -124,7 +124,7 @@
         setcookie(REMEMBERME, $cookieValue, $expireTime);//setto il cookie
 
         $cookieValue = password_hash($cookieValue, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
-        $query = "UPDATE utenti SET rememberMe = ?, expireTime = ? WHERE email = ?";
+        $query = "UPDATE Utente SET rememberMe = ?, expireTime = ? WHERE email = ?";
         
         if(safeQuery($query, array($cookieValue, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
             return true;//cookie settato correttamente
@@ -178,7 +178,7 @@
                     );
 
         //uso un prepared statement per evitare sql injection
-        $query = "INSERT INTO utenti (firstname, lastname, email, pass) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO Utente (firstname, lastname, email, pass) VALUES (?, ?, ?, ?)";
 
         try{
             if(safeQuery($query, $data, "ssss") == 1)
@@ -208,7 +208,7 @@
         $conn = connect();
         if($conn == null) return updateResult::ERROR_DB;
         
-        $query = "UPDATE utenti SET pass = ? WHERE email = ?";
+        $query = "UPDATE Utente SET pass = ? WHERE email = ?";
         $HshdPsw = password_hash(trim($_POST[PASS]), PASSWORD_DEFAULT);
         if(safeQuery($query, array($HshdPsw, $_SESSION[EMAIL]), "ss") == 1)//la query deve interessare una sola riga
             return updateResult::SUCCESSFUL_UPDATE;
@@ -245,7 +245,7 @@
         else
             return updateResult::MISSING_FIELDS;//se non ci sono campi aggiornabili restituisco un errore
 
-        $query = "UPDATE utenti SET $SetFields WHERE email = ?";
+        $query = "UPDATE Utente SET $SetFields WHERE email = ?";
         $SetTypes .= "s";//per l'email come chiave 
         $SetValues[] = $_SESSION[EMAIL];//aggiungo l'email come chiave
         
@@ -260,7 +260,7 @@
         $conn = connect();
         if($conn == null) return updateResult::ERROR_DB;
 
-        $query = "SELECT firstname, lastname, email FROM utenti WHERE email = ?";
+        $query = "SELECT firstname, lastname, email FROM Utente WHERE email = ?";
         $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
         if(!is_numeric($tmp))
             return json_encode($tmp);
