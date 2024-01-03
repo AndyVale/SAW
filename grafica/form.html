@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="./cssform.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form action="form.php" method="post">
+        <div class="container-sm p-3 my-5 fixed-top">
+            <div class=" mx-auto border  rounded p-3">
+                <div class="row">
+                    <div class="col d-flex justify-content-end">
+                        <button type="button" class="btn-close border rounded-circle bg-secondary" aria-label="Close"></button>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col d-flex justify-content-center">
+                        <span class="h2">Registrati</span>
+                    </div>
+                </div>
+                <div class="bg-body-secondary">
+                    <div class="row p-2">
+                        <div class="col d-flex justify-content-center">
+                            <input type="text" name="firstname" id="firstname" placeholder="Nome" aria-label="Nome">
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col d-flex justify-content-center">
+                            <input type="text" name="lastname" id="lastname" placeholder="Cognome" aria-label="Cognome">
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col d-flex justify-content-center">
+                            <input type="text" name="email" id="email" placeholder="Email" aria-label="Email">
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col d-flex justify-content-center">
+                            <input type="password" name="password" id="password" placeholder="Password" aria-label="Password">
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col d-flex justify-content-center">
+                            <input type="password" name="confirm" id="confirm" placeholder="Conferma password" aria-label="Conferma password">
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col d-flex justify-content-center">
+                            <input type="submit" name="submit" value="Invia" aria-label="Invia">
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </form>
+    
+</body>
+</html>
