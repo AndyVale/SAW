@@ -15,7 +15,7 @@ create table Utente(
     pass varchar(255) not null,
     role int not null default 0,
     rememberMe varchar(255),
-    expireTime timestamp,
+    expireTime int default 0,
     primary key(ID)
 );
 
