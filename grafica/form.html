@@ -9,8 +9,9 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="login.php" method="post" aria-label="Form di login">
-        <div class="container-sm p-2 my-3 my-md-5 fixed-top border border-2 border-dark rounded bg-body-secondary text-center" style="max-width: 520px;">
+    
+    <form action="../login.php" method="post" aria-label="Form di login">
+        <div id="registrationForm" class="container-sm p-2 my-3 my-md-5 border border-2 border-dark rounded bg-body-secondary text-center">
                 <div class="row">
                     <div class="col-1">
                         <div class="btn-close bg-danger border border-2 rounded-circle" aria-label="Bottone di chiusura"></div>
@@ -22,14 +23,21 @@
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="col my-4 mx-2">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email">
                         </div>
                         <div class="col my-4 mx-2">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" aria-label="Input per password">
+                            <input type="password" class="form-control" name="pass" id="password" placeholder="Password" aria-label="Input per password">
+                        </div>
+                        <div class="col my-2 mx-2 text-start">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="rememberMeCheck">Ricordami</label>
+                                <input class="form-check-input" type="checkbox" id="rememberMeCheck" name="rememberMe">
+                            </div>
                         </div>
                         <div class="col mt-5 mx-2">
                             <input type="submit" class="form-control bg-primary" name="submit" value="Invia" aria-label="Invia">
                         </div>
+                        
                     </div>
                     <div class="col-12 col-md-6 my-2">
                         <img src="login.jpg" alt="Immagine con bambino in smoking che dice: 'Fai login perfavore'" width="238">
@@ -38,8 +46,8 @@
         </div>
     </form>
     
-    <form action="registration.php" method="post" aria-label="Form di registrazione">
-        <div class="container-sm p-2 my-3 my-md-5 fixed-top border border-2 border-dark rounded bg-body-secondary text-center" style="max-width: 520px;">
+    <form action="../registration.php" method="post" aria-label="Form di registrazione">
+        <div id="loginForm" class="container-sm p-2 my-3 my-md-5 border border-2 border-dark rounded bg-body-secondary text-center">
                 <div class="row">
                     <div class="col-1">
                         <div class="btn-close bg-danger border border-2 rounded-circle" aria-label="Bottone di chiusura"></div>
@@ -51,19 +59,19 @@
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <div class="col m-2">
-                            <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Nome" aria-label="Input per nome">
+                            <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Nome" aria-label="Input per nome" required>
                         </div>
                         <div class="col m-2">
-                            <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Cognome" aria-label="Input per cognome">
+                            <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Cognome" aria-label="Input per cognome" required>
                         </div>
                         <div class="col m-2">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email" required>
                         </div>
                         <div class="col m-2">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" aria-label="Input per password">
+                            <input type="password" class="form-control" name="pass" id="password" placeholder="Password" aria-label="Input per password" required>
                         </div>
                         <div class="col m-2">
-                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Conferma password" aria-label="Input per confermare la password">
+                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Conferma password" aria-label="Input per confermare la password" required>
                         </div>
                         <div class="col my-3">
                             <input type="submit" class="form-control bg-primary" name="submit" value="Invia" aria-label="Invia">
@@ -76,6 +84,5 @@
         </div>
     </form>
 
-    
 </body>
 </html>

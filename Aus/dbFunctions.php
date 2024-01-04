@@ -47,91 +47,7 @@
         return $nAffectedRows;
     }
 
-    enum loginResult {
-        case SUCCESSFUL_LOGIN;
-        case WRONG_CREDENTIALS;
-        case DB_ERROR;
-        case MISSING_FIELDS;
-    }
-    function login($data, $pass, $hash){
-        //funzione che effettua il login, in $data devono essere passati i campi da inserire nella sessione
-        $inSessionByDefault = array(EMAIL, FIRSTNAME, ROLE, LASTNAME);
-
-        if(password_verify($pass, $hash)){
-            if(session_status() !== PHP_SESSION_ACTIVE)
-                session_start();
-            
-            for($i = 0; $i < count($inSessionByDefault); $i++){
-                if(array_key_exists($inSessionByDefault[$i], $data)){
-                    $_SESSION[$inSessionByDefault[$i]] = $data[$inSessionByDefault[$i]];
-                }
-            }
-            return loginResult::SUCCESSFUL_LOGIN;
-        }
-        return loginResult::WRONG_CREDENTIALS;
-    }
-    function cookieLogin(){
-        //Funzione che effettua il login tramite cookie
-        if(empty($_COOKIE[REMEMBERME]))//controllo che il cookie sia settato
-            return loginResult::MISSING_FIELDS;
-
-        $conn = connect();
-        if($conn == null)
-            return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
-
-        $actualTime = time();
-        $fields = EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
-        $query = "SELECT $fields FROM Utente WHERE email = ? and expireTime > $actualTime";
-        
-        $result = safeQuery($query, array($_POST[EMAIL]), "s");
-        if(!is_numeric($result)) {//controllo credenziali
-            if(count($result) != 1) 
-                return loginResult::WRONG_CREDENTIALS;
-            return login($result[0], $_COOKIE[REMEMBERME], $result[0][REMEMBERME]);
-        }
-        return loginResult::DB_ERROR;
-    }
-    function credentialsLogin(){
-        //Funzione che effettua il login tramite email e password
-        if(empty($_POST[EMAIL]) || empty($_POST[PASS]))//controllo che i campi non siano vuoti
-            return loginResult::MISSING_FIELDS;
-       
-        $conn = connect();
-        if($conn == null)
-            return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
-        
-        $fields = EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
-        $query = "SELECT $fields FROM Utente WHERE email = ?";
-        $result = safeQuery($query, array($_POST[EMAIL]), "s");
-        
-        if(!is_numeric($result)) {//controllo che safeQuery abbia restituito un solo oggetto
-            if(count($result) != 1)
-                return loginResult::WRONG_CREDENTIALS;
-            return login($result[0], $_POST[PASS], $result[0][PASS]);
-        }
-        return loginResult::DB_ERROR;
-    }
-    function setRememberMe(){
-        /*funzione che setta i cookie per il rememberme, funziona solo se la sessione è già stata avviata.
-          Il controllo sul campo "rememberme" deve essere fatto prima di invocare la funzione.*/
-
-        if(!isLogged()) {//se la sessione non è stata avviata non posso settare il cookie
-            return false;
-        }
-
-        $cookieValue = random_int(PHP_INT_MIN,PHP_INT_MAX);//genero un cookie value "random" che rilascio in chiaro al client
-        $expireTime = time() + 60*60*24*30;//scade dopo 30 giorni
-        setcookie(REMEMBERME, $cookieValue, $expireTime);//setto il cookie
-
-        $cookieValue = password_hash($cookieValue, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
-        $query = "UPDATE Utente SET rememberMe = ?, expireTime = ? WHERE email = ?";
-        
-        if(safeQuery($query, array($cookieValue, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
-            return true;//cookie settato correttamente
-        }
-        error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
-        return false;//cookie non settato
-    }
+   
     function isLogged() {
         if(!empty($_SESSION[EMAIL])) {
             return true;
@@ -146,51 +62,7 @@
         return true;
     }
     
-    enum registerResult {
-        case SUCCESSFUL_REGISTER;
-        case EMAIL_ALREADY_EXISTS;
-        case DB_ERROR;
-        case MISSING_FIELDS;
-        case WRONG_EMAIL_FORMAT;
-        case ERROR_REGISTER;
-        case DIFFERENT_PASSWORDS;//TODO:Ha senso questa?Se l'utente passa da curl saranno fatti suoi se non vuole confermare la password
-    }
-    function register(){
-        //funzione che registra un utente
-        if(empty($_POST[EMAIL]) || empty($_POST[PASS]) || empty($_POST[FIRSTNAME]) || empty($_POST[LASTNAME]) || empty($_POST[CONFIRM]))//controllo che i campi non siano vuoti
-            return registerResult::MISSING_FIELDS;
-
-        if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL))//controllo che l'email sia valida
-            return registerResult::WRONG_EMAIL_FORMAT;
-
-        if($_POST[PASS] != $_POST[CONFIRM])//controllo che le password coincidano
-            return registerResult::DIFFERENT_PASSWORDS;
-
-        //cripto la password;
-        //sanitizzo i dati per evitare attacchi XSS;
-        //faccio il trim per evitare problemi con gli spazi;
-        //passo a lowercase l'email per evitare problemi con la case sensitivity:
-        //TODO:Forse l'email posso evitare di passarla a htmlentities, tanto è già stata validata
-        $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
-                        htmlentities(trim($_POST[LASTNAME])),
-                        htmlentities(strtolower($_POST[EMAIL])),
-                        password_hash(trim($_POST[PASS]), PASSWORD_DEFAULT)
-                    );
-
-        //uso un prepared statement per evitare sql injection
-        $query = "INSERT INTO Utente (firstname, lastname, email, pass) VALUES (?, ?, ?, ?)";
-
-        try{
-            if(safeQuery($query, $data, "ssss") == 1)
-                return registerResult::SUCCESSFUL_REGISTER;
-            return registerResult::DB_ERROR;
-        }
-        catch(mysqli_sql_exception $ex){
-            error_log("dbFunctions.php/register(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
-            return registerResult::EMAIL_ALREADY_EXISTS;
-        }
-        
-    }
+ 
     enum updateResult {
         case SUCCESSFUL_UPDATE;
         case MISSING_FIELDS;
