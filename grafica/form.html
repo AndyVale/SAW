@@ -9,55 +9,73 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="form.php" method="post">
-        <div class="container-sm p-3 my-5 fixed-top">
-            <div class=" mx-auto border  rounded p-3">
+    <form action="login.php" method="post" aria-label="Form di login">
+        <div class="container-sm p-2 my-3 my-md-5 fixed-top border border-2 border-dark rounded bg-body-secondary text-center" style="max-width: 520px;">
                 <div class="row">
-                    <div class="col d-flex justify-content-end">
-                        <button type="button" class="btn-close border rounded-circle bg-secondary" aria-label="Close"></button>
+                    <div class="col-1">
+                        <div class="btn-close bg-danger border border-2 rounded-circle" aria-label="Bottone di chiusura"></div>
+                    </div>
+                    <div class="col-11">
+                        <div class="h3">Accedi</div>
                     </div>
                 </div>
-                
-                <div class="row mb-4">
-                    <div class="col d-flex justify-content-center">
-                        <span class="h2">Registrati</span>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="col my-4 mx-2">
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email">
+                        </div>
+                        <div class="col my-4 mx-2">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" aria-label="Input per password">
+                        </div>
+                        <div class="col mt-5 mx-2">
+                            <input type="submit" class="form-control bg-primary" name="submit" value="Invia" aria-label="Invia">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 my-2">
+                        <img src="login.jpg" alt="Immagine con bambino in smoking che dice: 'Fai login perfavore'" width="238">
                     </div>
                 </div>
-                <div class="bg-body-secondary">
-                    <div class="row p-2">
-                        <div class="col d-flex justify-content-center">
-                            <input type="text" name="firstname" id="firstname" placeholder="Nome" aria-label="Nome">
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <div class="col d-flex justify-content-center">
-                            <input type="text" name="lastname" id="lastname" placeholder="Cognome" aria-label="Cognome">
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <div class="col d-flex justify-content-center">
-                            <input type="text" name="email" id="email" placeholder="Email" aria-label="Email">
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <div class="col d-flex justify-content-center">
-                            <input type="password" name="password" id="password" placeholder="Password" aria-label="Password">
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <div class="col d-flex justify-content-center">
-                            <input type="password" name="confirm" id="confirm" placeholder="Conferma password" aria-label="Conferma password">
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <div class="col d-flex justify-content-center">
-                            <input type="submit" name="submit" value="Invia" aria-label="Invia">
-                        </div>
-                    </div>
-                    </div>
-            </div>
         </div>
     </form>
+    
+    <form action="registration.php" method="post" aria-label="Form di registrazione">
+        <div class="container-sm p-2 my-3 my-md-5 fixed-top border border-2 border-dark rounded bg-body-secondary text-center" style="max-width: 520px;">
+                <div class="row">
+                    <div class="col-1">
+                        <div class="btn-close bg-danger border border-2 rounded-circle" aria-label="Bottone di chiusura"></div>
+                    </div>
+                    <div class="col-11">
+                        <div class="h3">Registrati</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="col m-2">
+                            <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Nome" aria-label="Input per nome">
+                        </div>
+                        <div class="col m-2">
+                            <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Cognome" aria-label="Input per cognome">
+                        </div>
+                        <div class="col m-2">
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email">
+                        </div>
+                        <div class="col m-2">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" aria-label="Input per password">
+                        </div>
+                        <div class="col m-2">
+                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Conferma password" aria-label="Input per confermare la password">
+                        </div>
+                        <div class="col my-3">
+                            <input type="submit" class="form-control bg-primary" name="submit" value="Invia" aria-label="Invia">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <img src="register.jpg" alt="Immagine di Yoda che dice: 'Register now you must'" width="238">
+                    </div>
+                </div>
+        </div>
+    </form>
+
     
 </body>
 </html>
