@@ -15,8 +15,9 @@
 
     <style>
       .background {
-        background-image: url('./Progetto senza titolo.png');
+        background-image: url('./Progetto senza titolo (2).png');
         height:100vh;
+        transition: transform 1s ease, opacity 2s ease;
       }
 
       .show-remove{
@@ -32,6 +33,12 @@
       }
 
       .animate-text{
+      transform: translateY(100%);
+      opacity: 0%;
+     
+      }
+
+      .animate-image{
       transform: translateY(100%);
       opacity: 0%;
      
@@ -156,16 +163,20 @@
         transform: translateX(-50%) rotate(45deg);
 
       }
+
+      .image{
+        transition: transform 0.3s ease-in-out; /* Aggiungi un effetto di transizione per una transizione più fluida */
+      }
     </style>
     
   </head>
 
   <body>
-    <div class="background">
+    
     <nav class="navbar navbar-dark" style="background-color: #75D8AE;" >
         <div class="container-fluid">
           <a class="navbar-brand" href="#" style="color:black;">
-            <img src="817451-84.png" alt="" width="30" height=auto class="d-inline-block align-text-top">
+            <img src="817451-84.png" alt="EmojiSorridente" width="30" height=auto class="d-inline-block align-text-top">
             Meme<span class="fw-bolder">Bank</span>
             <div class="position-absolute top-0 end-0 me-2 mt-2">
               <button type="button" class="btn btn-outline-dark" style="border-radius: 35px;"> Accedi </button>
@@ -175,51 +186,94 @@
         </div>
       </nav>
     
-    
-    <div class="container my-5 animate-text" style="width: 900px; background-color: #fff; border-radius: 20px; height: 500px;" id="name">
-    <h1 class="text-start">Benvenuto su Meme<span class="fw-bolder">Bank</span>!</h1>
-    <p class="lead">Accendi la tua creatività, sblocca la tua vena comica e preparati a immergerti in un oceano di meme. </p>
+    <div class="background">
+    <div class="container animate-text position-absolute top-50 start-50 translate-middle text-center" id="name">
+    <h1  style="color: #fff;">Benvenuto su Meme<span class="fw-bolder">Bank</span>!</h1>
+    <p class="lead" style="color: #fff;">Accendi la tua creatività, sblocca la tua vena comica e preparati a immergerti in un oceano di meme. </p>
     </div>
 
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-auto">
-          <img class="img-fluid animate1" id="img1" src="./Meme Immagini/1rzy4a.jpg" alt="Meme senza testo raffigurante Fry di Futurama" width="300px" height="auto">
-        </div>
-        <div class="col-auto">
-          <img class="img-fluid animate2" id="img2" src="./Meme Immagini/6cf.jpg" alt="Meme" width="300px" height="auto">
-        </div>
-        <div class="col-auto">
-          <img class="img-fluid animate3" id="img3" src="./Meme Immagini/confused-nick-young-meme-history.jpg" alt="Meme" width="300px" height="auto">
-        </div>
-      </div>
-    </div>
     </div>
 
-     <div class="container" style="margin-top:15vh;">
+    <div class="container" style="margin-top: 25vh; margin-bottom:40vh;">
       <div class="row">
-        <div class="col-6">
+        <div class="col-lg-8">
           <ul id="list" class="animate-text">
-            <li class="lead">Metti like ai meme migliori</li>
-            <li class="lead">Segui i tuoi meme-makers preferiti</li>
-            <li class="lead">Posta i tuoi meme</li>
-            <li class="lead">Cerca i tuoi amici su MemeBank</li>
+            <li class="lead" style="font-size: 20px; margin-bottom: 20px;">Metti like ai meme migliori</li>
+            <li class="lead" style="font-size: 20px; margin-bottom: 20px;">Segui i tuoi meme-makers preferiti</li>
+            <li class="lead" style="font-size: 20px; margin-bottom: 20px;">Posta i tuoi meme</li>
+            <li class="lead" style="font-size: 20px; margin-bottom: 20px;">Cerca i tuoi amici su MemeBank</li>
           </ul>
         </div>
-        <div class="col-2">
-          <img class="img-fluid" src="./Meme Immagini/6cf.jpg" alt="Meme" width="150px" height="auto">
+          <div class="col-md-4" style="margin-bottom: 20px;">
+        
         </div>
-        <div class="col-2 position-absolute end-0 me-2">
-          <img class="img-fluid" src="./Meme Immagini/6cf.jpg" alt="Meme" width="150px" height="auto">
         </div>
       </div>
     </div>
 
-  <footer class="footer text-black" style="background-color: #75D8AE; height: 25vh; margin-top:15vh;">
-    <div class="container">
+    <div class="container text-center">
+      <h1 class="lead animate-text" id="ispirazione"> Lasciati ispirare dalla community! </h1>
+    </div>
+
+    <div class="container" style="margin-top: 10vh; margin-bottom:10vh;">
+      <div class="row">
+        <div  class="col-lg-2">
+          <div class="card image" id="img1" style="width: 12rem; margin-bottom: 15px;">
+            <img src="./Meme Immagini/gerry-scotty (square).jpg" class="card-img-top" alt="Meme">
+            <div class="card-body">
+              <p class="card-text"  style="font-size:12px;">Meme di @anonimo.</p>
+            </div>
+          </div>
+        </div>
+        <div  class="col-lg-2">
+          <div class="card image" id="img4" style="width: 12rem; margin-bottom: 15px;">
+            <img src="./Meme Immagini/WikiMeme_Dank.jpg" class="card-img-top" alt="Meme">
+            <div class="card-body">
+              <p class="card-text"  style="font-size:12px;">Meme di @wikipedia.</p>
+            </div>
+          </div>
+        </div>
+        <div  class="col-lg-2">
+          <div class="card image" id="img5" style="width: 12rem; margin-bottom: 15px;">
+            <img src="./Meme Immagini/EsWopi_XYAALFBE.jpg" class="card-img-top" alt="Meme">
+            <div class="card-body">
+              <p class="card-text"  style="font-size:12px;">Meme di @anonimo.</p>
+            </div>
+          </div>
+        </div>
+        <div  class="col-lg-2">
+          <div class="card image" id="img6" style="width: 12rem; margin-bottom: 15px;">
+            <img src="./Meme Immagini/359A3273-C55F-437D-9DD3-BC885DD2FC56.jpeg" class="card-img-top" alt="Meme">
+            <div class="card-body">
+              <p class="card-text"  style="font-size:12px;">Meme di @ilsuperuovo.</p>
+            </div>
+          </div>
+        </div>
+        <div  class="col-lg-2">
+          <div class="card image" id="img2" style="width: 12rem; margin-bottom: 15px;">
+            <img src="./Meme Immagini/cosa-fai-a-capodanno-meme-3-1024x1024.jpg" class="card-img-top" alt="Meme">
+            <div class="card-body">
+              <p class="card-text" style="font-size:12px;">Meme di @anonimo.</p>
+            </div>
+          </div>
+        </div>
+        <div  class="col-lg-2">
+          <div class="card image" id="img3" style="width: 12rem; margin-bottom: 15px;">
+            <img src="./Meme Immagini/Schermata-2020-06-29-alle-15.45.35.png" class="card-img-top" alt="Meme">
+            <div class="card-body">
+              <p class="card-text"  style="font-size:12px;">Meme di @tmlplanet.</p>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+  <footer class="footer text-black" style="background-color: #75D8AE;">
+    <div class="container" style="position: relative; top: 20px;">
         <div class="row">
-            <div class="col-md-6">
-                <h4>Seguici su social media</h4>
+            <div class="col-md-4" style="margin-bottom: 20px;">
+                <h4 style="font-size: 20px;">Seguici</h4>
                 <div class="wrapper">
                   <div class="icon facebook">
                     <div class="tooltip">Facebook</div>
@@ -245,15 +299,20 @@
                   </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <h4>Contatti</h4>
-                <p>Email: info@meme-bank.com</p>
-                <p>Telefono: +123 456 7890</p>
+            <div class="col-md-4" style="margin-bottom: 10px;">
+                <h4 style="font-size: 20px;">Contatti</h4>
+                <p style="font-size: 15px; margin-bottom: 5px;">Email: info@meme-bank.com</p>
+                <p style="font-size: 15px;">Telefono: +123 456 7890</p>
             </div>
+            <div class="col-md-4" style="margin-bottom: 10px;">
+              <h4 style="font-size: 20px;">Su di noi</h4>
+              <p style="font-size: 15px; margin-bottom: 5px;"><a class="text-reset" href="nopage.html">Chi siamo</a></p>
+              <p style="font-size: 15px;"> <a class="text-reset" href="nopage.html">Novità</a></p>
+          </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <p>&copy; 2024 MemeBank. Tutti i diritti riservati. | <a href="nopage.html">Termini e Condizioni</a></p>
+        <div class="row" style="margin-top:5vh; font-size: 15px;">
+            <div class="col-md-12 text-center" style="bottom: 0;">
+                <p>&copy; 2024 MemeBank | Tutti i diritti riservati | <a href="nopage.html" class="text-reset">Termini e Condizioni</a> | <a href="nopage.html" class="text-reset">Privacy Policy</a> </p>
             </div>
         </div>
     </div>
@@ -268,18 +327,114 @@
       console.log("page is fully loaded");
       presentation.classList.add("show-name")
     });
+
     function myFunction() {      
-      let imagecenter = document.getElementById("img2");
-      let imageright = document.getElementById("img3");
-      let background = document.querySelector('.background'); 
       let list = document.getElementById("list");
-      if (window.scrollY) {
-      document.getElementById("img1").classList.add("show-animate");
-      imageright.classList.add("show-animate");
-      imagecenter.classList.add("show-animate");
-      background.classList.add("show-remove");
-      list.classList.add("show-name");
-}
+      let inspo = document.getElementById("ispirazione");
+      /*
+      let background = document.querySelector('.background'); 
+      let top = window.scrollY;
+      let offset = background.offsetTop;
+      let height = background.offsetHeight; 
+      if (window.scrollY >= (offset*5) && top < (offset + height)){
+          background.classList.add("show-remove");
+         
+      } else {
+          background.classList.remove("show-remove");
+          
+      }
+      */
+      if(window.scrollY >= (list.offsetTop/4) && window.scrollY < (list.offsetTop + list.offsetHeight)){
+        list.classList.add("show-name");
+      } else {
+        list.classList.remove("show-name");
+      }
+
+      if(window.scrollY >= (inspo.offsetTop/2) && window.scrollY < (inspo.offsetTop + inspo.offsetHeight)){
+        inspo.classList.add("show-name");
+      } else {
+        inspo.classList.remove("show-name");
+      }
+    }
+
+    let image1 = document.getElementById("img1");
+    let image2 = document.getElementById("img2");
+    let image3 = document.getElementById("img3");
+    let image4 = document.getElementById("img4");
+    let image5 = document.getElementById("img5");
+    let image6 = document.getElementById("img6");
+
+    image1.addEventListener('mouseover', gestisciEventoMouseOver1);
+    image2.addEventListener('mouseover', gestisciEventoMouseOver2);
+    image3.addEventListener('mouseover', gestisciEventoMouseOver3);
+    image4.addEventListener('mouseover', gestisciEventoMouseOver4);
+    image5.addEventListener('mouseover', gestisciEventoMouseOver5);
+    image6.addEventListener('mouseover', gestisciEventoMouseOver6);
+    image1.addEventListener('mouseout', gestisciEventoMouseOut1);
+    image2.addEventListener('mouseout', gestisciEventoMouseOut2);
+    image3.addEventListener('mouseout', gestisciEventoMouseOut3);
+    image4.addEventListener('mouseout', gestisciEventoMouseOut4);
+    image5.addEventListener('mouseout', gestisciEventoMouseOut5);
+    image6.addEventListener('mouseout', gestisciEventoMouseOut6);
+
+    function gestisciEventoMouseOver1() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image1.style.transform = 'scale(1.1)';
+    }
+
+    function gestisciEventoMouseOver2() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image2.style.transform = 'scale(1.1)';
+    }
+
+    function gestisciEventoMouseOver3() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image3.style.transform = 'scale(1.1)';
+    }
+
+    function gestisciEventoMouseOver4() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image4.style.transform = 'scale(1.1)';
+    }
+
+    function gestisciEventoMouseOver5() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image5.style.transform = 'scale(1.1)';
+    }
+
+    function gestisciEventoMouseOver6() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image6.style.transform = 'scale(1.1)';
+    }
+
+    function gestisciEventoMouseOut1() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image1.style.transform = 'scale(1)';
+    }
+
+    function gestisciEventoMouseOut2() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image2.style.transform = 'scale(1)';
+    }
+
+    function gestisciEventoMouseOut3() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image3.style.transform = 'scale(1)';
+    }
+
+    function gestisciEventoMouseOut4() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image4.style.transform = 'scale(1)';
+    }
+
+    function gestisciEventoMouseOut5() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image5.style.transform = 'scale(1)';
+    }
+
+    function gestisciEventoMouseOut6() {
+    console.log('Il cursore è sopra l\'elemento!');
+    image6.style.transform = 'scale(1)';
     }
 
     </script>
