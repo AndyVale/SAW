@@ -9,7 +9,6 @@
         case DB_ERROR;
         case MISSING_FIELDS;
         case WRONG_EMAIL_FORMAT;
-        case ERROR_REGISTER;
         case DIFFERENT_PASSWORDS;//TODO:Ha senso questa?Se l'utente passa da curl saranno fatti suoi se non vuole confermare la password
     }
     function register(){
