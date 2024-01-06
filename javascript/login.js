@@ -5,6 +5,8 @@ loginFeedback = document.getElementById("loginFeedback");
 form = document.getElementById("form");
 rememberMe = document.getElementById("rememberMeCheck");
 submitButton = document.getElementById("submitButton");
+closeButton = document.getElementById("closeButton");
+
 
 //NOTA PER I POSTERI: i "@param" servono solo per l'IDE, non impongono in nessun modo il tipo dei parametri (JS non è tipato)
 
@@ -65,4 +67,8 @@ form.addEventListener("input", function(event){//TODO: Rimuovere il checkbox dal
     if(event.target === email || event.target === password){
         credentialsAreWrongReport(false);
     }
+});
+
+closeButton.addEventListener("click", function(event){
+    document.getElementById("form").parentNode.removeChild(document.getElementById("form"));
 });

@@ -77,6 +77,7 @@ confirm = document.getElementById("confirm");
 
 email = document.getElementById("email");
 emailFeedback = document.getElementById("emailFeedback");
+closeButton = document.getElementById("closeButton");
 
 form.addEventListener("submit", function(event){
     event.preventDefault();
@@ -134,3 +135,5 @@ passwordFields.addEventListener("input", function(event){
         passwordsAreValidsReport(true);
     }
 });
+
+closeButton.addEventListener("click", (e)=>removeNodeById("form"));
