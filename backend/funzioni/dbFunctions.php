@@ -1,5 +1,5 @@
 <?php
-    require_once "const.php";
+    require_once("const.php");
     //TODO: vedere se si possono levare i try catch a livello di funzione e gestirli ad un livello più alto
     function connect() {
         /*La funzione restituisce l'oggetto mysqli connesso al db specificato se la connessione va a buon fine, null altrimenti*/

@@ -1,5 +1,5 @@
 <?php
-require_once("loginFunctions.php");
+require_once("../funzioni/loginFunctions.php");
 
 $resultCookieLogin = cookieLogin();
 if($resultCookieLogin != loginResult::SUCCESSFUL_LOGIN){

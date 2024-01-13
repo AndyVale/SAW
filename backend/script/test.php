@@ -1,7 +1,7 @@
 <?php
-    require_once "dbConfig.php";
-    require_once "dbFunctions.php";
-    require_once "const.php";
+    require_once "../funzioni/dbConfig.php";
+    require_once "../funzioni/dbFunctions.php";
+    require_once "../funzioni/const.php";
     /*$conn = connect();
     if($conn == null) {
         echo "connessione fallita<br>";

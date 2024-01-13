@@ -1,5 +1,5 @@
 <?php
-    require_once("registrationFunctions.php");
+    require_once("../funzioni/registrationFunctions.php");
     
     switch(register()){
         case registerResult::SUCCESSFUL_REGISTER:

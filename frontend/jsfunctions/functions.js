@@ -3,7 +3,9 @@
  * @param {string} id - id dell'elemento da rimuovere
  */
 function removeNodeById(id){
-    document.getElementById(id).parentNode.removeChild(document.getElementById(id));
+    let node = document.getElementById(id);
+    if(node != null)
+        document.getElementById(id).parentNode.removeChild(document.getElementById(id));
 }
 
 /**

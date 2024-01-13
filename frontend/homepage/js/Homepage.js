@@ -156,3 +156,10 @@ window.onscroll = function() {myFunction()};
     // Chiama la funzione al caricamento della pagina
     window.onload = addIconWithLink;
     */
+
+let bottoneAccedi = document.getElementById("bottoneAccedi");
+let bottoneIscriviti = document.getElementById("bottoneIscriviti");
+
+bottoneAccedi.addEventListener('click', () => showLogin());
+bottoneIscriviti.addEventListener('click', () => showRegistration());
+

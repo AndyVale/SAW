@@ -1,7 +1,7 @@
 <?php
-    require_once("./Aus/dbConfig.php");
-    require_once("./Aus/dbFunctions.php");
-    require_once("./Aus/const.php");
+    require_once("dbConfig.php");
+    require_once("dbFunctions.php");
+    require_once("const.php");
 
     enum registerResult {
         case SUCCESSFUL_REGISTER;

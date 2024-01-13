@@ -38,7 +38,7 @@ function addLoginEvents(){
         event.preventDefault();
 
         dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
-        fetch("../php/login.php",
+        fetch("../../backend/script/login.php",
         {
             method: "POST",
             body: dati
@@ -74,10 +74,11 @@ function addLoginEvents(){
     });
 }
 
-function login(){
+function showLogin(){
     let container = document.querySelector("body");
-    
-    fetch("../php/login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
+    removeNodeById("form");
+
+    fetch("../../backend/script/login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
         if(response.ok){
             return response.text();
         }else{
@@ -85,13 +86,12 @@ function login(){
         }
     }).then((text) => {
         if(text == "OK"){
-            window.location.href = "../immagini/login.jpg";
+            alert("SEI LOGGATO TRAMITE COOKIE");
         }else{//altrimenti carico la pagina di login
-            getSnippet("../snippets/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
+            getSnippet("../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
         }
     }).catch((error) => {
         console.log(error);
     });
 }
-login();
 

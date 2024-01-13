@@ -90,7 +90,7 @@ function addRegistrationEvents(){
         passwordsAreValidsReport(true);
 
         dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
-        fetch("../php/registration.php",
+        fetch("../../backend/script/registration.php",
         {
             method: "POST",
             body: dati
@@ -141,8 +141,6 @@ function addRegistrationEvents(){
 
 function showRegistration(){
     container = document.querySelector("body");
-    getSnippet("../snippets/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
+    removeNodeById("form");
+    getSnippet("../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
 }
-
-showRegistration();
-

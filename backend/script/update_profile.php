@@ -2,8 +2,8 @@
  
  //ho iniziato solo a guardarle ma non c'è ancora niente di concreto qui
  session_start();
- include "dbConfig.php";
- include "dbFunctions.php";
+ include "../funzioni/dbConfig.php";
+ include "../funzioni/dbFunctions.php";
 
  $result = showProfile();
 
