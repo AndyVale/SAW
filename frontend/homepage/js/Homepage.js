@@ -51,78 +51,34 @@ window.onscroll = function() {myFunction()};
     let image5 = document.getElementById("img5");
     let image6 = document.getElementById("img6");
 
-    image1.addEventListener('mouseover', gestisciEventoMouseOver1);
-    image2.addEventListener('mouseover', gestisciEventoMouseOver2);
-    image3.addEventListener('mouseover', gestisciEventoMouseOver3);
-    image4.addEventListener('mouseover', gestisciEventoMouseOver4);
-    image5.addEventListener('mouseover', gestisciEventoMouseOver5);
-    image6.addEventListener('mouseover', gestisciEventoMouseOver6);
-    image1.addEventListener('mouseout', gestisciEventoMouseOut1);
-    image2.addEventListener('mouseout', gestisciEventoMouseOut2);
-    image3.addEventListener('mouseout', gestisciEventoMouseOut3);
-    image4.addEventListener('mouseout', gestisciEventoMouseOut4);
-    image5.addEventListener('mouseout', gestisciEventoMouseOut5);
-    image6.addEventListener('mouseout', gestisciEventoMouseOut6);
-
-    function gestisciEventoMouseOver1() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image1.style.transform = 'scale(1.1)';
+    function gestisciEventoMouseOver(number){
+      let img = document.getElementById("img"+number);
+      //console.log("Il cursore è sopra l'elemento numero "+number+"!");
+      img.style.transform = 'scale(1.1)';
+    }
+    
+    function gestisciEventoMouseOut(number) {
+      let img = document.getElementById("img"+number);
+      //console.log("Il cursore è sopra l'elemento numero "+number+"!");
+      img.style.transform = 'scale(1)';
     }
 
-    function gestisciEventoMouseOver2() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image2.style.transform = 'scale(1.1)';
-    }
+    image1.addEventListener('mouseover', ()=> gestisciEventoMouseOver("1"));
+    image2.addEventListener('mouseover', ()=> gestisciEventoMouseOver("2"));
+    image3.addEventListener('mouseover', ()=> gestisciEventoMouseOver("3"));
+    image4.addEventListener('mouseover', ()=> gestisciEventoMouseOver("4"));
+    image5.addEventListener('mouseover', ()=> gestisciEventoMouseOver("5"));
+    image6.addEventListener('mouseover', ()=> gestisciEventoMouseOver("6"));
 
-    function gestisciEventoMouseOver3() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image3.style.transform = 'scale(1.1)';
-    }
+    image1.addEventListener('mouseout', ()=> gestisciEventoMouseOut("1"));
+    image2.addEventListener('mouseout', ()=> gestisciEventoMouseOut("2"));
+    image3.addEventListener('mouseout', ()=> gestisciEventoMouseOut("3"));
+    image4.addEventListener('mouseout', ()=> gestisciEventoMouseOut("4"));
+    image5.addEventListener('mouseout', ()=> gestisciEventoMouseOut("5"));
+    image6.addEventListener('mouseout', ()=> gestisciEventoMouseOut("6"));
 
-    function gestisciEventoMouseOver4() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image4.style.transform = 'scale(1.1)';
-    }
 
-    function gestisciEventoMouseOver5() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image5.style.transform = 'scale(1.1)';
-    }
-
-    function gestisciEventoMouseOver6() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image6.style.transform = 'scale(1.1)';
-    }
-
-    function gestisciEventoMouseOut1() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image1.style.transform = 'scale(1)';
-    }
-
-    function gestisciEventoMouseOut2() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image2.style.transform = 'scale(1)';
-    }
-
-    function gestisciEventoMouseOut3() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image3.style.transform = 'scale(1)';
-    }
-
-    function gestisciEventoMouseOut4() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image4.style.transform = 'scale(1)';
-    }
-
-    function gestisciEventoMouseOut5() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image5.style.transform = 'scale(1)';
-    }
-
-    function gestisciEventoMouseOut6() {
-    console.log('Il cursore è sopra l\'elemento!');
-    image6.style.transform = 'scale(1)';
-    }
+    
 
     /*
     function addIconWithLink() {

@@ -77,7 +77,6 @@ function addLoginEvents(){
 function showLogin(){
     let container = document.querySelector("body");
     removeNodeById("form");
-
     fetch("../../backend/script/login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
         if(response.ok){
             return response.text();
