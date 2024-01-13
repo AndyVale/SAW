@@ -10,6 +10,9 @@ if($resultCookieLogin != loginResult::SUCCESSFUL_LOGIN){
             if(!setRememberMe()){//se non riesco a settare il cookie
                 $result = 'OKnr';
             }
+            else{
+                $result = 'OKr';
+            }
         }
     }
     else{

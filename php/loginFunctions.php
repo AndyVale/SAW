@@ -29,22 +29,20 @@ function cookieLogin(){
     //Funzione che effettua il login tramite cookie
     if(empty($_COOKIE[REMEMBERME]))//controllo che il cookie sia settato
         return loginResult::MISSING_FIELDS;
-
     $conn = connect();
     if($conn == null)
         return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
 
     $actualTime = time();
-    $fields = EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
-    $query = "SELECT $fields FROM Utente WHERE email = ? and expireTime > $actualTime";
-    
-    $result = safeQuery($query, array($_POST[EMAIL]), "s");
-    if(!is_numeric($result)) {//controllo credenziali
-        if(count($result) != 1) 
-            return loginResult::WRONG_CREDENTIALS;
-        return login($result[0], $_COOKIE[REMEMBERME], $result[0][REMEMBERME]);
+    $campi = EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
+    $query = "SELECT $campi FROM Utente WHERE expireTime > $actualTime";
+    $risultato = $conn -> query($query);
+    while($utente = $risultato -> fetch_assoc()){
+        if(password_verify($_COOKIE[REMEMBERME], $utente[REMEMBERME])){
+            return login($utente, $_COOKIE[REMEMBERME], $utente[REMEMBERME]);
+        }
     }
-    return loginResult::DB_ERROR;
+    return loginResult::WRONG_CREDENTIALS;
 }
 function credentialsLogin(){
     //Funzione che effettua il login tramite email e password
@@ -76,7 +74,7 @@ function setRememberMe(){
 
     $cookieValue = random_int(PHP_INT_MIN,PHP_INT_MAX);//genero un cookie value "random" che rilascio in chiaro al client
     $expireTime = time() + 60*60*24*30;//scade dopo 30 giorni
-    setcookie(REMEMBERME, $cookieValue, $expireTime);//setto il cookie
+    setcookie(REMEMBERME, $cookieValue, $expireTime, '/', null, false, true);//setto il cookie
 
     $cookieValue = password_hash($cookieValue, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
     $query = "UPDATE Utente SET rememberMe = ?, expireTime = ? WHERE email = ?";

@@ -1,0 +1,35 @@
+<form id="form" action="../php/login.php" method="post" aria-label="Form di login">
+    <div id="loginContainer" class="container-sm p-2 my-3 fixed-top my-md-5 border border-2 border-dark rounded bg-body-secondary text-center">
+            <div class="row">
+                <div class="col-1">
+                    <div class="btn-close bg-danger border border-2 rounded-circle" id="closeButton" aria-label="Bottone di chiusura"></div>
+                </div>
+                <div class="col-11">
+                    <div class="h3">Accedi</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="col my-4 mx-2">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Input per email" required>
+                    </div>
+                    <div class="col my-4 mx-2">
+                        <input type="password" class="form-control" name="pass" id="password" placeholder="Password" aria-label="Input per password" required>
+                        <div id="loginFeedback" class="feedback invalid-feedback"></div>
+                    </div>
+                    <div class="col my-2 mx-2 text-start">
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="rememberMeCheck" aria-label="Checkbox per abilitare il rememberMe">Ricordami</label>
+                            <input class="form-check-input" type="checkbox" id="rememberMeCheck" name="rememberMe">
+                        </div>
+                    </div>
+                    <div class="col mt-5 mx-2">
+                        <input type="submit" class="form-control bg-primary" name="submit" value="Invia" aria-label="Invia" id="submitButton">
+                    </div>
+                    
+                </div>
+                <div class="col-12 col-md-6 my-2">
+                    <img src="../immagini/login.jpg" alt="Immagine con bambino in smoking che dice: 'Fai login perfavore'" width="238">
+                </div>
+            </div>
+    </div>

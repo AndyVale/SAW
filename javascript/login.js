@@ -1,13 +1,3 @@
-container = document.getElementById("loginContainer");
-password=document.getElementById("password");
-email = document.getElementById("email");
-loginFeedback = document.getElementById("loginFeedback");
-form = document.getElementById("form");
-rememberMe = document.getElementById("rememberMeCheck");
-submitButton = document.getElementById("submitButton");
-closeButton = document.getElementById("closeButton");
-
-
 //NOTA PER I POSTERI: i "@param" servono solo per l'IDE, non impongono in nessun modo il tipo dei parametri (JS non è tipato)
 
 /**
@@ -35,40 +25,73 @@ function credentialsAreWrongReport(boolWrongCredential){
     }
 }
 
-form.addEventListener("submit", function(event){
-    event.preventDefault();
+function addLoginEvents(){
+    container = document.getElementById("loginContainer");
+    password=document.getElementById("password");
+    email = document.getElementById("email");
+    loginFeedback = document.getElementById("loginFeedback");
+    form = document.getElementById("form");
+    rememberMe = document.getElementById("rememberMeCheck");
+    submitButton = document.getElementById("submitButton");
+    closeButton = document.getElementById("closeButton");
+    form.addEventListener("submit", function(event){
+        event.preventDefault();
 
-    dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
-    fetch("../php/login.php",
-    {
-        method: "POST",
-        body: dati
-    }).then(function(response){
+        dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
+        fetch("../php/login.php",
+        {
+            method: "POST",
+            body: dati
+        }).then(function(response){
+            if(response.ok){
+                return response.text();
+            }else{
+                console.log(response);
+                throw new Error("Errore nella richiesta AJAX");
+            }
+        }).then(function(text){
+            alert(text);
+            if(text=="OK"){
+                alert("SEI LOGGATO ATTRAVERSO LE CREDENZIALI");
+                //window.location.href = "../immagini/login.jpg";
+            }else{
+                credentialsAreWrongReport(true);
+            }    
+        }).catch(function(error){
+            console.log(error);
+        });
+
+    });
+
+    form.addEventListener("input", function(event){//TODO: Rimuovere il checkbox dalla roba
+        if(event.target === email || event.target === password){
+            credentialsAreWrongReport(false);
+        }
+    });
+
+    closeButton.addEventListener("click", function(event){
+        document.getElementById("form").parentNode.removeChild(document.getElementById("form"));
+    });
+}
+
+function login(){
+    let container = document.querySelector("body");
+    
+    fetch("../php/login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
         if(response.ok){
             return response.text();
         }else{
-            console.log(response);
             throw new Error("Errore nella richiesta AJAX");
         }
-    }).then(function(text){
-        alert(text);
-        if(text=="OK"){
-            window.location.href = "login.jpg";
-        }else{
-            credentialsAreWrongReport(true);
-        }    
-    }).catch(function(error){
+    }).then((text) => {
+        if(text == "OK"){
+            window.location.href = "../immagini/login.jpg";
+        }else{//altrimenti carico la pagina di login
+            getSnippet("../grafica/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
+        }
+    }).catch((error) => {
         console.log(error);
     });
+}
+login();
 
-});
-
-form.addEventListener("input", function(event){//TODO: Rimuovere il checkbox dalla roba
-    if(event.target === email || event.target === password){
-        credentialsAreWrongReport(false);
-    }
-});
-
-closeButton.addEventListener("click", function(event){
-    document.getElementById("form").parentNode.removeChild(document.getElementById("form"));
-});
