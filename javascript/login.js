@@ -87,7 +87,7 @@ function login(){
         if(text == "OK"){
             window.location.href = "../immagini/login.jpg";
         }else{//altrimenti carico la pagina di login
-            getSnippet("../grafica/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
+            getSnippet("../snippets/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
         }
     }).catch((error) => {
         console.log(error);
