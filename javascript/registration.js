@@ -36,6 +36,9 @@ function dbErrorReport(container){
  * @param {Boolean} areValids - areValids specifica se le password sono uguali o no
  */
 function passwordsAreValidsReport(areValids){
+    let password = document.getElementById("password");
+    let confirm = document.getElementById("confirm");
+
     if(areValids){
         password.classList.remove("is-invalid");
         confirm.classList.remove("is-invalid");
@@ -55,6 +58,7 @@ function passwordsAreValidsReport(areValids){
  * @param {Boolean} possiblyUnique - possiblyUnique specifica se la mail può essere univoca o no. Il valore falso indica che la mail è sicuramente in uso
  */
 function emailIsUniqueReport(possiblyUnique){
+    let email = document.getElementById("email");
     if(possiblyUnique){
         email.classList.remove("is-invalid");
         emailFeedback.textContent="Inserisci la tua email";
@@ -66,74 +70,79 @@ function emailIsUniqueReport(possiblyUnique){
     }
 }
 
-form = document.getElementById("form");
-fieldSetForm = document.getElementById("fieldSetForm");
-registrationContainer = document.getElementById("registrationContainer");
+function addRegistrationEvents(){
+    let form = document.getElementById("form");
+    let registrationContainer = document.getElementById("registrationContainer");
+    let passwordFields = document.getElementById("passwordFields");
+    let password = document.getElementById("password");
+    let confirm = document.getElementById("confirm");
 
-passwordFields = document.getElementById("passwordFields");
-confirmFeedback = document.getElementById("confirmFeedback");
-password = document.getElementById("password");
-confirm = document.getElementById("confirm");
+    let email = document.getElementById("email");
+    let closeButton = document.getElementById("closeButton");
 
-email = document.getElementById("email");
-emailFeedback = document.getElementById("emailFeedback");
-closeButton = document.getElementById("closeButton");
-
-form.addEventListener("submit", function(event){
-    event.preventDefault();
-    if(password.value!=confirm.value){
-        passwordsAreValidsReport(false);
-        return;
-    }
-
-    passwordsAreValidsReport(true);
-
-    dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
-    fetch("../php/registration.php",
-    {
-        method: "POST",
-        body: dati
-    }).then(function(response){
-        if(response.ok){
-            return response.json();
-        }else{
-            console.log(response);
-            throw new Error("Errore nella richiesta AJAX");
+    form.addEventListener("submit", function(event){
+        event.preventDefault();
+        if(password.value!=confirm.value){
+            passwordsAreValidsReport(false);
+            return;
         }
-    }).then(function(json){
-        if(json["result"]=="OK"){
-            window.location.href = "loginForm.html";
-        }
-        else{
-            //alert(json["message"]);
-            switch(json["message"]){
-                case "EMAIL_ALREADY_EXISTS":
-                    emailIsUniqueReport(false);
-                    break;
-                case "DB_ERROR":
-                    dbErrorReport(registrationContainer);
-                    break;
-                default:
-                    alert("You did play with the code, didn't you?");
-                    break;
+
+        passwordsAreValidsReport(true);
+
+        dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
+        fetch("../php/registration.php",
+        {
+            method: "POST",
+            body: dati
+        }).then(function(response){
+            if(response.ok){
+                return response.json();
+            }else{
+                console.log(response);
+                throw new Error("Errore nella richiesta AJAX");
             }
-        }
-    }).catch(function(error){
-        dbErrorReport(registrationContainer);
+        }).then(function(json){
+            if(json["result"]=="OK"){
+                window.location.href = "loginForm.html";
+            }
+            else{
+                //alert(json["message"]);
+                switch(json["message"]){
+                    case "EMAIL_ALREADY_EXISTS":
+                        emailIsUniqueReport(false);
+                        break;
+                    case "DB_ERROR":
+                        dbErrorReport(registrationContainer);
+                        break;
+                    default:
+                        alert("You did play with the code, didn't you?");
+                        break;
+                }
+            }
+        }).catch(function(error){
+            dbErrorReport(registrationContainer);
+        });
     });
 
-});
+    email.addEventListener("input", function(event){
+        emailIsUniqueReport(true);
+    });
 
-email.addEventListener("input", function(event){
-    emailIsUniqueReport(true);
-});
+    passwordFields.addEventListener("input", function(event){
+        if(password.value!=confirm.value){
+            passwordsAreValidsReport(false);
+        }else{
+            passwordsAreValidsReport(true);
+        }
+    });
 
-passwordFields.addEventListener("input", function(event){
-    if(password.value!=confirm.value){
-        passwordsAreValidsReport(false);
-    }else{
-        passwordsAreValidsReport(true);
-    }
-});
+    closeButton.addEventListener("click", (e)=>removeNodeById("form"));
+}
 
-closeButton.addEventListener("click", (e)=>removeNodeById("form"));
+function showRegistration(){
+    container = document.querySelector("body");
+    getSnippet("../snippets/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
+}
+
+showRegistration();
+
