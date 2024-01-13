@@ -1,9 +1,41 @@
 <?php
  
- //ho iniziato solo a guardarle ma non c'è ancora niente di concreto qui
  session_start();
- include "dbConfig.php";
- include "dbFunctions.php";
+ require_once "dbConfig.php";
+ require_once "dbFunctions.php";
+ require_once "const.php";
+
+ //forzo la creazione di una sessione a solo scopo didattico
+ $_SESSION[EMAIL] = 'email17@example.com';
+
+
+ // Simula i dati dell'utente. In un'applicazione reale, dovrai recuperare questi dati dal tuo sistema di autenticazione.
+ $logged_in_user = [
+    'username' => 'utente123',
+    'firstname' => 'Maria',
+    'lastname' => 'Rossi',
+    'email' => 'maria.rossi@example.com'
+    /*,
+    'posts' => '7',
+    'followers' => '13',
+    'following' => '21',
+    */
+];
+
+// Verifica che l'utente sia autenticato (simulato)
+if (isLogged()) {
+    // Se l'utente è autenticato, restituisci i dati dell'utente
+    header('Content-Type: application/json');
+    echo json_encode($logged_in_user);
+    //Verificare il perchè questa istruzione dia problemi
+    //echo showProfile();
+} else {
+    // Se l'utente non è autenticato, restituisci un errore
+    header('HTTP/1.1 401 Unauthorized');
+    echo json_encode(['error' => 'Utente non autenticato']);
+}
+
+/*
 
  $result = showProfile();
 
@@ -34,5 +66,6 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
     }
     echo $message;
   }
+ */
 
  ?>

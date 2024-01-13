@@ -75,6 +75,10 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
     font-size: 18px
     }
 
+    hr.custom-line {
+            border-top: 1px solid #eaeaf1;
+        } 
+
     </style>
     
   </head>
@@ -86,12 +90,6 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
           <a class="navbar-brand" href="#" style="color:black;">
             <img src="817451-84.png" alt="EmojiSorridente" width="30" height=auto class="d-inline-block align-text-top">
             Meme<span class="fw-bolder">Bank</span>
-          <!--
-            <div class="position-absolute top-0 end-0 me-2 mt-2">
-            <button type="button" class="btn btn-outline-dark" style="border-radius: 35px;"> Accedi </button>
-            <button type="button" class="btn btn-outline-dark" style="border-radius: 35px;"> Iscriviti </button>
-            </div>
-          -->
        </a>
      </div>
     </nav>
@@ -101,11 +99,26 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
         <div class="row">
           <!-- Colonna a Sinistra -->
           <!-- aggiungendo a col-md-3 la classe border-end si aggiunge il bordo destro che però rimane anche quando si stringe la pagina-->
-          <div class="col-md-3">
+          <div class="col-md-3 mt-3">
             <img class="img-fluid rounded-circle mx-auto d-block" style="width: 110px; height: auto; margin-top: 10px;" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="user profile picture">
              <ul class="list-unstyled">
              <li class="lead text-center">Rebecca Sanders</li>
              </ul>
+
+             <div class="row mt-3">
+              <div class="col-md-4 text-center">
+                  <h3>15</h3>
+                  <p>post</p>
+              </div>
+              <div class="col-md-4 text-center">
+                  <h3>23</h3>
+                  <p>follower</p>
+              </div>
+              <div class="col-md-4 text-center">
+                <h3>37</h3>
+                <p>seguiti</p>
+            </div>
+              </div>
             <div class="list-group">
               <a href="#" class="list-group-item list-group-item-action">Link 1</a>
               <a href="#" class="list-group-item list-group-item-action">Link 2</a>
@@ -122,26 +135,19 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
                 <h2 class="lead fw-bolder title"> Profilo </h2>
                 <fieldset class="fieldset"> 
                 <h3 class="fieldset-title">Informazioni personali </h3>
-                <!--class="form-inline col-md-10 col-sm-9 col-xs-12"-->
                 <div class="form-group mb-3">
                   <label for="profile-image">Immagine profilo</label>
                   <input type="file" id="profile-image" name="profile-image" class="form-control-file">
                   <button type="submit" class="btn btn-sm" style="background-color: #6FD08C;">Update Image</button>
                 </div>  
-                <!-- delle prossime 6 righe vanno controllate le classi-->
-                <div class="form-group">
-                  <label for="username" class="col-sm-2 mb-1">Nome utente</label>
-                  <input type="text" id="username" name="username" class="form-control mb-3" value="Rebecca">
-                </div> 
                 <div class="form-group">
                   <label for="firstname" class="col-md-2 col-sm-3 col-xs-12 mb-1">Nome</label>
-                  <input type="text" id="firstname" name="firstname" class="form-control mb-3" value="<?php echo $profileData['firstname']; ?>">
+                  <input type="text" id="firstname" name="firstname" class="form-control mb-3">
                   </div> 
                 </div>
-                 <!-- delle prossime 6 righe vanno controllate le classi-->
                  <div class="form-group">
                   <label for="lastname" class="col-md-2 col-sm-3 col-xs-12 mb-1">Cognome</label>
-                  <input type="text" id="lastname" name="lastname" class="form-control mb-3" value="<?php echo $profileData['lastname']; ?>">
+                  <input type="text" id="lastname" name="lastname" class="form-control mb-3">
                  </div>
                 </fieldset>
 
@@ -152,18 +158,17 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
               <div class="col-md-12">
                 <fieldset class="fieldset"> 
                   <h3 class="fieldset-title">Account</h3>
-                   <!-- delle prossime 7 righe vanno controllate le classi-->
+                  <div class="form-group">
+                    <label for="username" class="col-sm-2 mb-1">Nome utente</label>
+                    <input type="text" id="username" name="username" class="form-control mb-3">
+                  </div> 
                   <div class="form-group">
                     <label for="email" class="col-md-2  col-sm-3 col-xs-12 mb-1">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" value="<?php echo $profileData['email']; ?>">
+                    <input type="email" id="email" name="email" class="form-control">
                     <p class="form-text text-muted mb-3">eg. info@meme-bank.com </p>
-                    </div>
-                   <div class="form-group">
-                    <label for="pass" class="col-md-2 col-sm-3 col-xs-12 mb-1">Password</label>
-                    <input type="password" id="pass" name="pass" class="form-control mb-3" value="Rebecca">
-                  </div>             
+                    </div>          
                   </fieldset>
-                  <hr>
+                  <hr class="custom-line">
                   <div class="row">
                    <!-- controlla la classe form-group seguente-->
                   <div class="form-group">
@@ -233,9 +238,35 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
     </div>
   </footer>
 
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Effettua una richiesta API Fetch per ottenere i dati dell'utente
+  fetch('http://localhost/saw/update_profile.php')
+  //verifica che non siano necessari altri controlli più specifici
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Errore nella richiesta.');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Popola i campi del form con i dati ottenuti
+    document.getElementById('firstname').value = data.firstname;
+    document.getElementById('lastname').value = data.lastname;
+    document.getElementById('username').value = data.username;
+    document.getElementById('email').value = data.email;
+   })
+   .catch(error => {
+   console.error('Errore:', error);
 
+    console.log('Nome dell\'errore:', error.name);
+    console.log('Messaggio dell\'errore:', error.message);
+    console.log('Stack dell\'errore:', error.stack);
+   });
+  });
 
-    <script src ="./Homepage.js"></script>
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
   </body>
