@@ -1,31 +1,3 @@
-<!--
-<?php
- 
- session_start();
- include "dbConfig.php";
-
- $result = showProfile();
-
-if ($result === updateResult::ERROR_NOTLOGGED) {
-    // Utente non autenticato, gestisci di conseguenza
-} elseif ($result === updateResult::ERROR_DB) {
-    // Errore di connessione al database, gestisci di conseguenza
-} elseif ($result === updateResult::ERROR_UPDATE) {
-    // Altri errori durante l'esecuzione della query, gestisci di conseguenza
-} else {
-    // La funzione ha restituito un JSON con i dati del profilo
-    // Puoi utilizzare json_decode per convertire il JSON in un array associativo
-    $profileData = json_decode($result, true);
-
-    // Ora $profileData contiene i dati del profilo, puoi fare quello che desideri con essi
-    // Ad esempio, stampare i dati
-    echo "First Name: " . $profileData['firstname'] . "<br>";
-    echo "Last Name: " . $profileData['lastname'] . "<br>";
-    echo "Email: " . $profileData['email'] . "<br>";
-}
-?>
--->
-
 <!doctype html>
 <html lang="it">
   <head>
@@ -101,21 +73,19 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
           <!-- aggiungendo a col-md-3 la classe border-end si aggiunge il bordo destro che però rimane anche quando si stringe la pagina-->
           <div class="col-md-3 mt-3">
             <img class="img-fluid rounded-circle mx-auto d-block" style="width: 110px; height: auto; margin-top: 10px;" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="user profile picture">
-             <ul class="list-unstyled">
-             <li class="lead text-center">Rebecca Sanders</li>
-             </ul>
+             <h3 id="fullname" class="lead text-center mt-2">Rebecca Sanders</h3>
 
              <div class="row mt-3">
               <div class="col-md-4 text-center">
-                  <h3>15</h3>
+                  <h3 id="posts">15</h3>
                   <p>post</p>
               </div>
               <div class="col-md-4 text-center">
-                  <h3>23</h3>
+                  <h3 id="followers">23</h3>
                   <p>follower</p>
               </div>
               <div class="col-md-4 text-center">
-                <h3>37</h3>
+                <h3 id="following">37</h3>
                 <p>seguiti</p>
             </div>
               </div>
@@ -128,7 +98,7 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
       
           <!-- Sezione Divisa a Destra -->
           <div class="col-md-9">
-            <form action="update_profile.php" method="post">
+            <form action="update.php" method="post" enctype="multipart/form-data">
             <!-- Prima Riga a Destra -->
             <div class="row mb-4">
               <div class="col-md-12">
@@ -241,7 +211,12 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
   <script>
   document.addEventListener('DOMContentLoaded', function() {
   // Effettua una richiesta API Fetch per ottenere i dati dell'utente
-  fetch('http://localhost/saw/update_profile.php')
+  fetch('./update.php', {
+    method: 'GET', // Puoi cambiare questo a 'POST' se necessario
+    headers: {
+      'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
+    }
+  })
   //verifica che non siano necessari altri controlli più specifici
   .then(response => {
     if (!response.ok) {
@@ -251,21 +226,25 @@ if ($result === updateResult::ERROR_NOTLOGGED) {
   })
   .then(data => {
     // Popola i campi del form con i dati ottenuti
-    document.getElementById('firstname').value = data.firstname;
     document.getElementById('lastname').value = data.lastname;
-    document.getElementById('username').value = data.username;
-    document.getElementById('email').value = data.email;
+    document.getElementById('firstname').value = data.firstname;
+    //document.getElementById('username').value = data.username;
+    document.getElementById('lastname').value = data.lastname;
+   // document.getElementById('email').value = data.email;
+    //document.getElementById('posts').innerText = data.posts;
+    //document.getElementById('followers').innerText = data.followers;
+    //document.getElementById('following').innerText = data.following;
+    document.getElementById('fullname').innerText = data.firstname + " " + data.lastname;
    })
    .catch(error => {
    console.error('Errore:', error);
-
-    console.log('Nome dell\'errore:', error.name);
-    console.log('Messaggio dell\'errore:', error.message);
-    console.log('Stack dell\'errore:', error.stack);
+   console.log('Nome dell\'errore:', error.name);
+   console.log('Messaggio dell\'errore:', error.message);
+   console.log('Stack dell\'errore:', error.stack);
    });
   });
-
-    </script>
+  
+  </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
