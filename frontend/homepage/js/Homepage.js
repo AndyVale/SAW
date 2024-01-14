@@ -112,10 +112,43 @@ window.onscroll = function() {myFunction()};
     // Chiama la funzione al caricamento della pagina
     window.onload = addIconWithLink;
     */
+function logout(){
+  fetch("../../backend/script/logout.php").then((response) => {
+    if(response.ok){
+      return response.json();
+    }else{
+      throw new Error("Errore nella richiesta AJAX");
+    }
+  }).then((res) => {
+    if(res['result'] == "OK"){
+      localStorage.clear();
+      window.location.href = "./";
+    }
+  }).catch((error) => {
+    console.log(error);
+  });
+}
 
 let bottoneAccedi = document.getElementById("bottoneAccedi");
 let bottoneIscriviti = document.getElementById("bottoneIscriviti");
 
-bottoneAccedi.addEventListener('click', () => showLogin());
-bottoneIscriviti.addEventListener('click', () => showRegistration());
+function gestioneBottoni(event){
+  switch(event.target.id){
+    case "bottoneAccedi":
+      showLogin();
+      break;
+    case "bottoneIscriviti":
+      showRegistration();
+      break;
+    case "bottoneLogout":
+      logout();
+      break;
+    case "bottoneModificaProfilo":
+      showProfile();
+      break;
+    default:
+      break;
+  }
+}
 
+document.getElementById("contenitoreBottoni").addEventListener("click", (e)=>gestioneBottoni(e));

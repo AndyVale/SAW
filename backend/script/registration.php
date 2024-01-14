@@ -1,6 +1,8 @@
 <?php
     require_once("../funzioni/registrationFunctions.php");
     
+    $result['from'] = 'registration.php';
+    
     switch(register()){
         case registerResult::SUCCESSFUL_REGISTER:
             //aggiungo campi per la registrazione avvenuta con successo

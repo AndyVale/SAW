@@ -1,3 +1,5 @@
+//---------------------------------------QUESTO FILE RICHIEDE IL FILE "functions.js" PER FUNZIONARE---------------------------------------//
+
 //NOTA PER I POSTERI: i "@param" servono solo per l'IDE, non impongono in nessun modo il tipo dei parametri (JS non è tipato)
 
 /**
@@ -44,15 +46,15 @@ function addLoginEvents(){
             body: dati
         }).then(function(response){
             if(response.ok){
-                return response.text();
+                return response.json();
             }else{
                 console.log(response);
                 throw new Error("Errore nella richiesta AJAX");
             }
-        }).then(function(text){
-            alert(text);
-            if(text=="OK"){
-                alert("SEI LOGGATO ATTRAVERSO LE CREDENZIALI");
+        }).then(function(res){
+            console.log(res);
+            if(res['result']=="OK"){
+                successfulLogin(res['data']);
                 //window.location.href = "../immagini/login.jpg";
             }else{
                 credentialsAreWrongReport(true);
@@ -74,18 +76,38 @@ function addLoginEvents(){
     });
 }
 
+function successfulLogin(dati){
+    let contenitoreBottoni = document.getElementById("contenitoreBottoni");
+    let bottoneLogout = document.getElementById("bottoneLogout");
+    let bottoneModificaProfilo = document.getElementById("bottoneModificaProfilo");
+    
+    localStorage.setItem("email", dati.email);
+    localStorage.setItem("firstname", dati.firstname);
+    localStorage.setItem("lastname", dati.lastname);
+
+    removeNodeById("form");//controlla già che non sia null
+
+    while(contenitoreBottoni.firstChild){//rimuovo tutti i figli del contenitore
+        contenitoreBottoni.removeChild(contenitoreBottoni.firstChild);
+    }
+    
+    contenitoreBottoni.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogout'> Logout </button>");
+    contenitoreBottoni.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneModificaProfilo'>"+dati['firstname']+"</span>");
+}
+
 function showLogin(){
     let container = document.querySelector("body");
     removeNodeById("form");
-    fetch("../../backend/script/login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
+    fetch("../../backend/script/cookie_login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
         if(response.ok){
-            return response.text();
+            return response.json();
         }else{
             throw new Error("Errore nella richiesta AJAX");
         }
-    }).then((text) => {
-        if(text == "OK"){
-            alert("SEI LOGGATO TRAMITE COOKIE");
+    }).then((res) => {
+        console.log(res);
+        if(res['result'] == "OK"){
+            successfulLogin(res['data']);
         }else{//altrimenti carico la pagina di login
             getSnippet("../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
         }

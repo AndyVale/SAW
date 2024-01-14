@@ -1,3 +1,5 @@
+//---------------------------------------QUESTO FILE RICHIEDE IL FILE "functions.js" PER FUNZIONARE---------------------------------------//
+
 /**
  * @param {node} container - container specifica in che container inserire il messaggio di errore 
  */
@@ -103,7 +105,7 @@ function addRegistrationEvents(){
             }
         }).then(function(json){
             if(json["result"]=="OK"){
-                window.location.href = "loginForm.html";
+                alert("Registrazione avvenuta con successo");
             }
             else{
                 //alert(json["message"]);

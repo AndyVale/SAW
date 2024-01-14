@@ -55,13 +55,6 @@
             return false;
         }
     }
-    function logout() {
-        //funzione che distrugge la sessione e i cookie
-        if(session_status() == PHP_SESSION_ACTIVE) session_destroy();
-        setcookie(REMEMBERME, "", time()-3600);
-        return true;
-    }
-    
  
     enum updateResult {
         case SUCCESSFUL_UPDATE;

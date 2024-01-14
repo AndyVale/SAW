@@ -2,9 +2,5 @@ Progetto di SAW.
 
 Nome:
     MemeBank;
-Funzionalità da implementare:
-    login;
-    registrazione;
-    ...
-Funzionalità in implementazione:
-    libreria database;
+Funzionalità implementate in questa branch:
+    Homepage con registrazione.
