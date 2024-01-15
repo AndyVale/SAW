@@ -24,7 +24,7 @@
             break;
         case updateResult::ERROR_UPDATE:
             $result['result'] = 'KO';
-            $result['message'] = 'ERROR_UPDATE';
+            $result['message'] = 'ERROR_SHOW';
             break;
         default:
             $result['result'] = 'OK';

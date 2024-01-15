@@ -1,1 +1,3 @@
 dbFunctions.php/register(): Duplicate entry 'email11@example.com' for key 'email'
+dbFunctions.php/register(): Duplicate entry 'email11@example.com' for key 'email'
+dbFunctions.php/register(): Duplicate entry 'admin@admin.com' for key 'email'
