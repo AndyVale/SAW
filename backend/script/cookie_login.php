@@ -1,6 +1,7 @@
 <?php
     require_once("../funzioni/loginFunctions.php");
 
+    header('Content-Type: application/json');
     $result['from'] = 'cookie_login.php';
     
     switch (cookieLogin()) {

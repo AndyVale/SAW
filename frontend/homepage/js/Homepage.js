@@ -122,7 +122,8 @@ function logout(){
   }).then((res) => {
     if(res['result'] == "OK"){
       localStorage.clear();
-      window.location.href = "./";
+      console.log(res);
+      //window.location.href = "./";
     }
   }).catch((error) => {
     console.log(error);
@@ -156,3 +157,18 @@ function gestioneBottoni(event){
 }
 
 document.getElementById("contenitoreBottoni").addEventListener("click", (e)=>gestioneBottoni(e));
+
+fetch("../../backend/script/cookie_login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
+  if(response.ok){
+      return response.json();
+  }else{
+      throw new Error("Errore nella richiesta AJAX");
+  }
+}).then((res) => {
+  console.log(res);
+  if(res['result'] == "OK"){
+      successfulLogin(res['data']);
+  }
+}).catch((error) => {
+  console.log(error);
+});

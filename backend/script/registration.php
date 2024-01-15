@@ -1,6 +1,7 @@
 <?php
     require_once("../funzioni/registrationFunctions.php");
     
+    header('Content-Type: application/json');
     $result['from'] = 'registration.php';
     
     switch(register()){

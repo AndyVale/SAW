@@ -1,6 +1,7 @@
 <?php
     require_once("../funzioni/loginFunctions.php");
     
+    header('Content-Type: application/json');
     $result['from'] = 'login.php';
 
     switch(CredentialsLogin()){

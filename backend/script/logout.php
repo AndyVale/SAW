@@ -1,12 +1,17 @@
 <?php
     require_once("../funzioni/const.php");
 
+    header('Content-Type: application/json');
     $result['from'] = 'logout.php';
 
     function logout() {
         //funzione che distrugge la sessione e i cookie
         if(session_status() == PHP_SESSION_ACTIVE) session_destroy();
-        setcookie(REMEMBERME, "", time()-3600);
+        if (isset($_COOKIE[REMEMBERME])) {
+            unset($_COOKIE[REMEMBERME]); 
+            setcookie(REMEMBERME, '', -1, '/'); 
+            return true;
+        }
         return true;
     }
 
