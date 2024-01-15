@@ -113,7 +113,7 @@ window.onscroll = function() {myFunction()};
     window.onload = addIconWithLink;
     */
 function logout(){
-  fetch("../../backend/script/logout.php").then((response) => {
+  fetch("../../../backend/script/logout.php").then((response) => {
     if(response.ok){
       return response.json();
     }else{
@@ -158,7 +158,7 @@ function gestioneBottoni(event){
 
 document.getElementById("contenitoreBottoni").addEventListener("click", (e)=>gestioneBottoni(e));
 
-fetch("../../backend/script/cookie_login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
+fetch("../../../backend/script/cookie_login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
   if(response.ok){
       return response.json();
   }else{
