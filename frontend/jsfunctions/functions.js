@@ -66,7 +66,7 @@ function blurAllRemove(){
  */
 async function getSnippet(url){
     //let result = null;
-    return fetch(url)
+    return fetch(url, {cache: 'no-cache'})
         .then(res=>{
             if(res.ok)
                 return res.text();
