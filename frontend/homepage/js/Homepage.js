@@ -129,6 +129,10 @@ function logout(){
   });
 }
 
+function showProfile(){
+  window.location.href = "./PROFILO_ANCORA_DA_IMPLEMENTARE";
+}
+
 let bottoneAccedi = document.getElementById("bottoneAccedi");
 let bottoneIscriviti = document.getElementById("bottoneIscriviti");
 

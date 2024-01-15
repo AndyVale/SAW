@@ -1,5 +1,8 @@
 <?php
     require_once("../funzioni/const.php");
+
+    $result['from'] = 'logout.php';
+
     function logout() {
         //funzione che distrugge la sessione e i cookie
         if(session_status() == PHP_SESSION_ACTIVE) session_destroy();
