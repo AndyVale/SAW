@@ -9,10 +9,10 @@
    
     <!-- Nome e Icona -->
     <title>Modifica del profilo</title>
-    <link rel="icon" type="image/x-icon" href="817451-84.png">
+    <link rel="icon" type="image/x-icon" href="../../immagini/817451-84.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="style-homepage.css">
+    <link rel="stylesheet" href="../homepage/css/style-homepage.css">
 
     <style>
     body{
@@ -57,10 +57,10 @@
 
   <body>
     
-    <nav class="navbar navbar-dark" style="background-color: #6FD08C; height: 8vh;" >
+    <nav class="navbar navbar-dark" style="background-color: #6FD08C; height: 60px;" >
         <div class="container-fluid">
           <a class="navbar-brand" href="#" style="color:black;">
-            <img src="817451-84.png" alt="EmojiSorridente" width="30" height=auto class="d-inline-block align-text-top">
+            <img src="../../immagini/817451-84.png" alt="EmojiSorridente" width="30" height=auto class="d-inline-block align-text-top">
             Meme<span class="fw-bolder">Bank</span>
        </a>
      </div>
@@ -98,7 +98,7 @@
       
           <!-- Sezione Divisa a Destra -->
           <div class="col-md-9">
-            <form action="update.php" method="post" enctype="multipart/form-data">
+            <form action="../../../backend/script/update_profile.php" method="post" enctype="multipart/form-data">
             <!-- Prima Riga a Destra -->
             <div class="row mb-4">
               <div class="col-md-12">
@@ -208,45 +208,8 @@
     </div>
   </footer>
 
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-  // Effettua una richiesta API Fetch per ottenere i dati dell'utente
-  fetch('./update.php', {
-    method: 'GET', // Puoi cambiare questo a 'POST' se necessario
-    headers: {
-      'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
-    }
-  })
-  //verifica che non siano necessari altri controlli più specifici
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Errore nella richiesta.');
-    }
-    return response.json();
-  })
-  .then(data => {
-    // Popola i campi del form con i dati ottenuti
-    document.getElementById('lastname').value = data.lastname;
-    document.getElementById('firstname').value = data.firstname;
-    //document.getElementById('username').value = data.username;
-    document.getElementById('lastname').value = data.lastname;
-   // document.getElementById('email').value = data.email;
-    //document.getElementById('posts').innerText = data.posts;
-    //document.getElementById('followers').innerText = data.followers;
-    //document.getElementById('following').innerText = data.following;
-    document.getElementById('fullname').innerText = data.firstname + " " + data.lastname;
-   })
-   .catch(error => {
-   console.error('Errore:', error);
-   console.log('Nome dell\'errore:', error.name);
-   console.log('Messaggio dell\'errore:', error.message);
-   console.log('Stack dell\'errore:', error.stack);
-   });
-  });
-  
-  </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="./update_profile.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
   </body>
 </html>
