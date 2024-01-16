@@ -158,7 +158,7 @@ function showRegistration(){
     //}
     //else{
         console.log("showRegistration():registration fetch");
-        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
+        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
     //}
     //getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
 }
