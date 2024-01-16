@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
      });
 });
 
+var UpdateButton = document.getElementById("UpdateButton");
 
+UpdateButton.addEventListener("click", function() {
 fetch('../../../backend/script/update_profile.php', {
   method: 'POST',
   headers: {
@@ -76,14 +78,12 @@ fetch('../../../backend/script/update_profile.php', {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
         alert("Non sei loggato");
-        window.location.href = "../homepage";
+        window.location.href = "../../homepage/index.html";
         break;
-      /*
       case "ERROR_NOTALLFIELDS":
         alert("Ci sono dei campi vuoti oppure niente è stato modificato");
         window.location.href = "../update_profile/index.html";
         break;
-      */
       case "ERROR_DB":
         alert("Errore nel database");
         break;
@@ -98,4 +98,5 @@ fetch('../../../backend/script/update_profile.php', {
   console.log('Nome dell\'errore:', error.name);
   console.log('Messaggio dell\'errore:', error.message);
   console.log('Stack dell\'errore:', error.stack);
+});
 });

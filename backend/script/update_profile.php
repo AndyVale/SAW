@@ -63,8 +63,7 @@ echo json_encode($result);
 function update2(){
     //funzione che effettua un aggiornamento del profilo utente dai dati mandati in POST
     if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
-    if(empty($_POST[FIRSTNAME])) return updateResult::MISSING_FIELDS;
-
+    
     $conn = connect();
     if($conn == null) return updateResult::ERROR_DB;
     
@@ -92,10 +91,15 @@ function update2(){
     $SetTypes .= "s";//per l'email come chiave 
     $SetValues[] = $_SESSION[EMAIL];//aggiungo l'email come chiave
     
+    //sanificazione input
+    //aggiornamento sessione email
     if(safeQuery($query, $SetValues, $SetTypes) == 1)
         return updateResult::SUCCESSFUL_UPDATE;
     return updateResult::ERROR_UPDATE;//nota: viene restituito questo anche qualora l'utente non avesse modificato nessun campo
 }
+
+//problema n°1: quando aggiorno nome e cognome resituisce ERROR_NOTALLFIELDS ma modifica effetivamente il database
+//problema n°2: quando aggiorno l'email, tutti i campi vengono svuotati e show profile fallisce
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $tmp=update2();
