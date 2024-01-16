@@ -95,24 +95,19 @@ function successfulLogin(dati){
     contenitoreBottoni.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneModificaProfilo'>"+dati['firstname']+"</span>");
 }
 
+/**
+ * Funzione che mostra il form di login in sovraimpressione nella pagina, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
+ */
 function showLogin(){
     let container = document.querySelector("body");
     removeNodeById("form");
-    fetch("../../../backend/script/cookie_login.php").then((response) => {//per prima cosa controllo se l'utente è già loggato tramite i cookie
-        if(response.ok){
-            return response.json();
-        }else{
-            throw new Error("Errore nella richiesta AJAX");
-        }
-    }).then((res) => {
-        console.log(res);
-        if(res['result'] == "OK"){
-            successfulLogin(res['data']);
-        }else{//altrimenti carico la pagina di login
-            getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
-        }
-    }).catch((error) => {
-        console.log(error);
-    });
+    //if(localStorage.getItem("login") != null){
+    //    console.log("showLogin():login in cache");
+    //    renderSnippet(localStorage.getItem("login"), container, addLoginEvents);
+    //}
+    //else{
+        console.log("showLogin():login fetch");
+        getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
+    //}
 }
 

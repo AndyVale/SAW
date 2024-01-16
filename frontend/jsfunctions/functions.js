@@ -66,7 +66,8 @@ function blurAllRemove(){
  */
 async function getSnippet(url){
     //let result = null;
-    return fetch(url, {cache: 'no-cache'})
+    console.log("getSnippet(): "+url);
+    return fetch(url, {cache: "no-cache"})
         .then(res=>{
             if(res.ok)
                 return res.text();
@@ -78,12 +79,12 @@ async function getSnippet(url){
 }
 
 /**
- * Funzione che restituisce lo snippet di una pagina in modalità SINCRONA
+ * Funzione che renderizza codice html in un elemento DOM specificato
  * @param {string} snippetHTML - codice html dello snippet da renderizzare
  * @param {string} where - oggetto DOM in cui renderizzare lo snippet
  * @returns {string} - risultato della fetch all'url indicato o null se la fetch non va a buon fine
  */
-async function renderSnippet(snippetHTML, where, eventLoader){
+function renderSnippet(snippetHTML, where, eventLoader){
     if(!snippetHTML){
         where.insertAdjacentHTML("beforeend", "<p>Errore 404 :(</p>");
         return;
@@ -92,6 +93,9 @@ async function renderSnippet(snippetHTML, where, eventLoader){
         console.log("Errore: elemento in cui renderizzare lo snippet non trovato");
         return;
     }
+    console.log("renderSnippet(): inzio renderizzazione");
     where.insertAdjacentHTML("beforeend", snippetHTML);
+    console.log("renderSnippet(): renderizzato");
     eventLoader();
+    console.log("renderSnippet(): eventi caricati");
 }

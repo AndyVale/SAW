@@ -72,6 +72,10 @@ function emailIsUniqueReport(possiblyUnique){
     }
 }
 
+
+/**
+ * Funzione che ausiliaria che aggiunge gli eventi al form di registrazione
+ */
 function addRegistrationEvents(){
     let form = document.getElementById("form");
     let registrationContainer = document.getElementById("registrationContainer");
@@ -141,8 +145,20 @@ function addRegistrationEvents(){
     closeButton.addEventListener("click", (e)=>removeNodeById("form"));
 }
 
+
+/**
+ * Funzione che mostra il form di registrazione in sovraimpressione nella pagina, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
+ */
 function showRegistration(){
     container = document.querySelector("body");
     removeNodeById("form");
-    getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
+    //if(localStorage.getItem("registration") != null){
+    //    console.log("showRegistration():registration in cache");
+    //    renderSnippet(localStorage.getItem("registration"), container, addLoginEvents);
+    //}
+    //else{
+        console.log("showRegistration():registration fetch");
+        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
+    //}
+    //getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
 }
