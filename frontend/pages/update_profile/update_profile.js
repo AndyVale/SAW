@@ -19,6 +19,23 @@ function stampaDati(datiUtente) {
 }
 }
 
+function AggiornaImmagine(){
+  const newImage = document.getElementById('new_profile_image');
+  const oldImage = document.getElementById('old_profile_picture');
+  const file = input.files[0];
+  if (file) {
+    //creazione dell'istanza di un oggetto FileReader
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        var dataURL = event.target.result;
+        oldImage.src = dataURL;
+    };
+
+    reader.readAsDataURL(file);
+}
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     fetch('../../../backend/script/show_profile.php', {
@@ -60,8 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
      });
 });
 
-var UpdateButton = document.getElementById("UpdateButton");
+var UpdateImage = document.getElementById("update_image_button");
+UpdateImage.addEventListener("click", function() {
+    alert("Hai provato ad aggiornare l'immagine!");
+    AggiornaImmagine();
+    //Da sistemare!
+    //Essendo nel form viene eseguito anche lo script update_profile.php
+});
 
+var UpdateButton = document.getElementById("UpdateButton");
 UpdateButton.addEventListener("click", function() {
 fetch('../../../backend/script/update_profile.php', {
   method: 'POST',
@@ -73,17 +97,25 @@ fetch('../../../backend/script/update_profile.php', {
 .then(data => {
   if (data['result'] == "OK") {
       alert("Profilo aggiornato con successo!");
-      window.location.href = "../show_profile/index.html";
+      window.location.href = ("../show_profile");
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
         alert("Non sei loggato");
         window.location.href = "../../homepage/index.html";
         break;
-      case "ERROR_NOTALLFIELDS":
-        alert("Ci sono dei campi vuoti oppure niente è stato modificato");
+      case "DUPLICATE_EMAIL":
+        alert("Email già in uso");
+        //scrivere email già in uso è sbagliato perchè suggerisce a un hacker un'email valida? Meglio usare 'Impossibile usare questa email'?
+        break; 
+      case "ERROR_MISSINGFIELDS":
+        alert("Ci sono dei campi vuoti!");
         window.location.href = "../update_profile/index.html";
         break;
+        case "ERROR_MISSINGFIELDS_BEFORE":
+          alert("Non hai modificato nulla!");
+          window.location.href = "../update_profile/index.html";
+          break;
       case "ERROR_DB":
         alert("Errore nel database");
         break;

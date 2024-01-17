@@ -7,6 +7,8 @@
         case ERROR_UPDATE;
         case ERROR_NOTLOGGED;
         case ERROR_DB;
+        case DUPLICATE_EMAIL;
+        case MISSING_FIELDS_BEFORE;
     }
     function pswUpdate(){
         //funzione che effettua un aggiornamento della password utente dai dati mandati in POST 
@@ -25,43 +27,75 @@
         return updateResult::ERROR_UPDATE;
         
     }
+
     function update(){
         //funzione che effettua un aggiornamento del profilo utente dai dati mandati in POST
         if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
-        if(empty($_POST[UPDATEREQUEST])) return updateResult::MISSING_FIELDS;
-
+        
         $conn = connect();
         if($conn == null) return updateResult::ERROR_DB;
         
         $SetFields = "";
         $SetValues = array();
         $SetTypes = "";
-        $updatableFields = array(FIRSTNAME, LASTNAME, EMAIL);
+        $automaticUpdatableFields = array(FIRSTNAME, LASTNAME, EMAIL);
+        $toUpdate = array(); 
 
+        if(empty($_POST)){
+            return updateResult::MISSING_FIELDS_BEFORE;
+        }
         foreach($_POST as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
-            if(in_array($key, $updatableFields)) {//se ci sono campi in POST che rientrano tra quelli aggiornabili
+            if(in_array($key, $automaticUpdatableFields)) {//se ci sono campi in POST che rientrano tra quelli aggiornabili
                 $SetFields .= $key." = ?, ";//aggiungo la stringa al campo SET della query
-                $SetValues[] = $value;//aggiungo il valore all'array dei valori (su cui farò il bind)
+                $SetValues[] = trim(htmlentities($value));//aggiungo il valore all'array dei valori (su cui farò il bind)
                 $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
+                $toUpdate[$key] = trim(htmlentities($value));
             }
         }
         
-        //TODO: aggiungere altri campi FACOLTATIVI
+        if(!empty($_POST[EMAIL])){//L'email è un campo particolare, non è automaticamente aggiornabile perchè deve passare il controllo di filtraggio
+            if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL)){
+                return updateResult::ERROR_UPDATE;//non mi preoccupo di dare un errore specifico perchè via frontend non è possibile mandare una email non valida
+            }
+            $SetFields .= EMAIL." = ?, ";//aggiungo la stringa al campo SET della query
+            $SetValues[] = trim(htmlentities($_POST[EMAIL]));//aggiungo il valore all'array dei valori (su cui farò il bind)
+            $toUpdate[EMAIL] = trim(htmlentities($_POST[EMAIL]));
+            $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
+        }
+    
+        //Debugging
+        //echo "SetFields: $SetFields\n"; 
 
         $strLen = strlen($SetFields);
-        if($strLen > 0)
+        if($strLen > 0){
             $SetFields = substr($SetFields, 0, $strLen-2);//tolgo l'ultima virgola e lo spazio
-        else
+        }
+        else {
             return updateResult::MISSING_FIELDS;//se non ci sono campi aggiornabili restituisco un errore
+        }
 
         $query = "UPDATE Utente SET $SetFields WHERE email = ?";
         $SetTypes .= "s";//per l'email come chiave 
         $SetValues[] = $_SESSION[EMAIL];//aggiungo l'email come chiave
-        
-        if(safeQuery($query, $SetValues, $SetTypes) == 1)
+        //sanificazione input
+        //aggiornamento sessione email
+    
+        try{
+         if(safeQuery($query, $SetValues, $SetTypes) == 1){
+             foreach($toUpdate as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
+                 $_SESSION[$key] = $value;
+            }
             return updateResult::SUCCESSFUL_UPDATE;
-        return updateResult::ERROR_UPDATE;//nota: viene restituito questo anche qualora l'utente non avesse modificato nessun campo
+         } 
+        }
+        catch(mysqli_sql_exception $ex){
+          error_log("update-showProfileFunctions.php/update(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+         return updateResult::DUPLICATE_EMAIL;
+        }
+        
+        return updateResult::ERROR_UPDATE;//nota: viene restituito questo anche qualora l'utente non avesse modificato nessun campo 
     }
+    
     function showProfile(){
         //funzione che restituisce i dati del profilo utente
         if(!isLogged()) return updateResult::ERROR_NOTLOGGED;

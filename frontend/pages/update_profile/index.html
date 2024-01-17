@@ -72,7 +72,7 @@
           <!-- Colonna a Sinistra -->
           <!-- aggiungendo a col-md-3 la classe border-end si aggiunge il bordo destro che però rimane anche quando si stringe la pagina-->
           <div class="col-md-3 mt-3">
-            <img class="img-fluid rounded-circle mx-auto d-block" style="width: 110px; height: auto; margin-top: 10px;" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="user profile picture">
+            <img class="img-fluid rounded-circle mx-auto d-block" style="width: 110px; height: auto; margin-top: 10px;" src="https://bootdey.com/img/Content/avatar/avatar1.png" id="old_profile_picture" alt="user profile picture">
              <h3 id="fullname" class="lead text-center mt-2">Rebecca Sanders</h3>
 
              <div class="row mt-3">
@@ -106,9 +106,9 @@
                 <fieldset class="fieldset"> 
                 <h3 class="fieldset-title">Informazioni personali </h3>
                 <div class="form-group mb-3">
-                  <label for="profile-image">Immagine profilo</label>
-                  <input type="file" id="profile-image" name="profile-image" class="form-control-file">
-                  <button type="submit" class="btn btn-sm" style="background-color: #6FD08C;">Update Image</button>
+                  <label for="new_profile_image">Immagine profilo</label>
+                  <input type="file" id="new_profile_image" name="new_profile_image" class="form-control-file">
+                  <button type="submit" id="update_image_button" class="btn btn-sm" style="background-color: #6FD08C;">Update Image</button>
                 </div>  
                 <div class="form-group">
                   <label for="firstname" class="col-md-2 col-sm-3 col-xs-12 mb-1">Nome</label>
