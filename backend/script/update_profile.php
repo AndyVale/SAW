@@ -70,16 +70,27 @@ function update2(){
     $SetFields = "";
     $SetValues = array();
     $SetTypes = "";
-    $updatableFields = array(FIRSTNAME, LASTNAME, EMAIL);
+    $automaticUpdatableFields = array(FIRSTNAME, LASTNAME);
+    $toUpdate = array();
 
     foreach($_POST as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
-        if(in_array($key, $updatableFields)) {//se ci sono campi in POST che rientrano tra quelli aggiornabili
+        if(in_array($key, $automaticUpdatableFields)) {//se ci sono campi in POST che rientrano tra quelli aggiornabili
             $SetFields .= $key." = ?, ";//aggiungo la stringa al campo SET della query
-            $SetValues[] = $value;//aggiungo il valore all'array dei valori (su cui farò il bind)
+            $SetValues[] = trim(htmlentities($value));//aggiungo il valore all'array dei valori (su cui farò il bind)
             $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
+            $toUpdate[$key] = trim(htmlentities($value));
         }
     }
-    //TODO: aggiungere altri campi FACOLTATIVI
+    
+    if(!empty($_POST[EMAIL])){//L'email è un campo particolare, non è automaticamente aggiornabile perchè deve passare il controllo di filtraggio
+        if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL)){
+            return updateResult::ERROR_UPDATE;//non mi preoccupo di dare un errore specifico perchè via frontend non è possibile mandare una email non valida
+        }
+        $SetFields .= EMAIL." = ?, ";//aggiungo la stringa al campo SET della query
+        $SetValues[] = trim(htmlentities($_POST[EMAIL]));//aggiungo il valore all'array dei valori (su cui farò il bind)
+        $toUpdate[EMAIL] = trim(htmlentities($_POST[EMAIL]));
+        $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
+    }
 
     $strLen = strlen($SetFields);
     if($strLen > 0)
@@ -90,18 +101,22 @@ function update2(){
     $query = "UPDATE Utente SET $SetFields WHERE email = ?";
     $SetTypes .= "s";//per l'email come chiave 
     $SetValues[] = $_SESSION[EMAIL];//aggiungo l'email come chiave
-    
     //sanificazione input
     //aggiornamento sessione email
-    if(safeQuery($query, $SetValues, $SetTypes) == 1)
+
+    if(safeQuery($query, $SetValues, $SetTypes) == 1){
+        foreach($toUpdate as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
+            $_SESSION[$key] = $value;
+        }
         return updateResult::SUCCESSFUL_UPDATE;
+    }
     return updateResult::ERROR_UPDATE;//nota: viene restituito questo anche qualora l'utente non avesse modificato nessun campo
 }
 
 //problema n°1: quando aggiorno nome e cognome resituisce ERROR_NOTALLFIELDS ma modifica effetivamente il database
 //problema n°2: quando aggiorno l'email, tutti i campi vengono svuotati e show profile fallisce
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $tmp=update2();
 switch($tmp){
     case updateResult::ERROR_NOTLOGGED:
@@ -119,13 +134,12 @@ switch($tmp){
     case updateResult::SUCCESSFUL_UPDATE:
         $result['result'] = 'OK';
         $result['message'] = 'Update eseguito con successo';
-        $result['data'] = $tmp;
+        //$result['data'] = $SESSION; -> Penso volessi fare una cosa del genere restituendo tmp. Non so se sia fattibile a livello di sicurezza
         break;
     case updateResult::ERROR_UPDATE:
         $result['result'] = 'KO';
         $result['message'] = 'ERROR_UPDATE';
         break;
-    
 }
 echo json_encode($result);
 }
