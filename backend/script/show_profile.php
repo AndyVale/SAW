@@ -14,9 +14,9 @@
     //$result['debug']= $_SESSION[EMAIL]; 
     $tmp = showProfile();
     switch($tmp){
-        case updateResult::ERROR_DB:
+        case updateResult::DB_ERROR:
             $result['result'] = 'KO';
-            $result['message'] = 'ERROR_DB';
+            $result['message'] = 'DB_ERROR';
             break;
         case updateResult::ERROR_NOTLOGGED:
             $result['result'] = 'KO';

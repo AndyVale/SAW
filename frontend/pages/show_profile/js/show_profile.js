@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
               alert("Non sei loggato");
               window.location.href = "../homepage";
               break;
-            case "ERROR_DB":
+            case "DB_ERROR":
               alert("Errore nel database");
               break;
             case "ERROR_SHOW":

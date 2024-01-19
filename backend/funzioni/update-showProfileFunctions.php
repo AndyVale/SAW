@@ -6,10 +6,72 @@
         case DIFFERENT_PASSWORDS;    
         case ERROR_UPDATE;
         case ERROR_NOTLOGGED;
-        case ERROR_DB;
+        case DB_ERROR;
         case DUPLICATE_EMAIL;
-        case MISSING_FIELDS_BEFORE;
+        case WRONG_EMAIL_FORMAT;
     }
+    
+    //funzione che restituisce true se ci sono campi vuoti inviati in $_POST
+    function emptyFields() {
+    //funzione che restituisce un array contenente tutti gli argomenti passati a una funzione
+    //comunemente utilizzata quando si vuole creare una funzione che accetta un numero variabile di argomenti
+    $args = func_get_args();
+
+    foreach ($args as $fieldName) {
+        if (empty($_POST[$fieldName])) {
+            return true; // Trovato un campo vuoto
+        }
+    }
+
+    return false; // Nessun campo vuoto
+    }
+
+    function update(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        
+            //ATTENZIONE!! $_SESSION[EMAIL] va cambiato con $_SESSION[ID]
+            $email = $_SESSION[EMAIL];
+        
+            //se l'utente non modifica qualche campo, si deve:
+            //-aggiornarli tutti ugualmente nel database
+            //-controllare se alcuni fossero uguali ai precedenti (è davvero l'unico modo per farlo fare una select?)
+        
+            //controlliamo che l'utente non abbia svuotato un campo
+        
+            //ATTENZIONE!! Va aggiunto username
+            if(emptyFields(EMAIL, FIRSTNAME, LASTNAME))
+                return updateResult::MISSING_FIELDS;
+        
+            //controllo, che l'email sia stata modificata o no, che sia valida
+            if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL))
+                return updateResult::WRONG_EMAIL_FORMAT;
+            
+            //ATTENZIONE!! Va aggiunto username e tolto l'ultimo 
+            $data = array(htmlentities(trim($_POST[FIRSTNAME])), 
+                                htmlentities(trim($_POST[LASTNAME])),
+                                htmlentities(strtolower($_POST[EMAIL])),
+                                htmlentities(strtolower($_SESSION[EMAIL]))); //vecchia email per la clausola where
+        
+            $conn = connect();
+            if($conn == null) return updateResult::DB_ERROR;
+             
+            //uso un prepared statement per evitare sql injection
+        
+            //ATTENZIONE!! where email = ? va cambiato con id = ? e va aggiunto username
+            $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE email = ?";
+        
+            try{
+                if(safeQuery($query, $data, "ssss") == 1)
+                    return updateResult::SUCCESSFUL_UPDATE;
+                return updateResult::DB_ERROR;
+            }
+            catch(mysqli_sql_exception $ex){
+                error_log("update-showProfileFunctions.php/update(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+                return updateResult::DUPLICATE_EMAIL;
+            }
+        }
+        }
+
     function pswUpdate(){
         //funzione che effettua un aggiornamento della password utente dai dati mandati in POST 
         if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
@@ -17,7 +79,7 @@
         if($_POST[PASS] != $_POST[CONFIRM]) return updateResult::DIFFERENT_PASSWORDS;
 
         $conn = connect();
-        if($conn == null) return updateResult::ERROR_DB;
+        if($conn == null) return updateResult::DB_ERROR;
         
         $query = "UPDATE Utente SET pass = ? WHERE email = ?";
         $HshdPsw = password_hash(trim($_POST[PASS]), PASSWORD_DEFAULT);
@@ -28,82 +90,14 @@
         
     }
 
-    function update(){
-        //funzione che effettua un aggiornamento del profilo utente dai dati mandati in POST
-        if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
-        
-        $conn = connect();
-        if($conn == null) return updateResult::ERROR_DB;
-        
-        $SetFields = "";
-        $SetValues = array();
-        $SetTypes = "";
-        $automaticUpdatableFields = array(FIRSTNAME, LASTNAME, EMAIL);
-        $toUpdate = array(); 
-
-        if(empty($_POST)){
-            return updateResult::MISSING_FIELDS_BEFORE;
-        }
-        foreach($_POST as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
-            if(in_array($key, $automaticUpdatableFields)) {//se ci sono campi in POST che rientrano tra quelli aggiornabili
-                $SetFields .= $key." = ?, ";//aggiungo la stringa al campo SET della query
-                $SetValues[] = trim(htmlentities($value));//aggiungo il valore all'array dei valori (su cui farò il bind)
-                $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
-                $toUpdate[$key] = trim(htmlentities($value));
-            }
-        }
-        
-        if(!empty($_POST[EMAIL])){//L'email è un campo particolare, non è automaticamente aggiornabile perchè deve passare il controllo di filtraggio
-            if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL)){
-                return updateResult::ERROR_UPDATE;//non mi preoccupo di dare un errore specifico perchè via frontend non è possibile mandare una email non valida
-            }
-            $SetFields .= EMAIL." = ?, ";//aggiungo la stringa al campo SET della query
-            $SetValues[] = trim(htmlentities($_POST[EMAIL]));//aggiungo il valore all'array dei valori (su cui farò il bind)
-            $toUpdate[EMAIL] = trim(htmlentities($_POST[EMAIL]));
-            $SetTypes .= "s";//aggiungo il tipo che è sempre string per i campi aggiornabili
-        }
-    
-        //Debugging
-        //echo "SetFields: $SetFields\n"; 
-
-        $strLen = strlen($SetFields);
-        if($strLen > 0){
-            $SetFields = substr($SetFields, 0, $strLen-2);//tolgo l'ultima virgola e lo spazio
-        }
-        else {
-            return updateResult::MISSING_FIELDS;//se non ci sono campi aggiornabili restituisco un errore
-        }
-
-        $query = "UPDATE Utente SET $SetFields WHERE email = ?";
-        $SetTypes .= "s";//per l'email come chiave 
-        $SetValues[] = $_SESSION[EMAIL];//aggiungo l'email come chiave
-        //sanificazione input
-        //aggiornamento sessione email
-    
-        try{
-         if(safeQuery($query, $SetValues, $SetTypes) == 1){
-             foreach($toUpdate as $key => $value) {//la key sarebbe il nome del campo, il value il valore contenuto in POST
-                 $_SESSION[$key] = $value;
-            }
-            return updateResult::SUCCESSFUL_UPDATE;
-         } 
-        }
-        catch(mysqli_sql_exception $ex){
-          error_log("update-showProfileFunctions.php/update(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
-         return updateResult::DUPLICATE_EMAIL;
-        }
-        
-        return updateResult::ERROR_UPDATE;//nota: viene restituito questo anche qualora l'utente non avesse modificato nessun campo 
-    }
-    
     function showProfile(){
         //funzione che restituisce i dati del profilo utente
         if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
         
         $conn = connect();
-        if($conn == null) return updateResult::ERROR_DB;
+        if($conn == null) return updateResult::DB_ERROR;
 
-        $query = "SELECT firstname, lastname, email FROM Utente WHERE email = ?";
+        $query = "SELECT firstname, lastname, email FROM utente WHERE email = ?";
         $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1)
             return $tmp[0];

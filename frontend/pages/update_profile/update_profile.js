@@ -1,4 +1,4 @@
-function stampaDati(datiUtente) {
+/*function stampaDati(datiUtente) {
   if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente) {
   console.log(datiUtente);
   let NomeCognome = document.getElementById('fullname');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Non sei loggato");
             window.location.href = "../homepage";
             break;
-          case "ERROR_DB":
+          case "DB_ERROR":
             alert("Errore nel database");
             break;
           case "ERROR_SHOW":
@@ -97,7 +97,6 @@ fetch('../../../backend/script/update_profile.php', {
 .then(data => {
   if (data['result'] == "OK") {
       alert("Profilo aggiornato con successo!");
-      window.location.href = ("../show_profile");
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
@@ -112,8 +111,8 @@ fetch('../../../backend/script/update_profile.php', {
         alert("Ci sono dei campi vuoti!");
         window.location.href = "../update_profile/index.html";
         break;
-        case "ERROR_MISSINGFIELDS_BEFORE":
-          alert("Non hai modificato nulla!");
+      case "ERROR_WRONGEMAILFORMAT":
+          alert("L'email non è nel formato corretto!");
           window.location.href = "../update_profile/index.html";
           break;
       case "ERROR_DB":
@@ -121,7 +120,7 @@ fetch('../../../backend/script/update_profile.php', {
         break;
       case "ERROR_UPDATE":
         alert("Errore nell'aggiornare i dati dell'utente");
-        break; 
+        break;       
     }
   }
 })
@@ -132,3 +131,4 @@ fetch('../../../backend/script/update_profile.php', {
   console.log('Stack dell\'errore:', error.stack);
 });
 });
+*/
