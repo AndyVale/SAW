@@ -131,7 +131,7 @@ function logout(){
 }
 
 function showProfile(){
-  window.location.href = "./PROFILO_ANCORA_DA_IMPLEMENTARE";
+  window.location.href = "../show_profile/";
 }
 
 let bottoneAccedi = document.getElementById("bottoneAccedi");
