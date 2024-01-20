@@ -42,7 +42,7 @@ function addLoginEvents(){
         dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
         fetch("../../../backend/script/login.php",
         {
-            method: "POST",
+            method: "POST",//potrebbe essere GET(?)
             body: dati
         }).then(function(response){
             if(response.ok){

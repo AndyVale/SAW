@@ -98,7 +98,7 @@ function addRegistrationEvents(){
         dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
         fetch("../../../backend/script/registration.php",
         {
-            method: "POST",
+            method: "POST",//POST Corretto
             body: dati
         }).then(function(response){
             if(response.ok){

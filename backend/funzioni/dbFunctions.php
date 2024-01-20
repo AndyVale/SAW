@@ -48,6 +48,31 @@
         return $nAffectedRows;
     }
 
+    function standardQuery(String $query){
+        /*funzione che esegue una query al db senza usare i prepared statement, se la query è una select restituisce il risultato sotto forma di array di oggetti,
+        altrimenti restituisce il numero di righe interessate dalla query. Restituisce -1 se qualcosa va storto*/
+
+        $isSelect = str_contains(strtoupper($query), "SELECT");//controllo se la query è una select
+
+        $conn = connect();
+        if($conn == null) return -1;
+
+        $result = $conn->query($query);
+        if($result == false) return -1;
+
+        if($isSelect) {
+            $rows = []; $i = 0;
+            while($row = $result->fetch_assoc())
+                $rows[$i++] = $row;
+            $result->close();
+            return $rows;
+        }
+        
+        $nAffectedRows = $conn->affected_rows;
+        $result->close();
+        return $nAffectedRows;
+    }
+
    
     function isLogged() {
         if(!empty($_SESSION[EMAIL])) {

@@ -1,6 +1,6 @@
 <?php
     const ERROR_LOG = '../Errors.log';
-    const ID = 'idutente';
+    const ID = 'ID';
     const USERNAME = 'username';
     const FIRSTNAME = 'firstname';
     const LASTNAME = 'lastname';
