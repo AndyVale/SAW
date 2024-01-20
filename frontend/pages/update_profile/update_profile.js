@@ -1,4 +1,4 @@
-/*function stampaDati(datiUtente) {
+function stampaDati(datiUtente) {
   if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente) {
   console.log(datiUtente);
   let NomeCognome = document.getElementById('fullname');
@@ -85,18 +85,24 @@ UpdateImage.addEventListener("click", function() {
     //Essendo nel form viene eseguito anche lo script update_profile.php
 });
 
-var UpdateButton = document.getElementById("UpdateButton");
-UpdateButton.addEventListener("click", function() {
+var UpdateForm = document.getElementById("update_form");
+UpdateForm.addEventListener("submit", function(e) {
+e.preventDefault();
+dati = new FormData(this);
+console.log(dati);
 fetch('../../../backend/script/update_profile.php', {
   method: 'POST',
-  headers: {
-      'Content-Type': 'application/json',
-  },
+  body: dati,
+  //headers: {
+  //  'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
+  //} 
 })
 .then(response => response.json())
 .then(data => {
+  console.log(data);
   if (data['result'] == "OK") {
       alert("Profilo aggiornato con successo!");
+      window.location.href = "../show_profile/index.html";
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
@@ -109,14 +115,14 @@ fetch('../../../backend/script/update_profile.php', {
         break; 
       case "ERROR_MISSINGFIELDS":
         alert("Ci sono dei campi vuoti!");
-        window.location.href = "../update_profile/index.html";
+        window.location.href = "./index.html";
         break;
       case "ERROR_WRONGEMAILFORMAT":
           alert("L'email non è nel formato corretto!");
-          window.location.href = "../update_profile/index.html";
+          window.location.href = "./index.html";
           break;
-      case "ERROR_DB":
-        alert("Errore nel database");
+      case "DB_ERROR":
+        alert("OHHHH cosa fai");
         break;
       case "ERROR_UPDATE":
         alert("Errore nell'aggiornare i dati dell'utente");
@@ -131,4 +137,3 @@ fetch('../../../backend/script/update_profile.php', {
   console.log('Stack dell\'errore:', error.stack);
 });
 });
-*/

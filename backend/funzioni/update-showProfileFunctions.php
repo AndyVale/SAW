@@ -2,6 +2,10 @@
     require_once("dbFunctions.php");
     enum updateResult {
         case SUCCESSFUL_UPDATE;
+        case MISSING_FIRSTNAME;
+        case MISSING_LASTNAME;
+        case MISSING_EMAIL;
+        case MISSING_USERNAME;
         case MISSING_FIELDS;
         case DIFFERENT_PASSWORDS;    
         case ERROR_UPDATE;
@@ -22,7 +26,6 @@
             return true; // Trovato un campo vuoto
         }
     }
-
     return false; // Nessun campo vuoto
     }
 
@@ -37,11 +40,10 @@
             //-controllare se alcuni fossero uguali ai precedenti (è davvero l'unico modo per farlo fare una select?)
         
             //controlliamo che l'utente non abbia svuotato un campo
-        
             //ATTENZIONE!! Va aggiunto username
-            if(emptyFields(EMAIL, FIRSTNAME, LASTNAME))
+            if(emptyFields(FIRSTNAME, LASTNAME, EMAIL, USERNAME)){
                 return updateResult::MISSING_FIELDS;
-        
+            }
             //controllo, che l'email sia stata modificata o no, che sia valida
             if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL))
                 return updateResult::WRONG_EMAIL_FORMAT;
@@ -61,7 +63,7 @@
             $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE email = ?";
         
             try{
-                if(safeQuery($query, $data, "ssss") == 1)
+                if(safeQuery($query, $data, "ssss") < 2)
                     return updateResult::SUCCESSFUL_UPDATE;
                 return updateResult::DB_ERROR;
             }
