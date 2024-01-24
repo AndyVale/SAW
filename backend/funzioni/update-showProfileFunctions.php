@@ -99,10 +99,23 @@
         $conn = connect();
         if($conn == null) return updateResult::DB_ERROR;
 
-        $query = "SELECT firstname, lastname, email FROM utente WHERE email = ?";
+        $query = "SELECT utente.firstname, utente.lastname, utente.email, COUNT(post.idUtente) as nPost FROM utente INNER JOIN post ON utente.email = ? and utente.ID = post.idUtente ";
         $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1)
-            return $tmp[0];
+            $result = $tmp[0];
+        $query = "SELECT COUNT(seguiti.idUtente) as nFollower FROM utente INNER JOIN seguiti ON utente.email = ? and utente.ID = seguiti.idUtenteSeguito ";
+        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        if(!is_numeric($tmp) && count($tmp) == 1)
+            $result = array_merge($result, $tmp[0]);
+
+        $query = "SELECT COUNT(seguiti.idUtenteSeguito) as nFollowing FROM utente INNER JOIN seguiti ON utente.email = ? and utente.ID = seguiti.idUtente";
+        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        if(!is_numeric($tmp) && count($tmp) == 1){
+            $result = array_merge($result, $tmp[0]);
+            return $result;
+        }
+        //TODO: MODIFICARE QUESTE QUERY CHE FANNO PENA
         return updateResult::ERROR_UPDATE;
+        
     }
 ?>

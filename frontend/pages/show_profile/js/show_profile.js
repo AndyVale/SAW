@@ -3,8 +3,13 @@
  */
 function stampaDatiUtenti(datiUtente) {
   console.log(datiUtente);
-  let nomeCognome = document.getElementById("fullname");
-
+  let nomeCognome = document.getElementById("fullname"),
+      nPost=document.getElementById("nPost"),
+      nFollower=document.getElementById("nFollowers"),
+      nFollowing=document.getElementById("nFollowing");
+  nPost.textContent = datiUtente.nPost;
+  nFollower.textContent = datiUtente.nFollower;
+  nFollowing.textContent = datiUtente.nFollowing;
   nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
 }
 
@@ -18,53 +23,51 @@ function showUserPosts(posts){
   });
 }
 
-/*<div class="col-12 col-md-6 col-lg-4 p-2 p-md-3 p-lg-4 border">
+/*
+<div class="col-12 col-md-6 col-lg-4">
   <div class="card">
-    <img src="../../immagini/104028-84.png" width="100%" alt="" class="card-img-top">
+    <img src="../../immagini/square.png" class="card-img-top" alt="...">
+    <div class="card-body">
+      <button class="btn w-100 m-auto" style="background-color: #6FD08C; color: white;">
+          <span class="icon heart heart-icon"> 
+            <i class="fas fa-heart"> </i>
+          </span>
+        1000
+      </button>
+    </div>
   </div>
-  <div class="card-body pb-0 pt-1">
-    <button class="btn w-100 m-auto" style="background-color: #6FD08C; color: white;">
-      <div class="icon heart heart-icon">
-        <span> 
-          <i class="fas fa-heart"> </i>
-        </span>
-      </div>
-      1000
-    </button>
-  </div>
-</div>*/
+</div>
+*/
 function renderPost(post){
  let
   postsContainer = document.getElementById("postsContainer"), 
   wrapper = document.createElement("div"),
   card = document.createElement("div"),
+  cardBody = document.createElement("div"),
   button = document.createElement("button"),
-  icon = document.createElement("div"),
   span = document.createElement("span"),
   i = document.createElement("i"),
   img = document.createElement("img");
 
-  wrapper.classList.add("col-12", "col-md-6", "col-lg-4", "p-2", "p-md-3", "p-lg-4", "border");
+  wrapper.classList.add("col-12", "col-md-6", "col-lg-4");
   card.classList.add("card");
-  card.style.maxWidth = "500px";
-  card.style.maxHeight = "500px";
+  img.classList.add("card-img-top");
+  img.setAttribute("src", "../../Immagini/"+post.urlImmagine);
+  cardBody.classList.add("card-body");
   button.classList.add("btn", "w-100", "m-auto");
   button.style.backgroundColor = "#6FD08C";
   button.style.color = "white";
-  icon.classList.add("icon", "heart", "heart-icon");
-  span.textContent = post.likes;
+  span.classList.add("icon", "heart", "heart-icon");
   i.classList.add("fas", "fa-heart");
-  img.src = "../../immagini/"+post.urlImmagine;
-  img.alt = "Post di michelino";
-  card.appendChild(img);
-  icon.appendChild(span);
-  icon.appendChild(i);
-  button.appendChild(icon);
-  button.appendChild(span);
-  wrapper.appendChild(card);
-  wrapper.appendChild(button);
-  postsContainer.appendChild(wrapper);
 
+  span.appendChild(i);
+  button.appendChild(span);
+  button.appendChild(document.createTextNode(" "+post.likes+" "));
+  cardBody.appendChild(button);
+  card.appendChild(img);
+  card.appendChild(cardBody);
+  wrapper.appendChild(card);
+  postsContainer.appendChild(wrapper);
 }
 
 
@@ -136,6 +139,7 @@ async function getUserData(){
             alert("Errore nel database");
             break;
           case "ERROR_SHOW":
+            console.log(data);
             alert("Errore nel mostrare i dati dell'utente");
             break; 
         }
