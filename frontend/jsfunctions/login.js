@@ -80,8 +80,8 @@ function gestoreEventiSubmitLogin(e){
             console.log(res);
             if(res['result']=="OK"){
                 storeUserData(res['data']);
-                removeNodeById("loginForm");
-                updateNavbarButtons();
+                renderBottoniNavbar("loginForm");
+                loginFormContainer.style.display = "none";
             }else{//TODO: gestire i vari casi di errore
                 credentialsAreWrongReport(true);
             }    
