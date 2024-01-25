@@ -2,7 +2,7 @@
  * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
  */
 function stampaDatiUtenti(datiUtente) {
-  console.log(datiUtente);
+  //console.log(datiUtente);
   let nomeCognome = document.getElementById("fullname"),
       nPost=document.getElementById("nPost"),
       nFollower=document.getElementById("nFollowers"),
@@ -18,7 +18,7 @@ function stampaDatiUtenti(datiUtente) {
  */
 function showUserPosts(posts){
   posts.forEach(post => {
-    console.log(post);
+    //console.log(post);
     renderPost(post);
   });
 }
