@@ -84,7 +84,7 @@ async function getSnippet(url){
  * @param {string} where - oggetto DOM in cui renderizzare lo snippet
  * @returns {string} - risultato della fetch all'url indicato o null se la fetch non va a buon fine
  */
-function renderSnippet(snippetHTML, where, eventLoader){
+function renderSnippet(snippetHTML, where){
     if(!snippetHTML){
         where.insertAdjacentHTML("beforeend", "<p>Errore 404 :(</p>");
         return;
@@ -96,6 +96,5 @@ function renderSnippet(snippetHTML, where, eventLoader){
     console.log("renderSnippet(): inzio renderizzazione");
     where.insertAdjacentHTML("beforeend", snippetHTML);
     console.log("renderSnippet(): renderizzato");
-    eventLoader();
     console.log("renderSnippet(): eventi caricati");
 }

@@ -72,93 +72,90 @@ function emailIsUniqueReport(possiblyUnique){
     }
 }
 
+function gestoreEventiClickRegistration(e){
+    if(e.target.id == "bottoneChiusuraRegistration"){
+        registrationFormContainer.style.display = "none";
+    }
+}
 
-/**
- * Funzione che ausiliaria che aggiunge gli eventi al form di registrazione
- */
-function addRegistrationEvents(){
-    let form = document.getElementById("form");
-    let registrationContainer = document.getElementById("registrationContainer");
-    let passwordFields = document.getElementById("passwordFields");
-    let password = document.getElementById("password");
-    let confirm = document.getElementById("confirm");
+function gestoreEventiSubmitRegistration(e){
+    let password = document.getElementById("password"),
+        confirm = document.getElementById("confirm"),
+        dataContainer = document.getElementById("registrationForm"),
+        registrationContainer = document.getElementById("registrationContainer");
 
-    let email = document.getElementById("email");
-    let closeButton = document.getElementById("closeButton");
+    e.preventDefault();
 
-    form.addEventListener("submit", function(event){
-        event.preventDefault();
-        if(password.value!=confirm.value){
-            passwordsAreValidsReport(false);
-            return;
+    if(password.value!=confirm.value){
+        passwordsAreValidsReport(false);
+        return;
+    }
+
+    dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
+    fetch("../../../backend/script/registration.php",
+    {
+        method: "POST",//POST Corretto
+        body: dati
+    }).then(function(response){
+        if(response.ok){
+            return response.json();
+        }else{
+            console.log(response);
+            throw new Error("Errore nella richiesta AJAX");
         }
-
-        passwordsAreValidsReport(true);
-
-        dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
-        fetch("../../../backend/script/registration.php",
-        {
-            method: "POST",//POST Corretto
-            body: dati
-        }).then(function(response){
-            if(response.ok){
-                return response.json();
-            }else{
-                console.log(response);
-                throw new Error("Errore nella richiesta AJAX");
+    }).then(function(json){
+        if(json["result"]=="OK"){
+            alert("Registrazione avvenuta con successo");
+        }
+        else{
+            //alert(json["message"]);
+            switch(json["message"]){
+                case "EMAIL_ALREADY_EXISTS":
+                    emailIsUniqueReport(false);
+                    break;
+                case "DB_ERROR":
+                    dbErrorReport(registrationContainer);
+                    break;
+                default:
+                    alert("You did play with the code, didn't you?");
+                    break;
             }
-        }).then(function(json){
-            if(json["result"]=="OK"){
-                alert("Registrazione avvenuta con successo");
-            }
-            else{
-                //alert(json["message"]);
-                switch(json["message"]){
-                    case "EMAIL_ALREADY_EXISTS":
-                        emailIsUniqueReport(false);
-                        break;
-                    case "DB_ERROR":
-                        dbErrorReport(registrationContainer);
-                        break;
-                    default:
-                        alert("You did play with the code, didn't you?");
-                        break;
-                }
-            }
-        }).catch(function(error){
-            dbErrorReport(registrationContainer);
-        });
+        }
+    }).catch(function(error){
+        dbErrorReport(registrationContainer);
     });
+}
 
-    email.addEventListener("input", function(event){
+function gestoreEventiInputRegistration(e){
+    let password = document.getElementById("password"), 
+        confirm = document.getElementById("confirm");
+    console.log("gestoreEventiInputRegistration");
+    if(e.target.id === "email"){
         emailIsUniqueReport(true);
-    });
-
-    passwordFields.addEventListener("input", function(event){
+    }
+    if(e.target.id === "password" || e.target.id === "confirm"){
         if(password.value!=confirm.value){
             passwordsAreValidsReport(false);
         }else{
             passwordsAreValidsReport(true);
         }
-    });
-
-    closeButton.addEventListener("click", (e)=>removeNodeById("form"));
+    }
 }
-
 
 /**
- * Funzione che mostra il form di registrazione in sovraimpressione nella pagina, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
+ * Funzione che mostra il form di registrazione renderizzandolo in registrationFormContainer, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
  */
 function showRegistration(){
-    container = document.querySelector("body");
-    removeNodeById("form");
-    //if(localStorage.getItem("registration") != null){
-    //    console.log("showRegistration():registration in cache");
-    //    renderSnippet(localStorage.getItem("registration"), container, addLoginEvents);
-    //}
-    //else{
+    loginFormContainer.style.display = "none";
+    if(registrationFormContainer.firstChild == null){
         console.log("showRegistration():registration fetch");
-        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
-    //}
-    //getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, container, addRegistrationEvents));
+        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, registrationFormContainer));
+    }
+    registrationFormContainer.style.display = "block";
 }
+
+var registrationFormContainer = document.getElementById("registrationFormContainer");
+
+registrationFormContainer.addEventListener("click", gestoreEventiClickRegistration);
+registrationFormContainer.addEventListener("submit", gestoreEventiSubmitRegistration);
+registrationFormContainer.addEventListener("input", gestoreEventiInputRegistration);

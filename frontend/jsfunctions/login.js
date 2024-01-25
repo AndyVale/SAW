@@ -6,6 +6,7 @@
  * @param {Boolean} boolWrongCredential - boolWrongCredential specifica se le credenziali sono sicuramente errate
  */
 function credentialsAreWrongReport(boolWrongCredential){
+    let email = document.getElementById("loginEmail"), password = document.getElementById("loginPassword"), submitButton = document.getElementById("loginSubmitButton"), loginFeedback = document.getElementById("loginFeedback");
     if(boolWrongCredential){
         email.classList.add("is-invalid");
         password.classList.add("is-invalid");
@@ -27,19 +28,43 @@ function credentialsAreWrongReport(boolWrongCredential){
     }
 }
 
-function addLoginEvents(){
-    container = document.getElementById("loginContainer");
-    password=document.getElementById("password");
-    email = document.getElementById("email");
-    loginFeedback = document.getElementById("loginFeedback");
-    form = document.getElementById("form");
-    rememberMe = document.getElementById("rememberMeCheck");
-    submitButton = document.getElementById("submitButton");
-    closeButton = document.getElementById("closeButton");
-    form.addEventListener("submit", function(event){
-        event.preventDefault();
+/**
+ * Funzione che salva i dati dell'utente nel localStorage
+*/
+function storeUserData(dati){
+    localStorage.setItem("email", dati.email);
+    localStorage.setItem("firstname", dati.firstname);
+    localStorage.setItem("lastname", dati.lastname);
+}
 
-        dati = new FormData(this);//associo i dati del form a quelli da inviare con la fetch
+/**
+ * Funzione che mostra il form di login renderizzandolo nel loginFormContainer, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
+ */
+function showLogin(){
+    registrationFormContainer.style.display = "none";
+    if(loginFormContainer.firstChild == null){
+        console.log("showLogin():login fetch");
+        getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, loginFormContainer));
+    }
+    loginFormContainer.style.display = "block";
+}
+
+function gestoreEventiClickLogin(e){
+    console.log("gestoreEventiClickLogin");
+    if(e.target.id=="bottoneChiusuraLogin"){//non voglio dover rifare il fetch ogni volta che chiudo il form
+        loginFormContainer.style.display = "none";
+    }
+}
+
+function gestoreEventiSubmitLogin(e){
+    e.preventDefault();
+    console.log("gestoreEventiSubmitLogin");
+    let dataContainer = document.getElementById("loginForm");
+    //if(e.target.id=="submitButton"){
+        dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
+        console.clear();
+        console.log(dataContainer)   ;
+        console.log(dati);
         fetch("../../../backend/script/login.php",
         {
             method: "POST",//potrebbe essere GET(?)
@@ -54,60 +79,27 @@ function addLoginEvents(){
         }).then(function(res){
             console.log(res);
             if(res['result']=="OK"){
-                successfulLogin(res['data']);
-                //window.location.href = "../immagini/login.jpg";
-            }else{
+                storeUserData(res['data']);
+                removeNodeById("loginForm");
+                updateNavbarButtons();
+            }else{//TODO: gestire i vari casi di errore
                 credentialsAreWrongReport(true);
             }    
         }).catch(function(error){
             console.log(error);
         });
-
-    });
-
-    form.addEventListener("input", function(event){//TODO: Rimuovere il checkbox dalla roba
-        if(event.target === email || event.target === password){
-            credentialsAreWrongReport(false);
-        }
-    });
-
-    closeButton.addEventListener("click", function(event){
-        document.getElementById("form").parentNode.removeChild(document.getElementById("form"));
-    });
+   // }
 }
 
-function successfulLogin(dati){
-    let contenitoreBottoni = document.getElementById("contenitoreBottoni");
-    let bottoneLogout = document.getElementById("bottoneLogout");
-    let bottoneModificaProfilo = document.getElementById("bottoneModificaProfilo");
-    
-    localStorage.setItem("email", dati.email);
-    localStorage.setItem("firstname", dati.firstname);
-    localStorage.setItem("lastname", dati.lastname);
-
-    removeNodeById("form");//controlla già che non sia null
-
-    while(contenitoreBottoni.firstChild){//rimuovo tutti i figli del contenitore
-        contenitoreBottoni.removeChild(contenitoreBottoni.firstChild);
+function gestoreEventiInputLogin(e){
+    console.log("gestoreEventiInputLogin");
+    if(e.target === loginEmail || e.target === loginPassword){
+        credentialsAreWrongReport(false);
     }
-    
-    contenitoreBottoni.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogout'> Logout </button>");
-    contenitoreBottoni.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneModificaProfilo'>"+dati['firstname']+"</span>");
 }
 
-/**
- * Funzione che mostra il form di login in sovraimpressione nella pagina, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
- */
-function showLogin(){
-    let container = document.querySelector("body");
-    removeNodeById("form");
-    //if(localStorage.getItem("login") != null){
-    //    console.log("showLogin():login in cache");
-    //    renderSnippet(localStorage.getItem("login"), container, addLoginEvents);
-    //}
-    //else{
-        console.log("showLogin():login fetch");
-        getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, container, addLoginEvents));
-    //}
-}
+var loginFormContainer = document.getElementById("loginFormContainer");
 
+loginFormContainer.addEventListener("click", (e)=>gestoreEventiClickLogin(e));
+loginFormContainer.addEventListener("submit", (e)=>gestoreEventiSubmitLogin(e));
+loginFormContainer.addEventListener("input", (e)=>gestoreEventiInputLogin(e));
