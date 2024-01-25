@@ -76,22 +76,21 @@ function renderPost(post){
  */
 async function getUserPosts(){
   fetch("../../../backend/script/show_profile_posts.php", {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
-    }
-  }).then(response =>{
+    method: 'GET'
+  })
+  .then(response =>{
     if(!response.ok){
       throw new Error("Errore nella richiesta");
     }
     return response.json();
-  }).then(data =>{
+  })
+  .then(data =>{
     if(data['result'] == "OK"){
       showUserPosts(data['data']);
     }else{
       switch(data['message']){
         case "ERROR_NOTLOGGED":
-          alert("Non sei loggato");
+          console.log("Utente non loggato");
           window.location.href = "../homepage";
           break;
         case "POST_NOT_FOUND":
@@ -99,7 +98,8 @@ async function getUserPosts(){
           break;
       }
     }
-  }).catch(error => {
+  })
+  .catch(error => {
     console.error('Errore:', error);
     console.log('Nome dell\'errore:', error.name);
     console.log('Messaggio dell\'errore:', error.message);
@@ -112,21 +112,15 @@ async function getUserPosts(){
  */
 async function getUserData(){
   fetch('../../../backend/script/show_profile.php', {
-    method: 'GET', //deve "ottenere" i dati
-    headers: {
-      'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
-    }
+    method: 'GET' //deve "ottenere" i dati
   })
-  //verifica che non siano necessari altri controlli più specifici
   .then(response => {
     if (!response.ok) {
       throw new Error('Errore nella richiesta.');
     }
     return response.json();
   })
-  .then(data => {
-      //potrei in realtà usare la memoria del browser per ottenere i dati
-      //console.log(data);
+  .then(data => {//potrei in realtà usare la memoria del browser per ottenere i dati
       if(data['result'] == "OK"){
         stampaDatiUtenti(data['data']);
       }else{

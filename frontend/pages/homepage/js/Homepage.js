@@ -21,20 +21,21 @@ window.onscroll = function() {myFunction()};
       }
       */
 
-      let like =  document.getElementById("like");
-      let profile =  document.getElementById("profile");
-      let search =  document.getElementById("search");
-      let plus =  document.getElementById("plus"); 
+      let like =  document.getElementById("like"),
+          profile =  document.getElementById("profile"),
+          search =  document.getElementById("search"),
+          plus =  document.getElementById("plus"); 
+          
       if(window.scrollY >= (like.offsetTop/4) && window.scrollY < (like.offsetTop + like.offsetHeight)){
         document.getElementById("like").classList.add("show-name");
-        document.getElementById("profile").classList.add("show-name");
-        document.getElementById("search").classList.add("show-name");
-        document.getElementById("plus").classList.add("show-name");
+        profile.classList.add("show-name");
+        search.classList.add("show-name");
+        plus.classList.add("show-name");
       } else {
         document.getElementById("like").classList.remove("show-name");
-        document.getElementById("profile").classList.remove("show-name");
-        document.getElementById("search").classList.remove("show-name");
-        document.getElementById("plus").classList.remove("show-name");
+        profile.classList.remove("show-name");
+        search.classList.remove("show-name");
+        plus.classList.remove("show-name");
       } 
 
       if(window.scrollY >= (inspo.offsetTop/2) && window.scrollY < (inspo.offsetTop + inspo.offsetHeight)){
