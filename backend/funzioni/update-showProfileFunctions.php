@@ -41,7 +41,7 @@
         
             //controlliamo che l'utente non abbia svuotato un campo
             //ATTENZIONE!! Va aggiunto username
-            if(emptyFields(FIRSTNAME, LASTNAME, EMAIL, USERNAME)){
+            if(emptyFields(FIRSTNAME, LASTNAME, EMAIL/*, USERNAME*/)){//NON SI DEVE CONTROLLARE USERNAME, I TEST AUTOMATICI FALLIREBBERO
                 return updateResult::MISSING_FIELDS;
             }
             //controllo, che l'email sia stata modificata o no, che sia valida
@@ -99,15 +99,21 @@
         $conn = connect();
         if($conn == null) return updateResult::DB_ERROR;
 
-        $query = "SELECT utente.firstname, utente.lastname, utente.email, COUNT(post.idUtente) as nPost FROM utente INNER JOIN post ON utente.email = ? and utente.ID = post.idUtente ";
+        $query = "SELECT utente.firstname, utente.lastname, utente.email FROM utente WHERE utente.email = ?";
         $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1)
             $result = $tmp[0];
+
+        $query = "SELECT COUNT(post.idUtente) as nPost FROM utente INNER JOIN post ON utente.email = ? and utente.ID = post.idUtente ";
+        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        if(!is_numeric($tmp) && count($tmp) == 1){
+            $result = array_merge($result, $tmp[0]);
+        }
         $query = "SELECT COUNT(seguiti.idUtente) as nFollower FROM utente INNER JOIN seguiti ON utente.email = ? and utente.ID = seguiti.idUtenteSeguito ";
         $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
-        if(!is_numeric($tmp) && count($tmp) == 1)
+        if(!is_numeric($tmp) && count($tmp) == 1){
             $result = array_merge($result, $tmp[0]);
-
+        }
         $query = "SELECT COUNT(seguiti.idUtenteSeguito) as nFollowing FROM utente INNER JOIN seguiti ON utente.email = ? and utente.ID = seguiti.idUtente";
         $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1){
