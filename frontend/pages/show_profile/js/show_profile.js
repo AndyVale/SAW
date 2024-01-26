@@ -137,6 +137,7 @@ async function getUserData(){
             break;
           case "ERROR_SHOW":
             alert("Errore nel mostrare i dati dell'utente");
+            console.log(data);
             break; 
         }
       }

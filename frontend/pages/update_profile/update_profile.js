@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
         stampaDati(data['data']);
       }else{
         switch(data['message']){
+          case "Immagine non vuota":
+            alert("W er duce");
+            break;
           case "ERROR_NOTLOGGED":
             alert("Non sei loggato");
             window.location.href = "../homepage";
@@ -80,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var UpdateImage = document.getElementById("update_image_button");
 UpdateImage.addEventListener("click", function() {
     alert("Hai provato ad aggiornare l'immagine!");
-    AggiornaImmagine();
+    //AggiornaImmagine();
     //Da sistemare!
     //Essendo nel form viene eseguito anche lo script update_profile.php
 });

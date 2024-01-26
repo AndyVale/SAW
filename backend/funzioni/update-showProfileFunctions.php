@@ -31,9 +31,8 @@
 
     function update(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        
             //ATTENZIONE!! $_SESSION[EMAIL] va cambiato con $_SESSION[ID]
-            $email = $_SESSION[EMAIL];
+            //$email = $_SESSION[EMAIL];
         
             //se l'utente non modifica qualche campo, si deve:
             //-aggiornarli tutti ugualmente nel database
@@ -63,8 +62,12 @@
             $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE email = ?";
         
             try{
-                if(safeQuery($query, $data, "ssss") < 2)
+                if(safeQuery($query, $data, "ssss") < 2){
+                    $_SESSION[FIRSTNAME] = $data[0];
+                    $_SESSION[LASTNAME] = $data[1];
+                    $_SESSION[EMAIL] = $data[2];
                     return updateResult::SUCCESSFUL_UPDATE;
+                }
                 return updateResult::DB_ERROR;
             }
             catch(mysqli_sql_exception $ex){
