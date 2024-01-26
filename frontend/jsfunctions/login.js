@@ -28,14 +28,7 @@ function credentialsAreWrongReport(boolWrongCredential){
     }
 }
 
-/**
- * Funzione che salva i dati dell'utente nel localStorage
-*/
-function storeUserData(dati){
-    localStorage.setItem("email", dati.email);
-    localStorage.setItem("firstname", dati.firstname);
-    localStorage.setItem("lastname", dati.lastname);
-}
+
 
 /**
  * Funzione che mostra il form di login renderizzandolo nel loginFormContainer, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"

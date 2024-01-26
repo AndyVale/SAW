@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }else{
         switch(data['message']){
           case "ERROR_NOTLOGGED":
-            alert("Non sei loggato");
+            removeUserData();
             window.location.href = "../homepage";
             break;
           case "DB_ERROR":
@@ -106,7 +106,7 @@ fetch('../../../backend/script/update_profile.php', {
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
-        alert("Non sei loggato");
+        removeUserData();
         window.location.href = "../../homepage/index.html";
         break;
       case "DUPLICATE_EMAIL":
@@ -137,3 +137,4 @@ fetch('../../../backend/script/update_profile.php', {
   console.log('Stack dell\'errore:', error.stack);
 });
 });
+

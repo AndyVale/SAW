@@ -98,3 +98,22 @@ function renderSnippet(snippetHTML, where){
     console.log("renderSnippet(): renderizzato");
     console.log("renderSnippet(): eventi caricati");
 }
+
+/**
+ * Funzione che salva i dati dell'utente nel localStorage
+*/
+function storeUserData(dati){
+    localStorage.setItem("email", dati.email);
+    localStorage.setItem("firstname", dati.firstname);
+    localStorage.setItem("lastname", dati.lastname);
+}
+
+/**
+ * Funzione che rimuove i dati dell'utente dal localStorage
+*/
+function removeUserData(){
+    console.log("Rimozione dati utente");
+    localStorage.removeItem("email");
+    localStorage.removeItem("firstname");
+    localStorage.removeItem("lastname");
+}

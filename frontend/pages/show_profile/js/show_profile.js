@@ -90,7 +90,7 @@ async function getUserPosts(){
     }else{
       switch(data['message']){
         case "ERROR_NOTLOGGED":
-          console.log("Utente non loggato");
+          removeUserData();
           window.location.href = "../homepage";
           break;
         case "POST_NOT_FOUND":
@@ -126,7 +126,7 @@ async function getUserData(){
       }else{
         switch(data['message']){
           case "ERROR_NOTLOGGED":
-            alert("Non sei loggato");
+            removeUserData();
             window.location.href = "../homepage";
             break;
           case "DB_ERROR":
