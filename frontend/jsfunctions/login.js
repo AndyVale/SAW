@@ -52,9 +52,10 @@ function gestoreEventiClickLogin(e){
 function gestoreEventiSubmitLogin(e){
     e.preventDefault();
     console.log("gestoreEventiSubmitLogin");
-    let dataContainer = document.getElementById("loginForm");
-    //if(e.target.id=="submitButton"){
+    let dataContainer = document.getElementById("loginForm"),
+        loginContainer = document.getElementById("loginContainer"),
         dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
+        
         console.clear();
         console.log(dataContainer)   ;
         console.log(dati);
@@ -76,10 +77,21 @@ function gestoreEventiSubmitLogin(e){
                 renderBottoniNavbar("loginForm");
                 loginFormContainer.style.display = "none";
             }else{//TODO: gestire i vari casi di errore
-                credentialsAreWrongReport(true);
+                switch(res["message"]){
+                    case "WRONG_CREDENTIALS":
+                        credentialsAreWrongReport(true);
+                        break;
+                    case "DB_ERROR":
+                        dbErrorReport(loginContainer);
+                        break;
+                    default:
+                        alert("You did play with the code, didn't you?");
+                        break;
+                }
             }    
         }).catch(function(error){
             console.log(error);
+            dbErrorReport(loginContainer);
         });
    // }
 }
