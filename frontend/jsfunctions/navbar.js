@@ -2,6 +2,7 @@ function renderBottoniNavbar(){
     console.log("renderBottoniNavbar()");
     let bottoniNavbarContainer = document.getElementById("contenitoreBottoniNavbar");
     bottoniNavbarContainer.innerHTML = "";
+
     if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null){
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogout'> Logout </button>");
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");

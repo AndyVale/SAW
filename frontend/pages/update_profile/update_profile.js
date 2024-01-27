@@ -5,12 +5,18 @@ function stampaDati(datiUtente) {
   let Nome  = document.getElementById('firstname');
   let Cognome = document.getElementById('lastname');
   let Email = document.getElementById('email');
+  let nPost = document.getElementById('nPost');
+  let nFollower = document.getElementById('nFollowers');
+  let nFollowing = document.getElementById('nFollowing');
 
-  if (NomeCognome && Nome && Cognome && Email) {
+  if (NomeCognome && Nome && Cognome && Email && nPost && nFollower && nFollowing) {
   NomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
   Nome.value = datiUtente.firstname;
   Cognome.value = datiUtente.lastname;
   Email.value = datiUtente.email;
+  nPost.textContent = datiUtente.nPost;
+  nFollower.textContent = datiUtente.nFollower;
+  nFollowing.textContent = datiUtente.nFollowing;
  } else {
   console.error("Uno o più elementi HTML non sono stati trovati.");
  }
@@ -100,7 +106,12 @@ fetch('../../../backend/script/update_profile.php', {
 .then(response => response.json())
 .then(data => {
   console.log(data);
+  //data = JSON.parse(data);
   if (data['result'] == "OK") {
+      //console.log(data['data']);
+      //non può fare cross-site scripting perchè i dati vengono salvati solo in questo caso in locale. Su un altro dispositivo vengono presi dal database (dove sono sanificati).
+      console.log({"firstanem":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
+      storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
       alert("Profilo aggiornato con successo!");
       window.location.href = "../show_profile/index.html";
   } else {

@@ -31,10 +31,6 @@
 
     function update(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        
-            //ATTENZIONE!! $_SESSION[EMAIL] va cambiato con $_SESSION[ID]
-            $email = $_SESSION[EMAIL];
-        
             //se l'utente non modifica qualche campo, si deve:
             //-aggiornarli tutti ugualmente nel database
             //-controllare se alcuni fossero uguali ai precedenti (è davvero l'unico modo per farlo fare una select?)
@@ -49,22 +45,21 @@
                 return updateResult::WRONG_EMAIL_FORMAT;
             
             //ATTENZIONE!! Va aggiunto username e tolto l'ultimo 
-            $data = array(htmlentities(trim($_POST[FIRSTNAME])), 
-                                htmlentities(trim($_POST[LASTNAME])),
-                                htmlentities(strtolower($_POST[EMAIL])),
-                                htmlentities(strtolower($_SESSION[EMAIL]))); //vecchia email per la clausola where
+            $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
+                            htmlentities(trim($_POST[LASTNAME])),
+                            htmlentities(strtolower($_POST[EMAIL])),
+                            $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
         
             $conn = connect();
             if($conn == null) return updateResult::DB_ERROR;
              
             //uso un prepared statement per evitare sql injection
-        
-            //ATTENZIONE!! where email = ? va cambiato con id = ? e va aggiunto username
-            $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE email = ?";
+            $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE ID = ?";
         
             try{
-                if(safeQuery($query, $data, "ssss") < 2)
+                if(safeQuery($query, $data, "sssi") < 2){
                     return updateResult::SUCCESSFUL_UPDATE;
+                }
                 return updateResult::DB_ERROR;
             }
             catch(mysqli_sql_exception $ex){
@@ -72,7 +67,7 @@
                 return updateResult::DUPLICATE_EMAIL;
             }
         }
-        }
+    }
 
     function pswUpdate(){
         //funzione che effettua un aggiornamento della password utente dai dati mandati in POST 
@@ -99,23 +94,23 @@
         $conn = connect();
         if($conn == null) return updateResult::DB_ERROR;
 
-        $query = "SELECT utente.firstname, utente.lastname, utente.email FROM utente WHERE utente.email = ?";
-        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        $query = "SELECT utente.firstname, utente.lastname, utente.email FROM utente WHERE utente.ID = ?";
+        $tmp = safeQuery($query, array($_SESSION[ID]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1)
             $result = $tmp[0];
 
-        $query = "SELECT COUNT(post.idUtente) as nPost FROM utente INNER JOIN post ON utente.email = ? and utente.ID = post.idUtente ";
-        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        $query = "SELECT COUNT(post.idUtente) as nPost FROM utente INNER JOIN post ON utente.ID = ? and utente.ID = post.idUtente ";
+        $tmp = safeQuery($query, array($_SESSION[ID]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1){
             $result = array_merge($result, $tmp[0]);
         }
-        $query = "SELECT COUNT(seguiti.idUtente) as nFollower FROM utente INNER JOIN seguiti ON utente.email = ? and utente.ID = seguiti.idUtenteSeguito ";
-        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        $query = "SELECT COUNT(seguiti.idUtente) as nFollower FROM utente INNER JOIN seguiti ON utente.ID = ? and utente.ID = seguiti.idUtenteSeguito ";
+        $tmp = safeQuery($query, array($_SESSION[ID]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1){
             $result = array_merge($result, $tmp[0]);
         }
-        $query = "SELECT COUNT(seguiti.idUtenteSeguito) as nFollowing FROM utente INNER JOIN seguiti ON utente.email = ? and utente.ID = seguiti.idUtente";
-        $tmp = safeQuery($query, array($_SESSION[EMAIL]), "s");
+        $query = "SELECT COUNT(seguiti.idUtenteSeguito) as nFollowing FROM utente INNER JOIN seguiti ON utente.ID = ? and utente.ID = seguiti.idUtente";
+        $tmp = safeQuery($query, array($_SESSION[ID]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1){
             $result = array_merge($result, $tmp[0]);
             return $result;

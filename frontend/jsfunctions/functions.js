@@ -106,6 +106,7 @@ function storeUserData(dati){
     localStorage.setItem("email", dati.email);
     localStorage.setItem("firstname", dati.firstname);
     localStorage.setItem("lastname", dati.lastname);
+    localStorage.setItem("lastUpdate", new Date().getTime());
 }
 
 /**
@@ -116,6 +117,7 @@ function removeUserData(){
     localStorage.removeItem("email");
     localStorage.removeItem("firstname");
     localStorage.removeItem("lastname");
+    localStorage.removeItem("lastUpdate");
 }
 
 /**
