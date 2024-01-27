@@ -18,7 +18,7 @@ function stampaDatiUtenti(datiUtente) {
  */
 function showUserPosts(posts){
   posts.forEach(post => {
-    //console.log(post);
+    console.log(post);
     renderPost(post);
   });
 }
@@ -63,6 +63,7 @@ function renderPost(post){
   span.appendChild(i);
   button.appendChild(span);
   button.appendChild(document.createTextNode(" "+post.likes+" "));
+  button.id = "bottoneLike"+post.ID;
   cardBody.appendChild(button);
   card.appendChild(img);
   card.appendChild(cardBody);
@@ -151,4 +152,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     getUserData();
     getUserPosts();
+});
+
+var postContainer = document.getElementById("postsContainer");
+
+postContainer.addEventListener("click", (e) =>{
+  if(e.target.id.includes("bottoneLike")){
+    console.log("Ascoltato l'evento click del bottone like del post"+ e.target.id.substring(11));
+  }
 });
