@@ -1,3 +1,8 @@
+import {storeUserData, removeUserData} from '../../jsfunctions/functions.js';
+import {renderNavbar} from '../../jsfunctions/navbar.js';
+import {renderFooter} from '../../jsfunctions/footer.js';
+
+
 function stampaDati(datiUtente) {
   if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente) {
   console.log(datiUtente);
@@ -43,9 +48,11 @@ function AggiornaImmagine(){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    renderNavbar();
+    renderFooter();
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     fetch('../../../backend/script/show_profile.php', {
-      method: 'GET', // Puoi cambiare questo a 'POST' se necessario
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
       }
@@ -64,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
         switch(data['message']){
           case "ERROR_NOTLOGGED":
             removeUserData();
+            alert("Non sei loggato!");
+            //showLogin(); potrei mostrare il login ma sarebbe più complicato da gestire a livello di sicurezza direi
             window.location.href = "../homepage";
             break;
           case "DB_ERROR":

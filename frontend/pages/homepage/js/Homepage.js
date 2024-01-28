@@ -1,3 +1,6 @@
+import { renderFooter } from "../../../jsfunctions/footer.js";
+import { renderNavbar } from "../../../jsfunctions/navbar.js";
+
 window.onscroll = function() {myFunction()};
     window.addEventListener("load", (event) => {
       let presentation = document.getElementById("name");
@@ -80,7 +83,10 @@ window.onscroll = function() {myFunction()};
 
 
     
-
+document.addEventListener("DOMContentLoaded", function(){
+  renderFooter();
+  renderNavbar();
+});
     /*
     function addIconWithLink() {
       // Esegui la richiesta AJAX per ottenere il contenuto del tuo link

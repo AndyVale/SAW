@@ -1,4 +1,5 @@
-//---------------------------------------QUESTO FILE RICHIEDE IL FILE "functions.js" PER FUNZIONARE---------------------------------------//
+import {getSnippet, renderSnippet, dbErrorReport, storeUserData} from "./functions.js";
+export {showLogin};
 
 //NOTA PER I POSTERI: i "@param" servono solo per l'IDE, non impongono in nessun modo il tipo dei parametri (JS non è tipato)
 
@@ -74,8 +75,7 @@ function gestoreEventiSubmitLogin(e){
             console.log(res);
             if(res['result']=="OK"){
                 storeUserData(res['data']);
-                renderBottoniNavbar("loginForm");
-                loginFormContainer.style.display = "none";
+                window.location.href = "./";
             }else{//TODO: gestire i vari casi di errore
                 switch(res["message"]){
                     case "WRONG_CREDENTIALS":

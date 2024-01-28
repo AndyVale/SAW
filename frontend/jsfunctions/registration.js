@@ -1,5 +1,5 @@
-//---------------------------------------QUESTO FILE RICHIEDE IL FILE "functions.js" PER FUNZIONARE---------------------------------------//
-
+import {getSnippet, renderSnippet, dbErrorReport} from "./functions.js";
+export {showRegistration};
 /**
  * @param {Boolean} areValids - areValids specifica se le password sono uguali o no
  */
@@ -57,7 +57,7 @@ function gestoreEventiSubmitRegistration(e){
         return;
     }
 
-    dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
+    let dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
     fetch("../../../backend/script/registration.php",
     {
         method: "POST",//POST Corretto

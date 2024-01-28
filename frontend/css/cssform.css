@@ -1,5 +1,6 @@
 #loginContainer, #registrationContainer{
     max-width: 520px;
+    background-color: white;
 }
 .blur{
     /*Per utilizzarlo bisogna avvolgere tutta la pagina in un div.blur eccetto le cose che non si vogliono sfocare*/

@@ -1,3 +1,8 @@
+import {showLogin} from "../../../jsfunctions/login.js";
+import {renderNavbar} from "../../../jsfunctions/navbar.js";
+import {renderFooter} from "../../../jsfunctions/footer.js";
+import {removeUserData} from "../../../jsfunctions/functions.js";
+
 /**
  * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
  */
@@ -91,8 +96,8 @@ async function getUserPosts(){
     }else{
       switch(data['message']){
         case "ERROR_NOTLOGGED":
+          alert("Errore nella richiesta");
           removeUserData();
-          window.location.href = "../homepage";
           break;
         case "POST_NOT_FOUND":
           alert("Errore nel database");
@@ -128,7 +133,9 @@ async function getUserData(){
         switch(data['message']){
           case "ERROR_NOTLOGGED":
             removeUserData();
-            window.location.href = "../homepage";
+          showLogin();
+
+            //window.location.href = "../homepage";
             break;
           case "DB_ERROR":
             alert("Errore nel database");
@@ -150,6 +157,9 @@ async function getUserData(){
 
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
+    renderFooter();
+    renderNavbar();
+
     getUserData();
     getUserPosts();
 });

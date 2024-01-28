@@ -1,3 +1,9 @@
+export {renderNavbar, renderBottoniNavbar};
+import {getSnippet, renderSnippet} from "./functions.js";
+import {showLogin} from "./login.js";
+import {showRegistration} from "./registration.js";
+
+
 function renderBottoniNavbar(){
     console.log("renderBottoniNavbar()");
     let bottoniNavbarContainer = document.getElementById("contenitoreBottoniNavbar");
@@ -59,12 +65,5 @@ function showProfile(){
     console.log("showProfile()");
     window.location.href = "../show_profile/";
 }
-
-document.addEventListener("DOMContentLoaded", function(){
-    var navbarContainer = document.getElementById("navbarContainer");
-    var bottoniNavbarContainer = document.getElementById("contenitoreBottoniNavbar");
-    renderNavbar(bottoniNavbarContainer);
-});
-
 
 navbarContainer.addEventListener("click", (e)=>gestioneClickBottoni(e));
