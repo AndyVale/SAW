@@ -32,23 +32,6 @@ function stampaDati(datiUtente) {
 }
 }
 
-function AggiornaImmagine(){
-  const newImage = document.getElementById('new_profile_image');
-  const oldImage = document.getElementById('old_profile_picture');
-  const file = input.files[0];
-  if (file) {
-    //creazione dell'istanza di un oggetto FileReader
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-        var dataURL = event.target.result;
-        oldImage.src = dataURL;
-    };
-
-    reader.readAsDataURL(file);
-}
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     renderNavbar();
     renderFooter();
@@ -94,18 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
      });
 });
 
-var UpdateImage = document.getElementById("update_image_button");
-UpdateImage.addEventListener("click", function() {
-    alert("Hai provato ad aggiornare l'immagine!");
-    AggiornaImmagine();
-    //Da sistemare!
-    //Essendo nel form viene eseguito anche lo script update_profile.php
-});
-
 var UpdateForm = document.getElementById("update_form");
 UpdateForm.addEventListener("submit", function(e) {
 e.preventDefault();
-dati = new FormData(this);
+let dati = new FormData(this);
 console.log(dati);
 fetch('../../../backend/script/update_profile.php', {
   method: 'POST',
@@ -140,9 +115,13 @@ fetch('../../../backend/script/update_profile.php', {
         window.location.href = "./index.html";
         break;
       case "ERROR_WRONGEMAILFORMAT":
-          alert("L'email non è nel formato corretto!");
-          window.location.href = "./index.html";
-          break;
+        alert("L'email non è nel formato corretto!");
+        window.location.href = "./index.html";
+        break;
+      case "ERROR_WRONGIMAGEFORMAT":
+        alert("Sono accettati solo file con estensioni: .jpg, .jpeg, .png");
+        window.location.href = "./index.html";
+        break;
       case "DB_ERROR":
         alert("OHHHH cosa fai");
         break;

@@ -35,7 +35,7 @@ switch($tmp){
         */
     case updateResult::ERROR_UPDATE:
         $result['result'] = 'KO';
-        $result['message'] = 'ERROR_SHOW';
+        $result['message'] = 'ERROR_UPDATE';
         break;
     case updateResult::MISSING_FIELDS:
         $result['result'] = 'KO';
@@ -44,6 +44,10 @@ switch($tmp){
     case updateResult::WRONG_EMAIL_FORMAT: 
         $result['result'] = 'KO';
         $result['message'] = 'ERROR_WRONGEMAILFORMAT';
+        break;
+    case updateResult::WRONG_IMAGE_FORMAT: 
+        $result['result'] = 'KO';
+        $result['message'] = 'ERROR_WRONGIMAGEFORMAT';
         break;
     case updateResult::DUPLICATE_EMAIL:
         $result['result'] = 'KO';

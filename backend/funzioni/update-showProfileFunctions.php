@@ -2,10 +2,6 @@
     require_once("dbFunctions.php");
     enum updateResult {
         case SUCCESSFUL_UPDATE;
-        case MISSING_FIRSTNAME;
-        case MISSING_LASTNAME;
-        case MISSING_EMAIL;
-        case MISSING_USERNAME;
         case MISSING_FIELDS;
         case DIFFERENT_PASSWORDS;    
         case ERROR_UPDATE;
@@ -13,6 +9,7 @@
         case DB_ERROR;
         case DUPLICATE_EMAIL;
         case WRONG_EMAIL_FORMAT;
+        case WRONG_IMAGE_FORMAT;
     }
     
     //funzione che restituisce true se ci sono campi vuoti inviati in $_POST
@@ -31,12 +28,8 @@
 
     function update(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            //se l'utente non modifica qualche campo, si deve:
-            //-aggiornarli tutti ugualmente nel database
-            //-controllare se alcuni fossero uguali ai precedenti (è davvero l'unico modo per farlo fare una select?)
         
             //controlliamo che l'utente non abbia svuotato un campo
-            //ATTENZIONE!! Va aggiunto username
             if(emptyFields(FIRSTNAME, LASTNAME, EMAIL/*, USERNAME*/)){//NON SI DEVE CONTROLLARE USERNAME, I TEST AUTOMATICI FALLIREBBERO
                 return updateResult::MISSING_FIELDS;
             }
@@ -44,20 +37,52 @@
             if(!filter_var($_POST[EMAIL], FILTER_VALIDATE_EMAIL))
                 return updateResult::WRONG_EMAIL_FORMAT;
             
+             //$_FILES['update-profile-image']['name']) fa sì che l'utente possa lasciare vuoto il campo (allora verrà impostata al momento della registrazione
+            //un'immagine di default) senza che venga restituito errore
+            if(isset($_FILES['update-profile-image']['name']) AND !empty($_FILES['update-profile-image']['name'])){
+
+                //info sull'immagine caricata
+                $img_name = $_FILES['update-profile-image']['name'];
+                $img_size = $_FILES['update-profile-image']['size'];
+                $tmp_name = $_FILES['update-profile-image']['tmp_name'];
+                $img_error = $_FILES['update-profile-image']['error'];
+
+                if($img_error === 0){
+
+                    $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+                    $img_ex_to_lc = strtolower($img_ex);
+                    $allowed_extensions = array("jpg", "jpeg", "png");
+
+                    //controllo backend che l'estensione sia ammissibile
+                    if(in_array($img_ex_to_lc, $allowed_extensions)){
+
+                        $new_img_name = uniqid($_SESSION[ID], true) . '.' . $img_ex_to_lc;
+                        $img_upload_path = "../../frontend/immagini/profile/" . $new_img_name;
+        
+                        move_uploaded_file($tmp_name, $img_upload_path);
+                        
+                    } else {
+                        return updateResult::WRONG_IMAGE_FORMAT;
+                    }
+                } else {
+                    return updateResult::ERROR_UPDATE;
+                }
+            }
             //ATTENZIONE!! Va aggiunto username e tolto l'ultimo 
             $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
                             htmlentities(trim($_POST[LASTNAME])),
                             htmlentities(strtolower($_POST[EMAIL])),
+                            $new_img_name,
                             $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
         
             $conn = connect();
             if($conn == null) return updateResult::DB_ERROR;
              
             //uso un prepared statement per evitare sql injection
-            $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE ID = ?";
+            $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ?, profilePicture = ? WHERE ID = ?";
         
             try{
-                if(safeQuery($query, $data, "sssi") < 2){
+                if(safeQuery($query, $data, "ssssi") < 2){
                     return updateResult::SUCCESSFUL_UPDATE;
                 }
                 return updateResult::DB_ERROR;
