@@ -13,6 +13,7 @@ create table Utente(
     firstname varchar(255) not null,
     lastname varchar(255) not null,
     pass varchar(255) not null,
+    pp varchar(255) not null default 'default_pp.png',
     role int not null default 0,
     rememberMe varchar(255),
     expireTime int default 0,
