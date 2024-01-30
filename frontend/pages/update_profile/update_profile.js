@@ -5,16 +5,17 @@ import {renderFooter} from '../../jsfunctions/footer.js';
 
 function stampaDati(datiUtente) {
   if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente) {
-  console.log(datiUtente);
-  let NomeCognome = document.getElementById('fullname');
-  let Nome  = document.getElementById('firstname');
-  let Cognome = document.getElementById('lastname');
-  let Email = document.getElementById('email');
-  let nPost = document.getElementById('nPost');
-  let nFollower = document.getElementById('nFollowers');
-  let nFollowing = document.getElementById('nFollowing');
+  //console.log(datiUtente);
+  let NomeCognome = document.getElementById('fullname'),
+  Nome  = document.getElementById('firstname'),
+  Cognome = document.getElementById('lastname'),
+  Email = document.getElementById('email'),
+  nPost = document.getElementById('nPost'),
+  nFollower = document.getElementById('nFollowers'),
+  nFollowing = document.getElementById('nFollowing'),
+  immagineProfilo = document.getElementById('profile-image');
 
-  if (NomeCognome && Nome && Cognome && Email && nPost && nFollower && nFollowing) {
+  if (NomeCognome && Nome && Cognome && Email && nPost && nFollower && nFollowing && immagineProfilo) {
   NomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
   Nome.value = datiUtente.firstname;
   Cognome.value = datiUtente.lastname;
@@ -22,6 +23,7 @@ function stampaDati(datiUtente) {
   nPost.textContent = datiUtente.nPost;
   nFollower.textContent = datiUtente.nFollower;
   nFollowing.textContent = datiUtente.nFollowing;
+  immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
  } else {
   console.error("Uno o più elementi HTML non sono stati trovati.");
  }

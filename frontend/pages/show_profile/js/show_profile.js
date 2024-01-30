@@ -9,14 +9,17 @@ import {removeUserData} from "../../../jsfunctions/functions.js";
 function stampaDatiUtenti(datiUtente) {
   //console.log(datiUtente);
   let nomeCognome = document.getElementById("fullname"),
-      nPost=document.getElementById("nPost"),
-      nFollower=document.getElementById("nFollowers"),
-      nFollowing=document.getElementById("nFollowing");
+      nPost = document.getElementById("nPost"),
+      nFollower = document.getElementById("nFollowers"),
+      nFollowing = document.getElementById("nFollowing"),
+      immagineProfilo = document.getElementById("profile-image");
   nPost.textContent = datiUtente.nPost;
   nFollower.textContent = datiUtente.nFollower;
   nFollowing.textContent = datiUtente.nFollowing;
   nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
+  immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
 }
+
 
 /**
  * @param {Array} posts - array di oggetti contenenti i dati dei post con campi con lo stesso nome del database

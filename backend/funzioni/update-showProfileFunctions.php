@@ -94,7 +94,7 @@
         $conn = connect();
         if($conn == null) return updateResult::DB_ERROR;
 
-        $query = "SELECT utente.firstname, utente.lastname, utente.email FROM utente WHERE utente.ID = ?";
+        $query = "SELECT utente.firstname, utente.lastname, utente.email, utente.profilePicture FROM utente WHERE utente.ID = ?";
         $tmp = safeQuery($query, array($_SESSION[ID]), "s");
         if(!is_numeric($tmp) && count($tmp) == 1)
             $result = $tmp[0];
