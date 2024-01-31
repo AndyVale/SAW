@@ -4,7 +4,11 @@
 
     function show_user_posts(int $idUtente) {
         try{
-            $res = standardQuery("SELECT post.ID, post.oraPubblicazione, post.urlImmagine, COUNT(liked.idPost) as likes FROM post, liked WHERE post.idUtente = $idUtente AND post.ID = liked.idPost GROUP BY post.ID ORDER BY post.oraPubblicazione DESC");
+            $query = "SELECT post.ID, post.oraPubblicazione, post.urlImmagine, COUNT(liked.idUtente) as likes
+                      FROM post LEFT JOIN liked ON post.ID = liked.idPost
+                      WHERE post.idUtente = $idUtente
+                      GROUP BY post.ID";
+            $res = standardQuery($query);
         }
         catch(Exception $e){
             error_log("show_profile_posts.php: Query non andata a buon fine, id: $idUtente\n", 3, ERROR_LOG);
