@@ -1,7 +1,7 @@
 import {showLogin} from "../../../jsfunctions/login.js";
 import {renderNavbar} from "../../../jsfunctions/navbar.js";
 import {renderFooter} from "../../../jsfunctions/footer.js";
-import {removeUserData} from "../../../jsfunctions/functions.js";
+import {removeUserData, renderPosts} from "../../../jsfunctions/functions.js";
 
 /**
  * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
@@ -20,66 +20,6 @@ function stampaDatiUtenti(datiUtente) {
   immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
 }
 
-
-/**
- * @param {Array} posts - array di oggetti contenenti i dati dei post con campi con lo stesso nome del database
- */
-function showUserPosts(posts){
-  posts.forEach(post => {
-    console.log(post);
-    renderPost(post);
-  });
-}
-
-/*
-<div class="col-12 col-md-6 col-lg-4">
-  <div class="card">
-    <img src="../../immagini/square.png" class="card-img-top" alt="...">
-    <div class="card-body">
-      <button class="btn w-100 m-auto" style="background-color: #6FD08C; color: white;">
-          <span class="icon heart heart-icon"> 
-            <i class="fas fa-heart"> </i>
-          </span>
-        1000
-      </button>
-    </div>
-  </div>
-</div>
-*/
-function renderPost(post){
- let
-  postsContainer = document.getElementById("postsContainer"), 
-  wrapper = document.createElement("div"),
-  card = document.createElement("div"),
-  cardBody = document.createElement("div"),
-  button = document.createElement("button"),
-  span = document.createElement("span"),
-  i = document.createElement("i"),
-  img = document.createElement("img");
-
-  wrapper.classList.add("col-12", "col-md-6", "col-lg-4");
-  card.classList.add("card");
-  img.classList.add("card-img-top");
-  img.setAttribute("src", "../../Immagini/"+post.urlImmagine);
-  cardBody.classList.add("card-body");
-  button.classList.add("btn", "w-100", "m-auto");
-  button.style.backgroundColor = "#6FD08C";
-  button.style.color = "white";
-  span.classList.add("icon", "heart", "heart-icon");
-  i.classList.add("fas", "fa-heart");
-
-  span.appendChild(i);
-  button.appendChild(span);
-  button.appendChild(document.createTextNode(" "+post.likes+" "));
-  button.id = "bottoneLike"+post.ID;
-  cardBody.appendChild(button);
-  card.appendChild(img);
-  card.appendChild(cardBody);
-  wrapper.appendChild(card);
-  postsContainer.appendChild(wrapper);
-}
-
-
 /**
  * Funzione che mediante fetch ottiene i post dell'utente loggato
  */
@@ -95,7 +35,7 @@ async function getUserPosts(){
   })
   .then(data =>{
     if(data['result'] == "OK"){
-      showUserPosts(data['data']);
+      renderPosts(data['data'], document.getElementById("postsContainer"));
     }else{
       switch(data['message']){
         case "ERROR_NOTLOGGED":
@@ -167,10 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
     getUserPosts();
 });
 
-var postContainer = document.getElementById("postsContainer");
+//var postContainer = document.getElementById("postsContainer");
 
-postContainer.addEventListener("click", (e) =>{
-  if(e.target.id.includes("bottoneLike")){
-    console.log("Ascoltato l'evento click del bottone like del post"+ e.target.id.substring(11));
-  }
-});
+//postContainer.addEventListener("click", (e) =>{
+//  if(e.target.id.includes("bottoneLike")){
+//    console.log("Ascoltato l'evento click del bottone like del post"+ e.target.id.substring(11));
+// }
+//});

@@ -12,7 +12,7 @@
         exit();
     }
     //$result['debug']= $_SESSION[EMAIL]; 
-    $tmp = showProfile();
+    $tmp = showProfile($_SESSION[ID], true);
     switch($tmp){
         case showProfileResult::DB_ERROR:
             $result['result'] = 'KO';

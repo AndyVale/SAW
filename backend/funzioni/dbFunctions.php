@@ -75,7 +75,7 @@
 
    
     function isLogged() {
-        if(!empty($_SESSION[EMAIL])) {
+        if(!empty($_SESSION[ID])) {
             return true;
         }else{
             return false;

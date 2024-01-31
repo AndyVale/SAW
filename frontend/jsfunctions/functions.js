@@ -1,4 +1,5 @@
-export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport};
+export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost};
+
 /**
  * @param {string} id - id dell'elemento da rimuovere
  */
@@ -102,4 +103,116 @@ function dbErrorReport(container){
     container.appendChild(img);
     container.appendChild(p1);
     //container.appendChild(p2);
+}
+
+/**
+ * Funzione che renderizza più post usando la funzione renderPost
+ * @param {Array} posts - array di oggetti contenenti i dati dei post con campi con lo stesso nome del database
+ * @param {HTMLElement} postContainer - Specifica in che container inserire i post
+ */
+function renderPosts(posts, postContainer){
+    console.log("renderPosts()");
+    posts.forEach(post => {
+        console.log(post);
+        renderAPost(post, postContainer);
+    });
+}
+  
+  /*
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="card">
+      <img src="../../immagini/square.png" class="card-img-top" alt="...">
+      <div class="card-body">
+        <button class="btn w-100 m-auto" style="background-color: #6FD08C; color: white;">
+            <span class="icon heart heart-icon"> 
+              <i class="fas fa-heart"> </i>
+            </span>
+          1000
+        </button>
+      </div>
+    </div>
+  </div>
+  */
+
+/**
+ * Funzione che renderizza un post
+ * @param {Object} post Oggetto contenente i dati del post con campi con lo stesso nome del database
+ * @param {HTMLElement} postContainer - Specifica in che container inserire il post
+ */
+function renderAPost(post, postsContainer){
+let wrapper = document.createElement("div"),
+    card = document.createElement("div"),
+    cardBody = document.createElement("div"),
+    button = document.createElement("button"),
+    span = document.createElement("span"),
+    i = document.createElement("i"),
+    img = document.createElement("img");
+
+    wrapper.classList.add("col-12", "col-md-6", "col-lg-4");
+    card.classList.add("card");
+    img.classList.add("card-img-top");
+    img.setAttribute("src", "../../Immagini/"+post.urlImmagine);
+    cardBody.classList.add("card-body");
+    button.classList.add("btn", "w-100", "m-auto");
+    button.style.backgroundColor = "#6FD08C";
+    button.style.color = "white";
+    span.classList.add("icon", "heart", "heart-icon");
+    i.classList.add("fas", "fa-heart");
+
+    span.appendChild(i);
+    button.appendChild(span);
+    button.appendChild(document.createTextNode(" "+post.likes+" "));
+    button.id = "bottoneLike"+post.ID;
+    cardBody.appendChild(button);
+    renderImg("../../Immagini/"+post.urlImmagine, 1, card);
+    card.appendChild(cardBody);
+    wrapper.appendChild(card);
+    postsContainer.appendChild(wrapper);
+}
+
+/**
+ * Funzione che renderizza un immagine in un canvas impostando un determinato aspect ratio
+ * @param {string} path - path dell'immagine da renderizzare
+ * @param {number} aspectRatio - aspect ratio voluto
+ * @param {HTMLElement} container - Specifica in che container inserire il canvas generato
+ */
+function renderImg(path, aspectRatio, container){
+	let inputImage = new Image();//same as document.createElement("img");
+	inputImage.src = path;
+    console.log("Rendering dell'imamgine: "+path);
+	//console.log(inputImage);
+	inputImage.onload = () =>{
+		const inputWidth = inputImage.naturalWidth;
+		const inputHeight = inputImage.naturalHeight;
+		//console.log(inputWidth, inputHeight);
+		// get the aspect ratio of the input image
+		const inputImageAspectRatio = inputWidth / inputHeight;
+
+		// if it's bigger than our target aspect ratio
+		let outputWidth = inputWidth;
+		let outputHeight = inputHeight;
+		if (inputImageAspectRatio > aspectRatio) {//devo aumentare la larghezza->spazio ai lati orizzontali
+			outputHeight = (1/aspectRatio)*inputWidth;
+		} else if (inputImageAspectRatio < aspectRatio) {//devo aumentare l'altezza->spazio ai lati verticali
+			outputWidth = aspectRatio*inputHeight;
+		}
+
+		// calculate the position to draw the image at
+		const outputX = (1*outputWidth - 1*inputWidth) * .5;
+		const outputY = (1*outputHeight - 1*inputHeight) * .5;
+
+		// create a canvas that will present the output image
+		const outputImage = document.createElement('canvas');
+		//outputImage.id=path+"canvas";
+		// set it to the same size as the image
+		outputImage.width = outputWidth;
+		outputImage.height = outputHeight;
+		
+		// draw our image at position 0, 0 on the canvas
+		const ctx = outputImage.getContext('2d');
+		ctx.drawImage(inputImage, outputX, outputY);
+		outputImage.style="background-color: white; border: 1px solid black; width: 100%;";
+        
+		container.insertBefore(outputImage, container.firstChild);
+	}
 }
