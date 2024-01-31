@@ -9,9 +9,9 @@ function renderBottoniNavbar(){
     let bottoniNavbarContainer = document.getElementById("contenitoreBottoniNavbar");
     bottoniNavbarContainer.innerHTML = "";
 
-    if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null){
+    if(sessionStorage.getItem("email") != null && sessionStorage.getItem("firstname") != null && sessionStorage.getItem("lastname") != null){
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogout'> Logout </button>");
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneVisualizzaProfilo'>"+sessionStorage.getItem("firstname")+"</span>");
     }else{
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogin'> Login </button>");
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneRegistration'> Registrati </button>");    
@@ -31,7 +31,7 @@ function logout(){
       }
     }).then((res) => {
       if(res['result'] == "OK"){
-        localStorage.clear();
+        sessionStorage.clear();
         window.location.href = "./";
       }
     }).catch((error) => {

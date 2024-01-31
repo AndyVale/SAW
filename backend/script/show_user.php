@@ -13,11 +13,10 @@
         return $risultato;
     }
 
-    if(!isset($_GET[ID])){
+    if(empty($_GET[ID]) || !is_numeric($_GET[ID])){
         http_response_code(400);
         echo json_encode(array("result" => "KO", "message" => "ERROR_NO_ID"));
         exit;
     }
-    
     echo json_encode(getNonSesitiveData($_GET[ID]));
 

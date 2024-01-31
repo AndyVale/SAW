@@ -1,4 +1,4 @@
-export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost};
+export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost, renderImg, getLikedPosts};
 
 /**
  * @param {string} id - id dell'elemento da rimuovere
@@ -50,24 +50,24 @@ function renderSnippet(snippetHTML, where){
 }
 
 /**
- * Funzione che salva i dati dell'utente nel localStorage
+ * Funzione che salva i dati dell'utente nel sessionStorage
 */
 function storeUserData(dati){
-    localStorage.setItem("email", dati.email);
-    localStorage.setItem("firstname", dati.firstname);
-    localStorage.setItem("lastname", dati.lastname);
-    localStorage.setItem("lastUpdate", new Date().getTime());
+    sessionStorage.setItem("email", dati.email);
+    sessionStorage.setItem("firstname", dati.firstname);
+    sessionStorage.setItem("lastname", dati.lastname);
+    sessionStorage.setItem("lastUpdate", new Date().getTime());
 }
 
 /**
- * Funzione che rimuove i dati dell'utente dal localStorage
+ * Funzione che rimuove i dati dell'utente dal sessionStorage
 */
 function removeUserData(){
     console.log("Rimozione dati utente");
-    localStorage.removeItem("email");
-    localStorage.removeItem("firstname");
-    localStorage.removeItem("lastname");
-    localStorage.removeItem("lastUpdate");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("firstname");
+    sessionStorage.removeItem("lastname");
+    sessionStorage.removeItem("lastUpdate");
 }
 
 /**
@@ -215,4 +215,21 @@ function renderImg(path, aspectRatio, container){
         
 		container.insertBefore(outputImage, container.firstChild);
 	}
+}
+
+/**
+ * Funzione che restituisce un array contenente gli id dei post a cui l'utente ha messo like
+ * @param {int} idUser - id dell'utente tra cui cercare i post likeati
+ * @returns {Array} - array contenente gli id dei post che l'utente ha messo like
+ */
+function getLikedPosts(idUser){
+    return fetch("../../../backend/script/get_liked_posts.php?ID="+idUser, {
+        method: "GET"
+    }).then(response => {
+        if(response.ok){
+            return response.json();
+        }else{
+            throw new Error("Errore nella richiesta fetch in getLikedPosts");
+        }
+    }).catch(error => console.log(error));
 }
