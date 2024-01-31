@@ -103,4 +103,17 @@
             $stmt->close();
         return $rows;
     }*/
+    //funzione che restituisce true se ci sono campi vuoti inviati in $_POST
+    function emptyFields() {
+        //funzione che restituisce un array contenente tutti gli argomenti passati a una funzione
+        //comunemente utilizzata quando si vuole creare una funzione che accetta un numero variabile di argomenti
+            $args = func_get_args();
+    
+            foreach ($args as $fieldName) {
+                if (empty($_POST[$fieldName])) {
+                    return true; // Trovato un campo vuoto
+                }
+            }
+            return false; // Nessun campo vuoto
+        }
 ?>

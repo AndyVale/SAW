@@ -1,6 +1,6 @@
 <?php
 
-require_once("../funzioni/update-showProfileFunctions.php");
+require_once("../funzioni/updateProfileFunctions.php");
 require_once("../funzioni/const.php");
 require_once("../funzioni/dbFunctions.php");
 

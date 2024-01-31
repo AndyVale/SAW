@@ -1,6 +1,6 @@
 <?php
     //ho iniziato solo a guardarle ma non c'è ancora niente di concreto qui
-    require_once ("../funzioni/update-showProfileFunctions.php");
+    require_once ("../funzioni/showProfileFunctions.php");
 
     header('Content-Type: application/json');
     $result['from'] = 'show_profile.php';
@@ -14,15 +14,15 @@
     //$result['debug']= $_SESSION[EMAIL]; 
     $tmp = showProfile();
     switch($tmp){
-        case updateResult::DB_ERROR:
+        case showProfileResult::DB_ERROR:
             $result['result'] = 'KO';
             $result['message'] = 'DB_ERROR';
             break;
-        case updateResult::ERROR_NOTLOGGED:
+        case showProfileResult::ERROR_NOTLOGGED:
             $result['result'] = 'KO';
             $result['message'] = 'ERROR_NOTLOGGED';
             break;
-        case updateResult::ERROR_UPDATE:
+        case showProfileResult::ERROR_SHOW:
             $result['result'] = 'KO';
             $result['message'] = 'ERROR_SHOW';
             break;
@@ -33,5 +33,3 @@
             break;
     }
     echo json_encode($result);
-    
-?>
