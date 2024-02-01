@@ -25,7 +25,8 @@
             
              //$_FILES['update-profile-image']['name']) fa sì che l'utente possa lasciare vuoto il campo (allora verrà impostata al momento della registrazione
             //un'immagine di default) senza che venga restituito errore
-            if(isset($_FILES['update-profile-image']['name']) AND !empty($_FILES['update-profile-image']['name'])){
+            if(isset($_FILES['update-profile-image']['name'])){
+                if (!empty($_FILES['update-profile-image']['name'])){
 
                 //info sull'immagine caricata
                 $img_name = $_FILES['update-profile-image']['name'];
@@ -53,22 +54,65 @@
                 } else {
                     return updateResult::ERROR_UPDATE;
                 }
+
+                if(!empty($_POST[USERNAME])){
+
+                    $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
+                                    htmlentities(trim($_POST[LASTNAME])),
+                                    htmlentities(strtolower($_POST[EMAIL])),
+                                    htmlentities(trim($_POST[USERNAME])),
+                                    $new_img_name,
+                                    $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
+
+                    $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ?, username = ?, profilePicture = ? WHERE ID = ?";
+
+                    $params = "sssssi";
+
+                } else {
+                    $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
+                                    htmlentities(trim($_POST[LASTNAME])),
+                                    htmlentities(strtolower($_POST[EMAIL])),
+                                    $new_img_name,
+                                    $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
+
+                    $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ?, profilePicture = ? WHERE ID = ?";
+
+                    $params = "ssssi";
+                }
+             } else {
+
+                if(!empty($_POST[USERNAME])){
+                    $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
+                                    htmlentities(trim($_POST[LASTNAME])),
+                                    htmlentities(strtolower($_POST[EMAIL])),
+                                    htmlentities(trim($_POST[USERNAME])),
+                                    $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
+
+                    $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ?, username = ? WHERE ID = ?";
+
+                    $params = "ssssi";
+
+                } else {
+
+                $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
+                                htmlentities(trim($_POST[LASTNAME])),
+                                htmlentities(strtolower($_POST[EMAIL])),
+                                $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
+
+                $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE ID = ?";
+
+                $params = "sssi";
+                }
             }
-            //ATTENZIONE!! Va aggiunto username e tolto l'ultimo 
-            $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
-                            htmlentities(trim($_POST[LASTNAME])),
-                            htmlentities(strtolower($_POST[EMAIL])),
-                            $new_img_name,
-                            $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
+        } else {
+
+        }
         
             $conn = connect();
             if($conn == null) return updateResult::DB_ERROR;
-             
-            //uso un prepared statement per evitare sql injection
-            $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ?, profilePicture = ? WHERE ID = ?";
         
             try{
-                if(safeQuery($query, $data, "ssssi") < 2){
+                if(safeQuery($query, $data, $params) < 2){
                     return updateResult::SUCCESSFUL_UPDATE;
                 }
                 return updateResult::DB_ERROR;

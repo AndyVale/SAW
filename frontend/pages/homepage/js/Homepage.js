@@ -55,18 +55,38 @@ window.onscroll = function() {myFunction()};
     let image5 = document.getElementById("img5");
     let image6 = document.getElementById("img6");
 
+
     function gestisciEventoMouseOver(number){
       let img = document.getElementById("img"+number);
       //console.log("Il cursore è sopra l'elemento numero "+number+"!");
       img.style.transform = 'scale(1.1)';
     }
     
+
     function gestisciEventoMouseOut(number) {
       let img = document.getElementById("img"+number);
       //console.log("Il cursore è sopra l'elemento numero "+number+"!");
       img.style.transform = 'scale(1)';
     }
 
+    /*
+    for (let i = 1; i < 7; i++) {
+      document.getElementById(`image${i}`).addEventListener('mouseover', (function(index) {
+        return function() {
+          gestisciEventoMouseOver(index);
+        };
+      })(i));
+    }
+
+    for (let i = 1; i < 7; i++) {
+      document.getElementById(`image${i}`).addEventListener('mouseover', (function(index) {
+        return function() {
+          gestisciEventoMouseOut(index);
+        };
+      })(i));
+    }
+    */
+    
     image1.addEventListener('mouseover', ()=> gestisciEventoMouseOver("1"));
     image2.addEventListener('mouseover', ()=> gestisciEventoMouseOver("2"));
     image3.addEventListener('mouseover', ()=> gestisciEventoMouseOver("3"));
@@ -80,7 +100,7 @@ window.onscroll = function() {myFunction()};
     image4.addEventListener('mouseout', ()=> gestisciEventoMouseOut("4"));
     image5.addEventListener('mouseout', ()=> gestisciEventoMouseOut("5"));
     image6.addEventListener('mouseout', ()=> gestisciEventoMouseOut("6"));
-
+    
 
     
 document.addEventListener("DOMContentLoaded", function(){
