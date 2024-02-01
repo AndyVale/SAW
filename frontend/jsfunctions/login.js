@@ -35,7 +35,8 @@ function credentialsAreWrongReport(boolWrongCredential){
  * Funzione che mostra il form di login renderizzandolo nel loginFormContainer, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
  */
 function showLogin(){
-    registrationFormContainer.style.display = "none";
+    document.getElementById("registrationFormContainer").style.display = "none";
+    document.querySelectorAll("body *:not(#loginFormContainer, #loginFormContainer *)").forEach((node)=>node.style.filter="blur(5px)");//TODO: non mi piace molto questa metodologia ma non ho trovato di meglio, se qualcuno ha idee migliori sono ben accette...
     if(loginFormContainer.firstChild == null){
         console.log("showLogin():login fetch");
         getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, loginFormContainer));
@@ -46,6 +47,7 @@ function showLogin(){
 function gestoreEventiClickLogin(e){
     console.log("gestoreEventiClickLogin");
     if(e.target.id=="bottoneChiusuraLogin"){//non voglio dover rifare il fetch ogni volta che chiudo il form
+        document.querySelectorAll("body *:not(#loginFormContainer, #loginFormContainer *)").forEach((node)=>node.style.filter="");//TODO: non mi piace molto questa metodologia ma non ho trovato di meglio, se qualcuno ha idee migliori sono ben accette...
         loginFormContainer.style.display = "none";
     }
 }

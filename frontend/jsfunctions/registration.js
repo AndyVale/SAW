@@ -40,6 +40,7 @@ function emailIsUniqueReport(possiblyUnique){
 
 function gestoreEventiClickRegistration(e){
     if(e.target.id == "bottoneChiusuraRegistration"){
+        document.querySelectorAll("body *:not(#registrationFormContainer, #registrationFormContainer *)").forEach((node)=>node.style.filter="");//TODO: non mi piace molto questa metodologia ma non ho trovato di meglio, se qualcuno ha idee migliori sono ben accette...
         registrationFormContainer.style.display = "none";
     }
 }
@@ -113,6 +114,7 @@ function gestoreEventiInputRegistration(e){
  */
 function showRegistration(){
     loginFormContainer.style.display = "none";
+    document.querySelectorAll("body *:not(#registrationFormContainer, #registrationFormContainer *)").forEach((node)=>node.style.filter="blur(5px)");//TODO: non mi piace molto questa metodologia ma non ho trovato di meglio, se qualcuno ha idee migliori sono ben accette...
     if(registrationFormContainer.firstChild == null){
         console.log("showRegistration():registration fetch");
         getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, registrationFormContainer));
