@@ -1,0 +1,27 @@
+.user {
+    border: 0.5px solid #f9f9fb; /* 2px larghezza, solid tipo di bordo, #3498db colore del bordo (puoi cambiare questo valore) */
+    padding: 10px; /* Spazio interno al bordo */
+    /*margin: 10px; margine esterno al bordo*/
+    width: 300px;
+    border-bottom: 0;
+    background-color: #ffffff;
+}
+
+.userlast {
+    /* oppure più scuro con #69707a*/
+    border: 0.5px solid #f9f9fb; /* 2px larghezza, solid tipo di bordo, #3498db colore del bordo (puoi cambiare questo valore) */
+    padding: 10px; /* Spazio interno al bordo */
+    /*margin: 10px; margine esterno al bordo*/
+    width: 300px;
+    background-color: #ffffff;
+}
+
+.searchvisiblename{
+    font-size: 20px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.searchvisibleusername{
+    font-size: 12px;
+}

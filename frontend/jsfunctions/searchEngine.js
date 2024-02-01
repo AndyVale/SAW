@@ -9,15 +9,21 @@ function displaySearchResult(data, where){
     for(let i=0;i<data.length;i++){
         console.log(i);
         where.innerHTML+=
-        `<div class="user">
-            <img src="../immagini/profile/${data[i].profilePicture}" alt="../immagini/profile/${data[i].profilePicture}" width ='50px'">
+        `<div class="user" id="usersearch-${i}">
+            <img class="rounded-circle img-thumbnail img-fluid" src="../immagini/profile/${data[i].profilePicture}" alt="../immagini/profile/${data[i].profilePicture}" width ='50px'">
             <div class="user-info">
-                <h3>${data[i].firstname} ${data[i].lastname}</h3>
-                <p>${data[i].username}</p>
+                <h3 class="searchvisiblename">${data[i].firstname} ${data[i].lastname}</h3>
+                <p class="searchvisibleusername"> @${data[i].username}</p>
             </div>
         </div>`;
+        if (i == (data.length-1)) {
+           document.getElementById(`usersearch-${i}`).classList.remove("user");
+           document.getElementById(`usersearch-${i}`).classList.add("userlast");
+        }
     }
 }
+
+   
 
 /**
  * Funzione che cerca gli utenti nel database tramite fetch, se la stringa è vuota ritorna un array vuoto, non
@@ -25,6 +31,7 @@ function displaySearchResult(data, where){
  * @param {String} userName Stringa da inviare al server (non deve essere per forza un username)
  * @returns {Promise} Restituisce una promise che contiene un array di oggetti con i dati degli utenti
  */
+
 function search_user(userName){
     userName = userName.trim();
     if(userName != ""){ // Se la stringa non è vuota
@@ -42,3 +49,11 @@ searcher.addEventListener('keyup',(e) => search_user(e.target.value).then(
         data => displaySearchResult(data, document.getElementById('users')) 
     )
 );
+
+/*
+for(let i=0;i<5;i++){
+    document.getElementById(`usersearch-${i}`).addEventListener('click', function () {
+      window.alert(`usersearch-${i}`);
+    })
+}
+*/

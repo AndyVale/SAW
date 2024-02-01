@@ -74,6 +74,16 @@
     background: #DE463B;
 }
 
+.custom-icon-color {
+    color: black;
+}
+
+@media only screen and (max-width: 576px) {
+    footer {
+      height: 500px; 
+    }
+}
+
 @media only screen and (max-width: 767px) {
     footer {
       height: 450px; 
