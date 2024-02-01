@@ -10,7 +10,7 @@
     }
     function login($data, $pass, $hash){
         //funzione che effettua il login, in $data devono essere passati i campi da inserire nella sessione
-        $inSessionByDefault = array(EMAIL, FIRSTNAME, ROLE, LASTNAME, ID);
+        $inSessionByDefault = array(EMAIL, FIRSTNAME, ROLE, LASTNAME, ID, USERNAME);
 
         if(password_verify($pass, $hash)){
             if(session_status() !== PHP_SESSION_ACTIVE)
@@ -34,7 +34,7 @@
             return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
 
         $actualTime = time();
-        $campi = ID.",".EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
+        $campi = ID.",".EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
         $query = "SELECT $campi FROM Utente WHERE expireTime > $actualTime";
         $risultato = $conn -> query($query);
         while($utente = $risultato -> fetch_assoc()){
@@ -53,7 +53,7 @@
         if($conn == null)
             return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
         
-        $fields = ID.",".EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME;//.",".ROLE;
+        $fields = ID.",".EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
         $query = "SELECT $fields FROM Utente WHERE email = ?";
         $result = safeQuery($query, array($_POST[EMAIL]), "s");
         

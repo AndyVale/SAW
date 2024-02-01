@@ -1,7 +1,7 @@
-import {showLogin} from "../../../jsfunctions/login.js";
+import {cookieLogin, showLogin} from "../../../jsfunctions/login.js";
 import {renderNavbar} from "../../../jsfunctions/navbar.js";
 import {renderFooter} from "../../../jsfunctions/footer.js";
-import {removeUserData, renderPosts} from "../../../jsfunctions/functions.js";
+import {storeUserData, removeUserData, renderPosts} from "../../../jsfunctions/functions.js";
 
 /**
  * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
@@ -29,7 +29,7 @@ async function getUserPosts(){
   })
   .then(response =>{
     if(!response.ok){
-      throw new Error("Errore nella richiesta");
+      throw new Error("Errore nella richiesta a show_profile_posts.php");
     }
     return response.json();
   })
@@ -100,13 +100,14 @@ async function getUserData(){
 
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
+    //console.log("domcontentloaded");
     renderFooter();
-    renderNavbar();
-
-    getUserData();
-    getUserPosts();
+    cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
+      renderNavbar();
+      getUserData();
+      getUserPosts();
+    });
 });
-
 //var postContainer = document.getElementById("postsContainer");
 
 //postContainer.addEventListener("click", (e) =>{

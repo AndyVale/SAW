@@ -1,5 +1,5 @@
-import {getSnippet, renderSnippet, dbErrorReport, storeUserData} from "./functions.js";
-export {showLogin};
+import {getSnippet, renderSnippet, dbErrorReport, storeUserData, removeUserData} from "./functions.js";
+export {showLogin, cookieLogin};
 
 //NOTA PER I POSTERI: i "@param" servono solo per l'IDE, non impongono in nessun modo il tipo dei parametri (JS non è tipato)
 
@@ -29,7 +29,27 @@ function credentialsAreWrongReport(boolWrongCredential){
     }
 }
 
-
+function cookieLogin(){
+    console.log("cookieLogin()");
+    if(document.cookie.includes("PHPSESSID")) return new Promise((resolve, reject) => resolve({result: "KO"}));//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
+    return fetch("../../../backend/script/cookie_login.php").then((response) => {
+        if(response.ok){
+            return response.json();
+        }else{
+            throw new Error("Errore nella richiesta a cookie_login.php");
+        }
+    }).then((res) => {
+        if(res['result'] == "OK"){
+        storeUserData(res['data']);
+        //window.location.href = "./"+window.location.search;
+        }else{
+            removeUserData();
+        }
+    }) 
+    .catch((error) => {
+        console.log(error);
+    });
+}
 
 /**
  * Funzione che mostra il form di login renderizzandolo nel loginFormContainer, per funzionare richiede il file "functions.js" e lo stile css "cssform.css"
@@ -71,7 +91,7 @@ function gestoreEventiSubmitLogin(e){
                 return response.json();
             }else{
                 console.log(response);
-                throw new Error("Errore nella richiesta AJAX");
+                throw new Error("Errore nella richiesta a login.php");
             }
         }).then(function(res){
             console.log(res);

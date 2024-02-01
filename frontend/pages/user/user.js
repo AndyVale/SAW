@@ -1,7 +1,7 @@
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
 import {renderPosts, getLikedPosts} from "../../jsfunctions/functions.js";
-import { showLogin } from "../../jsfunctions/login.js";
+import {cookieLogin, showLogin } from "../../jsfunctions/login.js";
 
 var parts = window.location.search.substring(1).split("&"), idUser = null, postContainer = document.getElementById("postsContainer");
 for (let i = 0; i < parts.length && idUser == null; i++) {
@@ -65,14 +65,16 @@ function postInteraction(clickedButtonPost){
 
 document.addEventListener("DOMContentLoaded", () => {
     renderFooter();
-    renderNavbar();
-    getUserInfo(idUser).then(data => {
-        console.log("DATI: "+data);
-        data = JSON.parse(data);
-        console.log(data); 
-        stampaDatiUtenti(data['datiUtente']);
-        renderPosts(data['posts'], document.getElementById("postsContainer"));
-        getLikedPosts(idUser).then((postsLiked) => setLikedPosts(postsLiked));
+    cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
+      renderNavbar();
+      getUserInfo(idUser).then(data => {
+          console.log("DATI: "+data);
+          data = JSON.parse(data);
+          console.log(data); 
+          stampaDatiUtenti(data['datiUtente']);
+          renderPosts(data['posts'], document.getElementById("postsContainer"));
+          getLikedPosts(idUser).then((postsLiked) => setLikedPosts(postsLiked));
+      });
     });
 });
 

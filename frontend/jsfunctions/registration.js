@@ -68,7 +68,7 @@ function gestoreEventiSubmitRegistration(e){
             return response.json();
         }else{
             console.log(response);
-            throw new Error("Errore nella richiesta AJAX");
+            throw new Error("Errore nella richiesta a registration.php");
         }
     }).then(function(json){
         if(json["result"]=="OK"){

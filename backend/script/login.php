@@ -9,7 +9,7 @@
             $result['result'] = 'OK';
             $result['message'] = 'Login tramite credenziali avvenuto con successo';
 
-            $result['data'] = array(FIRSTNAME=>$_SESSION[FIRSTNAME], LASTNAME=>$_SESSION[LASTNAME], EMAIL=>$_SESSION[EMAIL]);
+            $result['data'] = array(FIRSTNAME=>$_SESSION[FIRSTNAME], LASTNAME=>$_SESSION[LASTNAME], EMAIL=>$_SESSION[EMAIL], USERNAME => $_SESSION[USERNAME]);
 
             if(isset($_POST[REMEMBERME])){//se l'utente ha selezionato il rememberme
                 if(!setRememberMe()){//se non riesco a settare il cookie

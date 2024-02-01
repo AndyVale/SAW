@@ -8,7 +8,7 @@
         case loginResult::SUCCESSFUL_LOGIN:
             $result['result'] = 'OK';
             $result['message'] = 'Login mediante cookie avvenuto con successo';
-            $result['data'] = array(FIRSTNAME=>$_SESSION[FIRSTNAME], LASTNAME=>$_SESSION[LASTNAME], EMAIL=>$_SESSION[EMAIL]);
+            $result['data'] = array(FIRSTNAME=>$_SESSION[FIRSTNAME], LASTNAME=>$_SESSION[LASTNAME], EMAIL=>$_SESSION[EMAIL], USERNAME => $_SESSION[USERNAME]);
             break;
         case loginResult::WRONG_CREDENTIALS:
             $result['result'] = 'KO';

@@ -50,24 +50,26 @@ function renderSnippet(snippetHTML, where){
 }
 
 /**
- * Funzione che salva i dati dell'utente nel sessionStorage
+ * Funzione che salva i dati dell'utente nel localStorage
 */
 function storeUserData(dati){
-    sessionStorage.setItem("email", dati.email);
-    sessionStorage.setItem("firstname", dati.firstname);
-    sessionStorage.setItem("lastname", dati.lastname);
-    sessionStorage.setItem("lastUpdate", new Date().getTime());
+    localStorage.setItem("email", dati.email);
+    localStorage.setItem("firstname", dati.firstname);
+    localStorage.setItem("lastname", dati.lastname);
+    localStorage.setItem("username",dati.username);
+    localStorage.setItem("lastUpdate", new Date().getTime());
 }
 
 /**
- * Funzione che rimuove i dati dell'utente dal sessionStorage
+ * Funzione che rimuove i dati dell'utente dal localStorage
 */
 function removeUserData(){
     console.log("Rimozione dati utente");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("firstname");
-    sessionStorage.removeItem("lastname");
-    sessionStorage.removeItem("lastUpdate");
+    localStorage.removeItem("email");
+    localStorage.removeItem("firstname");
+    localStorage.removeItem("lastname");
+    localStorage.removeItem("username");
+    localStorage.removeItem("lastUpdate");
 }
 
 /**
