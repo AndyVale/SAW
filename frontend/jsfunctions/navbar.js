@@ -32,7 +32,7 @@ function logout(){
     }).then((res) => {
       if(res['result'] == "OK"){
         sessionStorage.clear();
-        window.location.href = "./";
+        window.location.href = "./"+window.location.search;
       }
     }).catch((error) => {
       console.log(error);

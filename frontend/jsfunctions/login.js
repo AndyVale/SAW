@@ -77,7 +77,7 @@ function gestoreEventiSubmitLogin(e){
             console.log(res);
             if(res['result']=="OK"){
                 storeUserData(res['data']);
-                window.location.href = "./";
+                window.location.href = "./"+window.location.search;
             }else{//TODO: gestire i vari casi di errore
                 switch(res["message"]){
                     case "WRONG_CREDENTIALS":

@@ -72,7 +72,8 @@ function gestoreEventiSubmitRegistration(e){
         }
     }).then(function(json){
         if(json["result"]=="OK"){
-            alert("Registrazione avvenuta con successo");
+            alert("Registrazione avvenuta con successo");//TODO: gestire il caso di registrazione, ad esempio mostrando un messaggio di successo
+            //window.location.href = "./"+window.location.search;
         }
         else{
             //alert(json["message"]);
