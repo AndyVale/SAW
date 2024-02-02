@@ -9,10 +9,10 @@ function displaySearchResult(data, where){
     for(let i=0;i<data.length;i++){
         console.log(i);
         where.innerHTML+=
-        `<div class="user" id="usersearch-${i}">
+        `<div class="user" id="usersearch-${data[i].id}">
             <img class="rounded-circle img-thumbnail img-fluid" src="../immagini/profile/${data[i].profilePicture}" alt="../immagini/profile/${data[i].profilePicture}" width ='50px'">
             <div class="user-info">
-                <h3 class="searchvisiblename">${data[i].firstname} ${data[i].lastname}</h3>
+                <div class="searchvisiblename">${data[i].firstname} ${data[i].lastname}</div>
                 <p class="searchvisibleusername"> @${data[i].username}</p>
             </div>
         </div>`;
@@ -22,8 +22,6 @@ function displaySearchResult(data, where){
         }
     }
 }
-
-   
 
 /**
  * Funzione che cerca gli utenti nel database tramite fetch, se la stringa è vuota ritorna un array vuoto, non
@@ -45,7 +43,7 @@ function search_user(userName){
 
 let searcher = document.getElementById('searchUser');
 
-searcher.addEventListener('keyup',(e) => search_user(e.target.value).then(
+searcher.addEventListener('input',(e) => search_user(e.target.value).then(
         data => displaySearchResult(data, document.getElementById('users')) 
     )
 );
@@ -57,3 +55,16 @@ for(let i=0;i<5;i++){
     })
 }
 */
+
+let users = document.getElementById('users');
+users.addEventListener('click', function (e) {
+    let element = e.target;
+    while (element && element !== users) {
+        if (element.id.includes('usersearch-')) {
+            let i = element.id.split('-')[1];
+            window.location.href = `../pages/user/?ID=${i}`;
+            break;
+        }
+        element = element.parentNode;
+    }
+});
