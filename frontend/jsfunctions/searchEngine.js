@@ -55,16 +55,3 @@ for(let i=0;i<5;i++){
     })
 }
 */
-
-let users = document.getElementById('users');
-users.addEventListener('click', function (e) {
-    let element = e.target;
-    while (element && element !== users) {
-        if (element.id.includes('usersearch-')) {
-            let i = element.id.split('-')[1];
-            window.location.href = `../pages/user/?ID=${i}`;
-            break;
-        }
-        element = element.parentNode;
-    }
-});

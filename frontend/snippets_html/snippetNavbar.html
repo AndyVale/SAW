@@ -1,10 +1,43 @@
-<nav class="navbar navbar-dark" style="background-color: #75D8AE; height: 60px;" >
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="color:black;">
-        <img src="../../immagini/817451-84.png" alt="EmojiSorridente" width="30" height=auto class="d-inline-block align-text-top">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #75D8AE;" >
+  <div class="container" style="margin-left: 5px; margin-right: 0;">
+  <a class="navbar-brand" href="#">
+    <img src="../../immagini/817451-84.png" alt="EmojiSorridente" width="30" height=auto class="d-inline-block align-text-top">
         Meme<span class="fw-bolder">Bank</span>
-        <div class="position-absolute top-0 end-0 me-2 mt-2" id="contenitoreBottoniNavbar">
+  </a>
+
+      <div class="toggler-dpdown" style="float:left;">
+        <button class="navbar-toggler toggler-dpbtn" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="toggler-dpdown-content" style="left:0;">
+        <div id="contenitoreBottoniNavbarSmall">
         </div>
-      </a>
+        <form class="form-inline my-2 my-lg-0 mx-auto">
+          <div class="dpdown">
+            <input class="form-control mr-sm-2" type="search" id="searchUser" name="searchUser" placeholder="Search" aria-label="Search" autocomplete="off" style="border: 1px solid black; color: black; background-color: transparent; padding: 16px; font-size: 16px; cursor: pointer; border-radius: 20px;">
+            <div class="dpdown-content" style="left:0;" id="result">
+                <div id="users">
+                </div>
+            </div>
+          </div>
+        </form>
+        </div>
+      </div>
+
+  <div class="d-flex flex-row-reverse">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <form class="form-inline my-2 my-lg-0 me-2">
+      <div class="dpdown">
+        <input class="form-control mr-sm-2" type="search" id="searchUser" name="searchUser" placeholder="Search" aria-label="Search" autocomplete="off" style="border: 1px solid black; color: black; background-color: transparent; padding: 16px; font-size: 16px; cursor: pointer; border-radius: 20px;">
+        <div class="dpdown-content" style="left:0;" id="result">
+            <div id="users">
+            </div>
+        </div>
+      </div>
+    </form>
+    <div class="btn-group" id="contenitoreBottoniNavbar">
     </div>
+  </div>
+  </div>
+  </div>
 </nav>
