@@ -6,33 +6,29 @@
         case DB_ERROR;
     }
 
-    function showProfile($idUtente, bool $checkforlogin = false){
+    function showProfile($idUtente){
         //funzione che restituisce i dati del profilo utente
-        if($checkforlogin && !isLogged()) return showProfileResult::ERROR_NOTLOGGED;
+        //if(!isLogged()) return showProfileResult::ERROR_NOTLOGGED;
         
         $conn = connect();
         if($conn == null) return showProfileResult::DB_ERROR;
 
-        $query = "SELECT utente.firstname, utente.lastname, utente.email, utente.profilePicture FROM utente WHERE utente.ID = ?";
-        $tmp = safeQuery($query, array($idUtente), "s");
-        if(!is_numeric($tmp) && count($tmp) == 1)
-            $result = $tmp[0];
+        $query = "SELECT 
+                        utente.firstname, 
+                        utente.lastname, 
+                        utente.email, 
+                        utente.profilePicture,
+                        (SELECT COUNT(post.idUtente) FROM post WHERE post.idUtente = utente.ID) as nPost,
+                        (SELECT COUNT(seguiti.idUtente) FROM seguiti WHERE seguiti.idUtenteSeguito = utente.ID) as nFollower,
+                        (SELECT COUNT(seguiti.idUtenteSeguito) FROM seguiti WHERE seguiti.idUtente = utente.ID) as nFollowing
+                FROM 
+                    utente 
+                WHERE 
+                    utente.ID = ?";
 
-        $query = "SELECT COUNT(post.idUtente) as nPost FROM utente INNER JOIN post ON utente.ID = ? and utente.ID = post.idUtente ";
-        $tmp = safeQuery($query, array($idUtente), "s");
-        if(!is_numeric($tmp) && count($tmp) == 1){
-            $result = array_merge($result, $tmp[0]);
-        }
-        $query = "SELECT COUNT(seguiti.idUtente) as nFollower FROM utente INNER JOIN seguiti ON utente.ID = ? and utente.ID = seguiti.idUtenteSeguito ";
-        $tmp = safeQuery($query, array($idUtente), "s");
-        if(!is_numeric($tmp) && count($tmp) == 1){
-            $result = array_merge($result, $tmp[0]);
-        }
-        $query = "SELECT COUNT(seguiti.idUtenteSeguito) as nFollowing FROM utente INNER JOIN seguiti ON utente.ID = ? and utente.ID = seguiti.idUtente";
-        $tmp = safeQuery($query, array($idUtente), "s");
-        if(!is_numeric($tmp) && count($tmp) == 1){
-            $result = array_merge($result, $tmp[0]);
-            return $result;
+        $result = safeQuery($query, array($idUtente), "s");
+        if(!is_numeric($result) && count($result) == 1){
+            return $result[0];
         }
         //TODO: MODIFICARE QUESTE QUERY CHE FANNO PENA
         return showProfileResult::ERROR_SHOW;

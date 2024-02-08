@@ -9,7 +9,7 @@
         
         $risultato['posts'] = show_user_posts($id);
         //var_dump($risultato['post']);
-        $risultato['datiUtente'] = showProfile($id,false);
+        $risultato['datiUtente'] = showProfile($id);
         return $risultato;
     }
 

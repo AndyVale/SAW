@@ -11,8 +11,8 @@
         echo json_encode($result);
         exit();
     }
-    //$result['debug']= $_SESSION[EMAIL]; 
-    $tmp = showProfile($_SESSION[ID], true);
+    //$result['debug']= $_SESSION[EMAIL];
+    $tmp = showProfile($_SESSION[ID]);
     switch($tmp){
         case showProfileResult::DB_ERROR:
             $result['result'] = 'KO';

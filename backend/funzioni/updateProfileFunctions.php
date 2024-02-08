@@ -93,7 +93,6 @@
                     $params = "ssssi";
 
                 } else {
-
                 $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
                                 htmlentities(trim($_POST[LASTNAME])),
                                 htmlentities(strtolower($_POST[EMAIL])),
@@ -105,7 +104,14 @@
                 }
             }
         } else {
+            $data = array(  htmlentities(trim($_POST[FIRSTNAME])), 
+                                htmlentities(trim($_POST[LASTNAME])),
+                                htmlentities(strtolower($_POST[EMAIL])),
+                                $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
 
+                $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ? WHERE ID = ?";
+
+                $params = "sssi";
         }
         
             $conn = connect();
@@ -113,6 +119,10 @@
         
             try{
                 if(safeQuery($query, $data, $params) < 2){
+                    $_SESSION[EMAIL] = htmlentities($_POST[EMAIL]);
+                    $_SESSION[FIRSTNAME] = htmlentities($_POST[FIRSTNAME]);
+                    $_SESSION[LASTNAME] = htmlentities($_POST[LASTNAME]);
+                    error_log("update-showProfileFunctions.php/update(): safeQuery"."\n", 3, ERROR_LOG);
                     return updateResult::SUCCESSFUL_UPDATE;
                 }
                 return updateResult::DB_ERROR;
@@ -133,9 +143,9 @@
         $conn = connect();
         if($conn == null) return updateResult::DB_ERROR;
         
-        $query = "UPDATE Utente SET pass = ? WHERE email = ?";
+        $query = "UPDATE Utente SET pass = ? WHERE".ID."= ?";
         $HshdPsw = password_hash(trim($_POST[PASS]), PASSWORD_DEFAULT);
-        if(safeQuery($query, array($HshdPsw, $_SESSION[EMAIL]), "ss") == 1)//la query deve interessare una sola riga
+        if(safeQuery($query, array($HshdPsw, $_SESSION[ID]), "si") == 1)//la query deve interessare una sola riga
             return updateResult::SUCCESSFUL_UPDATE;
 
         return updateResult::ERROR_UPDATE;
