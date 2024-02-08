@@ -1,7 +1,7 @@
-<?php
+<?php 
     require_once("../funzioni/dbFunctions.php");
-    
-    if(empty($_GET['idPost']) || !is_numeric($_GET['idPost'])){
+
+    if(empty($_GET['idUtenteSeguito']) || !is_numeric($_GET['idUtenteSeguito'])){
         echo json_encode(array("result" => "KO", "message" => "ERROR_NO_ID"));
         http_response_code(400);
         exit;
@@ -12,4 +12,4 @@
         exit;
     }
 
-    toggle_tuple("liked", ["idUtente", "idPost"], [$_SESSION[ID], $_GET['idPost']], "ii");
+    toggle_tuple("seguiti", ["idUtente", "idUtenteSeguito"], [$_SESSION[ID], $_GET['idUtenteSeguito']], "ii");
