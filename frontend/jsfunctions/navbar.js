@@ -24,7 +24,8 @@ function renderBottoniNavbar(){
 }
 
 function renderNavbar(){
-    getSnippet("../../snippets_html/snippetNavbar.html").then((snippet) => renderSnippet(snippet, navbarContainer)).then(() => renderBottoniNavbar());
+    getSnippet("../../snippets_html/snippetNavbar.html").then(
+        (snippet) => renderSnippet(snippet, navbarContainer)).then((e)=>renderBottoniNavbar());
 }
 
 function logout(){
@@ -77,11 +78,63 @@ function gestioneClickBottoni(event){
     }
 }
 
-
 function showProfile(){
     console.log("showProfile()");
     window.location.href = "../show_profile/";
 }
 
+/**
+ * Funzione che stampa i risultati della ricerca
+ * @param {Array} data Array di oggetti conententi i dati degli utenti
+ * @param {*} where Posizione in cui stampare i risultati
+ */
+function displaySearchResult(data, where){ 
+    let users = document.getElementById('users');
+    users.innerHTML="";
+    let n = data.length;
+    for(let i=0; i < n; i++){
+        console.log(i);
+        where.insertAdjacentHTML("beforeend",
+        `<div class="user" id="usersearch-${data[i].id}">
+            <img class="rounded-circle img-thumbnail img-fluid" src="../../immagini/profile/${data[i].profilePicture}" alt="../immagini/profile/${data[i].profilePicture}" width ='50px'">
+            <div class="user-info">
+                <div class="searchvisiblename">${data[i].firstname} ${data[i].lastname}</div>
+                <p class="searchvisibleusername"> @${data[i].username}</p>
+            </div>
+        </div>`);
+    }
+    if(n>0){
+        document.getElementById(`usersearch-${data[n-1].id}`).classList.remove("user");
+        document.getElementById(`usersearch-${data[n-1].id}`).classList.add("userlast");
+    }
+}
+    
+
+/**
+ * Funzione che cerca gli utenti nel database tramite fetch, se la stringa è vuota ritorna un array vuoto, non
+ * effettua chiamata al server se userName è vuota.
+ * @param {String} userName Stringa da inviare al server (non deve essere per forza un username)
+ * @returns {Promise} Restituisce una promise che contiene un array di oggetti con i dati degli utenti
+ */
+
+function search_user(userName){
+    userName = userName.trim();
+    if(userName != ""){ // Se la stringa non è vuota
+        return fetch('../../../backend/script/search_engine.php?search='+userName)
+        .then(result => result.json())
+        .catch(error => console.log(error));
+    }
+    //altrimenti ritorna un array vuoto, e di questo fuori da search_user() ce ne si accorge nemmeno
+    return new Promise ((resolve, reject) => resolve([]));
+}
+
+function gestisciInputSearchEngine(event){
+    console.log("gestisciInputSearchEngine()");
+    event.preventDefault();
+    if(event.target.id == "searchUser"){
+        search_user(event.target.value).then(data => displaySearchResult(data, document.getElementById('users')));
+    }
+}
 
 navbarContainer.addEventListener("click", (e)=>gestioneClickBottoni(e));
+navbarContainer.addEventListener("input", (e)=>gestisciInputSearchEngine(e));
