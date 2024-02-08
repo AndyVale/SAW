@@ -49,11 +49,3 @@ searcher.addEventListener('keyup',(e) => search_user(e.target.value).then(
         data => displaySearchResult(data, document.getElementById('users')) 
     )
 );
-
-/*
-for(let i=0;i<5;i++){
-    document.getElementById(`usersearch-${i}`).addEventListener('click', function () {
-      window.alert(`usersearch-${i}`);
-    })
-}
-*/

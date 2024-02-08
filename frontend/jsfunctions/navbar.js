@@ -3,19 +3,24 @@ import {getSnippet, renderSnippet} from "./functions.js";
 import {showLogin} from "./login.js";
 import {showRegistration} from "./registration.js";
 
-
 function renderBottoniNavbar(){
     console.log("renderBottoniNavbar()");
     let bottoniNavbarContainer = document.getElementById("contenitoreBottoniNavbar");
+    let bottoniNavbarContainerSmall = document.getElementById("contenitoreBottoniNavbarSmall");
     bottoniNavbarContainer.innerHTML = "";
+    bottoniNavbarContainerSmall.innerHTML = "";
 
     if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null){
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogout'> Logout </button>");
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 35px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 20px;' id='bottoneLogout'> Logout </button>");
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneLogoutPiccolo'>Logout</a>");
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneVisualizzaProfiloPiccolo'>"+localStorage.getItem("firstname")+"</a>");
     }else{
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneLogin'> Login </button>");
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 35px;' id='bottoneRegistration'> Registrati </button>");    
-    }
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneLogin'> Login </button>");
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneRegistration'> Registrati </button>");    
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneLoginPiccolo'>Login</a>");
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneRegistrationPiccolo'>Registrati</a>");    
+      }
 }
 
 function renderNavbar(){
@@ -46,13 +51,25 @@ function gestioneClickBottoni(event){
         case "bottoneLogin":
             showLogin();
             break;
+        case "bottoneLoginPiccolo":
+            showLogin();
+            break;
         case "bottoneRegistration":
+            showRegistration();
+            break;
+        case "bottoneRegistrationPiccolo":
             showRegistration();
             break;
         case "bottoneLogout":
             logout();
             break;
+        case "bottoneLogoutPiccolo":
+            logout();
+            break;
         case "bottoneVisualizzaProfilo":
+            showProfile();
+            break;
+        case "bottoneVisualizzaProfiloPiccolo":
             showProfile();
             break;
         default:
@@ -65,5 +82,6 @@ function showProfile(){
     console.log("showProfile()");
     window.location.href = "../show_profile/";
 }
+
 
 navbarContainer.addEventListener("click", (e)=>gestioneClickBottoni(e));

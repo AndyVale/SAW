@@ -1,8 +1,27 @@
+  .dpdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dpdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    width: 225px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border: 0;
+    z-index: 1;
+  }
+  
+.dpdown-content a:hover {background-color: #f1f1f1;}
+.dpdown:hover .dpdown-content {display: block;}
+
 .user {
     border: 0.5px solid #f9f9fb; /* 2px larghezza, solid tipo di bordo, #3498db colore del bordo (puoi cambiare questo valore) */
     padding: 10px; /* Spazio interno al bordo */
     /*margin: 10px; margine esterno al bordo*/
-    width: 300px;
+    width: 225px;
     border-bottom: 0;
     background-color: #ffffff;
     cursor: pointer;
@@ -13,7 +32,7 @@
     border: 0.5px solid #f9f9fb; /* 2px larghezza, solid tipo di bordo, #3498db colore del bordo (puoi cambiare questo valore) */
     padding: 10px; /* Spazio interno al bordo */
     /*margin: 10px; margine esterno al bordo*/
-    width: 300px;
+    width: 225px;
     background-color: #ffffff;
     cursor: pointer;
 }
@@ -27,3 +46,40 @@
 .searchvisibleusername{
     font-size: 12px;
 }
+
+.toggler-dpbtn {
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .toggler-dpdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .toggler-dpdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .toggler-dpdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .toggler-dpdown-content a:hover {background-color: #f1f1f1;}
+  
+  .toggler-dpdown:hover .toggler-dpdown-content {
+    display: block;
+  }
+  
