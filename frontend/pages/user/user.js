@@ -3,7 +3,11 @@ import {renderFooter} from "../../jsfunctions/footer.js";
 import {renderPosts, getLikedPosts} from "../../jsfunctions/functions.js";
 import {cookieLogin, showLogin } from "../../jsfunctions/login.js";
 
-var parts = window.location.search.substring(1).split("&"), idUser = null, postContainer = document.getElementById("postsContainer");
+let parts = window.location.search.substring(1).split("&"),
+    idUser = null,
+    postContainer = document.getElementById("postsContainer"),
+    bottoneSegui = document.getElementById("bottoneSeguiUtente");
+
 for (let i = 0; i < parts.length && idUser == null; i++) {
     var temp = parts[i].split("=");
     if(temp[0] == 'ID') idUser = temp[1];
@@ -40,6 +44,26 @@ function setLikedPosts(postsLiked){
     });
 }
 
+async function getIsFollowed(){
+    console.log("getIsFollowed()");
+    return fetch("../../../backend/script/follow_unfollow.php?idUtenteSeguito="+idUser, {
+        method: "GET"
+    }).then(response => {
+        if(response.status == 200)
+            return response.json();
+        return {isFollowed: false};//faccio finta di niente
+    })
+    .then(data => {
+        console.log(data);
+        if(data.isFollowed){
+            bottoneSegui.textContent = "Seguito";
+        }else{
+            bottoneSegui.textContent = "Segui";
+        }
+    })
+    .catch(error => console.log(error));
+}
+
 function postInteraction(clickedButtonPost){
     let postId=clickedButtonPost.id.substring(11);
     //alert("postInteraction: "+postId);
@@ -63,6 +87,29 @@ function postInteraction(clickedButtonPost){
     }).catch(error => console.log(error));
 }
 
+async function toggleSegui(segui){
+    let metodo = "PUT";
+    if(!segui)
+        metodo = "DELETE";
+    fetch("../../../backend/script/follow_unfollow.php?idUtenteSeguito="+idUser, {
+        method: metodo
+    }).then(response => {
+        switch(response.status){
+            case 200:
+                bottoneSegui.textContent = "Segui";
+                break;
+                //return response.json();
+            case 201:
+                bottoneSegui.textContent = "Seguito";
+                break;
+                //return response.json();
+            default:
+                console.log("Errore nel follow");
+                console.log(response);
+        }
+    }).catch(error => console.log(error));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     renderFooter();
     cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
@@ -74,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
           stampaDatiUtenti(data['datiUtente']);
           renderPosts(data['posts'], document.getElementById("postsContainer"));
           getLikedPosts(idUser).then((postsLiked) => setLikedPosts(postsLiked));
+          getIsFollowed();
       });
     });
 });
@@ -89,3 +137,10 @@ postContainer.addEventListener("click", (e) =>{
     }
 });
 
+bottoneSegui.addEventListener("click", () => {
+    console.log("Click su segui");
+    let b = false
+    if(bottoneSegui.textContent == "Segui")
+        b = true;
+    toggleSegui(b);
+});
