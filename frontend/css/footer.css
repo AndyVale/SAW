@@ -52,6 +52,7 @@
     bottom: -8px;
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .wrapper .icon:hover .tooltip {
@@ -74,8 +75,11 @@
     background: #DE463B;
 }
 
-.custom-icon-color {
+.icon .custom-icon-color {
     color: black;
+}
+.icon:hover .custom-icon-color {
+    color: white;
 }
 
 @media only screen and (max-width: 576px) {

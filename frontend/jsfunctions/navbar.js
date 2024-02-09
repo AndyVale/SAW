@@ -11,7 +11,7 @@ function renderBottoniNavbar(){
     bottoniNavbarContainerSmall.innerHTML = "";
 
     if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null){
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 20px;' id='bottoneLogout'> Logout </button>");
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneLogout'> Logout </button>");
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");
         bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneLogoutPiccolo'>Logout</a>");
         bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneVisualizzaProfiloPiccolo'>"+localStorage.getItem("firstname")+"</a>");
@@ -89,8 +89,6 @@ function showProfile(){
  * @param {*} where Posizione in cui stampare i risultati
  */
 function displaySearchResult(data, where){ 
-    let users = document.getElementById('users');
-    users.innerHTML="";
     let n = data.length;
     for(let i=0; i < n; i++){
         console.log(i);
@@ -132,7 +130,14 @@ function gestisciInputSearchEngine(event){
     console.log("gestisciInputSearchEngine()");
     event.preventDefault();
     if(event.target.id == "searchUser"){
+        let users = document.getElementById('users');
+        users.innerHTML="";
         search_user(event.target.value).then(data => displaySearchResult(data, document.getElementById('users')));
+    }
+    if(event.target.id=="searchUserPiccolo"){
+        let usersSmall = document.getElementById('usersPiccolo');
+        usersSmall.innerHTML="";
+        search_user(event.target.value).then(data => displaySearchResult(data, document.getElementById('usersPiccolo')));
     }
 }
 
