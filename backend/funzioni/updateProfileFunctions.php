@@ -28,6 +28,24 @@
             if(isset($_FILES['update-profile-image']['name'])){
                 if (!empty($_FILES['update-profile-image']['name'])){
 
+                //codice per eliminare la vecchia immagine dal server
+                $pathprofileimage = "../../frontend/immagini/profile";
+                //funzione glob per ottenere l'elenco dei file che iniziano con $_SESSION['ID']
+                $files = glob($pathprofileimage . '/' . $_SESSION['ID'] . '*');
+                //verifica che l'array files non sia vuoto ed esiste il primo elemento
+                if (!empty($files) && file_exists($files[0])) {
+                    // Elimina il file
+                    if (unlink($files[0])) {
+                        //File eliminato con successo
+                    } else {
+                        //Non è stato possibile eliminare il file.';
+                    }
+                } 
+                /*else {
+                    //Nessun file trovato o il primo file non esiste.;
+                }
+                */
+
                 //info sull'immagine caricata
                 $img_name = $_FILES['update-profile-image']['name'];
                 $img_size = $_FILES['update-profile-image']['size'];
@@ -74,6 +92,7 @@
                                     htmlentities(strtolower($_POST[EMAIL])),
                                     $new_img_name,
                                     $_SESSION[ID]); //Uso l'ID per evitare problemi con la vecchia mail
+
 
                     $query = "UPDATE utente SET firstname = ?, lastname = ?, email = ?, profilePicture = ? WHERE ID = ?";
 

@@ -143,5 +143,20 @@ function gestisciInputSearchEngine(event){
     }
 }
 
+
+function gestisciClickSearchEngine(event) {
+    console.log("gestisciClickSearchEngine()");
+
+    const userElement = event.target.closest(".user, .userlast");
+
+    if (userElement) {
+        const userId = userElement.id.split("-")[1];
+        const profileUrl = `/SAW/frontend/pages/user/?ID=${userId}`;
+        window.location.href = profileUrl;
+    }
+}
+
+
 navbarContainer.addEventListener("click", (e)=>gestioneClickBottoni(e));
 navbarContainer.addEventListener("input", (e)=>gestisciInputSearchEngine(e));
+navbarContainer.addEventListener("click", (e)=>gestisciClickSearchEngine(e));

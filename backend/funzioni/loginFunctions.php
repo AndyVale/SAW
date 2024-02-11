@@ -16,11 +16,12 @@
             if(session_status() !== PHP_SESSION_ACTIVE)
                 session_start();
             
-            for($i = 0; $i < count($inSessionByDefault); $i++){
-                if(array_key_exists($inSessionByDefault[$i], $data)){
-                    $_SESSION[$inSessionByDefault[$i]] = $data[$inSessionByDefault[$i]];
+            foreach ($inSessionByDefault as $SessionVar){
+                if(array_key_exists($SessionVar, $data)){
+                    $_SESSION[$SessionVar] = $data[$SessionVar];
                 }
             }
+
             return loginResult::SUCCESSFUL_LOGIN;
         }
         return loginResult::WRONG_CREDENTIALS;
@@ -46,7 +47,7 @@
     }
     function credentialsLogin(){
         //Funzione che effettua il login tramite email e password
-        if(empty($_POST[EMAIL]) || empty($_POST[PASS]))//controllo che i campi non siano vuoti
+        if(emptyFields(EMAIL, PASS))//controllo che i campi non siano vuoti
             return loginResult::MISSING_FIELDS;
     
         $conn = connect();
