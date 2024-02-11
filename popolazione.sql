@@ -1,5 +1,5 @@
 -- Popolazione del database (grazie chatgpt)
--- Inserimento utenti, le password sono la stringa: "passX" dove X è il numero dell'utente partendo da 1
+-- Inserimento utenti, le password sono la stringa: "passX" dove X è il numero dell'utente partendo da 1, per Marina Ribaudo è ziaribba
 INSERT INTO Utente (email, firstname, lastname, pass) VALUES
 ('email11@example.com', 'Ava', 'Anderson', '$2y$10$JcHRLcAfU8jir0N5pxEI4.TJpfKAMU3Et4t6Ftr.8f3xu2CsQ0GiW'),
 ('email12@example.com', 'Liam', 'Harris', '$2y$10$H2kv66.wclNP5SxU9WyfOe2Bj4bs6B1EU60vxkTrryi.95UJRSSt6'),
@@ -10,7 +10,8 @@ INSERT INTO Utente (email, firstname, lastname, pass) VALUES
 ('email17@example.com', 'Lily', 'Clark', '$2y$10$c99s2O/CW8oNJY8HPMi5uumic8l063itdhU2tZq.H2hJm1bhJadt2'),
 ('email18@example.com', 'Logan', 'White', '$2y$10$7nyijwDH7KHOJqG6sp5kL.LRgPg50b36.Y5o0WpIBvG8iAFcociJK'),
 ('email19@example.com', 'Aiden', 'Miller', '$2y$10$Em7rQRVASJqzlv8KHroFd.BNf4iUdz10xerX.5KLGwrewU3prMVeO'),
-('email20@example.com', 'Zoe', 'Lee', '$2y$10$htujX6L4KjSIvH4CG8BX6.RKUIQyrFDSpDElTuJXOQ.FQdOZfs9ey');
+('email20@example.com', 'Zoe', 'Lee', '$2y$10$htujX6L4KjSIvH4CG8BX6.RKUIQyrFDSpDElTuJXOQ.FQdOZfs9ey'),
+('email21@example.com', 'Marina', 'Ribaudo', '$2y$10$.QEw7NFCdCyjRbSUjJVnQ.98lSPRtCHMZDT8nR0mPpY...');
 
 -- Inserimento post
 INSERT INTO Post (idUtente, urlImmagine) VALUES
@@ -24,6 +25,26 @@ INSERT INTO Post (idUtente, urlImmagine) VALUES
 (4, 'image_url18.jpg'),
 (5, 'image_url19.jpg'),
 (6, 'image_url20.jpg');
+
+INSERT INTO post (IdUtente, oraPubblicazione, urlImmagine)
+VALUES
+  (11, '2022-02-09 15:30:00', 'javascript1.jpg'),
+  (11, '2022-02-09 14:45:00', 'javascript2.png'),
+  (11, '2022-02-08 17:20:00', 'javascript3.jpg'),
+  (11, '2022-02-08 10:00:00', 'javascript6.jpg'),
+  (11, '2022-02-08 11:30:00', 'javascript7.jpg'),
+  (11, '2022-02-08 12:45:00', 'javascript4.jpg'),
+  (11, '2022-02-09 08:00:00', 'javascript5.jpg'),
+  (11, '2022-02-09 13:10:00', 'javascript8.jpg'),
+  (11, '2022-02-09 15:30:00', 'PHP1.jpg'),
+  (11, '2022-02-09 14:45:00', 'PHP2.png'),
+  (11, '2022-02-08 17:20:00', 'PHP3.jpg'),
+  (11, '2022-02-08 10:00:00', 'PHP4.png'),
+  (11, '2022-02-08 11:30:00', 'PHP5.png'),
+  (11, '2022-02-08 12:45:00', 'PHP6.jpg'),
+  (11, '2022-02-09 08:00:00', 'PHP7.jpg'),
+  (11, '2022-02-09 13:10:00', 'PHP8.png'),
+  (11, '2022-02-09 13:10:00', 'PHP9.jpg');
 
 -- Inserimento like
 INSERT INTO Liked (idUtente, idPost) VALUES
