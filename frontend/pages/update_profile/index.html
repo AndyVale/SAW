@@ -70,7 +70,7 @@
           <!-- aggiungendo a col-md-3 la classe border-end si aggiunge il bordo destro che però rimane anche quando si stringe la pagina-->
           <div class="col-md-3 mt-3">
             <img class="img-fluid rounded-circle mx-auto d-block" style="width: 110px; height: auto; margin-top: 10px;" src="https://bootdey.com/img/Content/avatar/avatar1.png" id="profile-image" alt="user profile picture">
-             <h3 id="fullname" class="lead text-center mt-2">Rebecca Sanders</h3>
+             <h3 id="fullname" class="lead text-center mt-2">Nome Cognome</h3>
 
              <div class="row mt-3">
               <div class="col-md-4 text-center">
@@ -93,41 +93,52 @@
             <form id="update_form" action="../../../backend/script/update_profile.php" method="post" enctype="multipart/form-data">
             <!-- Prima Riga a Destra -->
             <div class="row mb-4">
-              <div class="col-md-12">
+              <div class="col-md-10">
                 <h2 class="lead fw-bolder title"> Profilo </h2>
                 <fieldset class="fieldset"> 
                 <h3 class="fieldset-title">Informazioni personali </h3>
                 <div class="form-group">
                   <label for="firstname" class="col-md-2 col-sm-3 col-xs-12 mb-1">Nome</label>
+                  <div class="col-md-12 col-sm-9 col-xs-12">
                   <input type="text" id="firstname" name="firstname" class="form-control mb-3">
+                  </div>
                   </div> 
-                </div>
+                
                  <div class="form-group">
                   <label for="lastname" class="col-md-2 col-sm-3 col-xs-12 mb-1">Cognome</label>
+                  <div class="col-md-12 col-sm-9 col-xs-12">
                   <input type="text" id="lastname" name="lastname" class="form-control mb-3">
+                  </div>
                  </div>
                 </fieldset>
+                </div>
 
               </div>
       
             <!-- Seconda Riga a Destra -->
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-10">
                 <fieldset class="fieldset"> 
                   <h3 class="fieldset-title">Account</h3>
                   <div class="form-group mb-3">
                     <label for="update-profile-image" class="form-label">Immagine profilo</label>
+                    <div class="col-md-12 col-sm-9 col-xs-12">
                     <input class="form-control" type="file" id="update-profile-image" name="update-profile-image" accept="image/png, image/jpeg">
+                    </div>
                   </div>
                     <!--<button type="submit" id="update_image_button" class="btn btn-sm" style="background-color: #6FD08C;">Update Image</button> -->
                   <div class="form-group">
                     <label for="username" class="col-sm-2 mb-1">Nome utente</label>
                     <!--ATTENZIONE!! forzo un username di default in attesa di aggiungerlo al db-->
+                    <div class="col-md-12 col-sm-9 col-xs-12">
                     <input type="text" id="username" name="username" class="form-control mb-3" value="username">
+                    </div>
                   </div> 
                   <div class="form-group">
                     <label for="email" class="col-md-2  col-sm-3 col-xs-12 mb-1">Email</label>
+                    <div class="col-md-12 col-sm-9 col-xs-12">
                     <input type="email" id="email" name="email" class="form-control">
+                    </div>
                     <p class="form-text text-muted mb-3">eg. info@meme-bank.com </p>
                     </div>          
                   </fieldset>
