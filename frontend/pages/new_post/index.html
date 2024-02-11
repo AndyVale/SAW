@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Post</title>
+</head>
+<body>
+    <h1>Welcome to the New Post Page</h1>
+    
+    <form action="../../../backend/script/post_handler.php" method="POST" enctype="multipart/form-data">
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="postImage" accept="image/*"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <br><br><br>
+
+    
+    <input type="submit" value="Submit" id="cazzoCulo">
+
+    <script src="new_post.js" type="module"></script>
+</body>
+</html>
