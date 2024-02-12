@@ -30,8 +30,9 @@ function stampaDatiUtenti(datiUtente) {
     nPost.textContent = datiUtente.nPost;
     nFollower.textContent = datiUtente.nFollower;
     nFollowing.textContent = datiUtente.nFollowing;
-    nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
+    nomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
     imgProfilo.src = "../../immagini/profile/"+datiUtente.profilePicture;
+    document.title = datiUtente.firstname + " " + datiUtente.lastname;
   }
 
 /**

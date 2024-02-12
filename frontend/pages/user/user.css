@@ -1,3 +1,16 @@
 .liked {
     background-color: #ff0000 !important;
 }
+
+body{
+    background:#f9f9fb;    
+  }
+
+  .view-account{
+    background:#FFFFFF; 
+    margin-top:20px;
+    margin-bottom:20px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+  }

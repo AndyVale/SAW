@@ -28,17 +28,18 @@
             if(isset($_FILES['update-profile-image']['name'])){
                 if (!empty($_FILES['update-profile-image']['name'])){
 
-                //codice per eliminare la vecchia immagine dal server
+                //codice per eliminare la vecchia immagine dal server per non sovraccaricarlo
                 $pathprofileimage = "../../frontend/immagini/profile";
                 //funzione glob per ottenere l'elenco dei file che iniziano con $_SESSION['ID']
                 $files = glob($pathprofileimage . '/' . $_SESSION['ID'] . '*');
-                //verifica che l'array files non sia vuoto ed esiste il primo elemento
-                if (!empty($files) && file_exists($files[0])) {
-                    // Elimina il file
-                    if (unlink($files[0])) {
-                        //File eliminato con successo
-                    } else {
+                //verifica che l'array files non sia vuoto
+                if (!empty($files)) {
+                    foreach ($files as $file) {
+                        if (file_exists($file)) {
+                            unlink($file);
+                        }/* else {
                         //Non è stato possibile eliminare il file.';
+                    }*/
                     }
                 } 
                 /*else {
