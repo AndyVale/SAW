@@ -154,10 +154,10 @@
         }
     }
 
-    function pswUpdate(){
+    function passwordUpdate(){
         //funzione che effettua un aggiornamento della password utente dai dati mandati in POST 
         if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
-        if(empty($_POST[UPDATEREQUEST]||empty($_POST[PASS]) || empty($_POST[CONFIRM]))) return updateResult::MISSING_FIELDS;
+        if(empty($_POST[PASS]) || empty($_POST[CONFIRM])) return updateResult::MISSING_FIELDS;
         if($_POST[PASS] != $_POST[CONFIRM]) return updateResult::DIFFERENT_PASSWORDS;
 
         $conn = connect();

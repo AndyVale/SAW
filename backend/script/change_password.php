@@ -6,41 +6,31 @@ require_once("../funzioni/dbFunctions.php");
 
 
 header('Content-Type: application/json');
-$result['from'] = 'update_profile.php';
+$result['from'] = 'change_password.php';
 
 session_start();
 
-$tmp = update();
+$tmp = passwordUpdate();
 switch($tmp){
     case updateResult::DB_ERROR:
         $result['result'] = 'KO';
         $result['message'] = 'DB_ERROR';
         break;
-    /*
-    case updateResult::ERROR_NOTLOGGED:
-        $result['result'] = 'KO';
-        $result['message'] = 'ERROR_NOTLOGGED';
-        break;
-        */
-    case updateResult::ERROR_UPDATE:
-        $result['result'] = 'KO';
-        $result['message'] = 'ERROR_UPDATE';
-        break;
     case updateResult::MISSING_FIELDS:
         $result['result'] = 'KO';
         $result['message'] = 'ERROR_MISSINGFIELDS';
         break;
-    case updateResult::WRONG_EMAIL_FORMAT: 
+    case updateResult::ERROR_NOTLOGGED:
         $result['result'] = 'KO';
-        $result['message'] = 'ERROR_WRONGEMAILFORMAT';
+        $result['message'] = 'ERROR_NOTLOGGED';
         break;
-    case updateResult::WRONG_IMAGE_FORMAT: 
+    case updateResult::DIFFERENT_PASSWORDS:
         $result['result'] = 'KO';
-        $result['message'] = 'ERROR_WRONGIMAGEFORMAT';
+        $result['message'] = 'DIFFERENT_PASSWORDS';
         break;
-    case updateResult::DUPLICATE_EMAIL:
+    case updateResult::ERROR_UPDATE:
         $result['result'] = 'KO';
-        $result['message'] = 'DUPLICATE_EMAIL';
+        $result['message'] = 'ERROR_UPDATE';
         break;
     case updateResult::SUCCESSFUL_UPDATE:
         $result['result'] = 'OK';
