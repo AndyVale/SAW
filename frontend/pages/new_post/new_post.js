@@ -178,7 +178,12 @@ function hadleUpload(){
         method: 'POST',
         body:  imgData
     })
-    .then(response => response.text())
+    .then(response =>{
+        if(response.status == 401)
+            showLogin()
+        if(response.status == 201)
+            window.location.href = '../show_profile/';
+    })
     .then(data => console.log(data))
     .catch(error => console.log(error));
 }
