@@ -14,7 +14,7 @@ create table Utente(
     lastname varchar(255) not null,
     pass varchar(255) not null,
     profilePicture varchar(255) not null default 'default_pp.png',
-    role int not null default 0,
+    username varchar(255) not null default 'username',
     rememberMe varchar(255),
     expireTime int default 0,
     primary key(ID)
