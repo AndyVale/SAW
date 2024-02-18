@@ -26,7 +26,7 @@ create table Post(
     oraPubblicazione timestamp not null DEFAULT CURRENT_TIMESTAMP,
     urlImmagine varchar(255) not null,
     primary key(ID),
-    foreign key(idUtente) references Utente(ID)
+    foreign key(idUtente) references Utente(ID) ON DELETE CASCADE
 );
 
 create table Liked(
@@ -34,7 +34,7 @@ create table Liked(
     idPost int not null,
     primary key(idUtente, idPost),
     foreign key(idUtente) references Utente(ID),
-    foreign key(idPost) references Post(ID)
+    foreign key(idPost) references Post(ID) ON DELETE CASCADE
 );
 
 create table Seguiti(
@@ -42,20 +42,20 @@ create table Seguiti(
     idUtenteSeguito int not null,
     primary key(idUtente, idUtenteSeguito),
     foreign key(idUtente) references Utente(ID),
-    foreign key(idUtenteSeguito) references Utente(ID)
+    foreign key(idUtenteSeguito) references Utente(ID) ON DELETE CASCADE
 );
 
 create table CartellaSalvati(
     ID int not null auto_increment,
     idUtente int not null,
     primary key(ID),
-    foreign key(idUtente) references Utente(ID)
+    foreign key(idUtente) references Utente(ID) ON DELETE CASCADE
 );
 
 create table Salvati(
     idCartella int not null,
     idPost int not null,
     primary key(idCartella, idPost),
-    foreign key(idCartella) references CartellaSalvati(ID),
-    foreign key(idPost) references Post(ID)
+    foreign key(idCartella) references CartellaSalvati(ID) ON DELETE CASCADE,
+    foreign key(idPost) references Post(ID) ON DELETE CASCADE
 );
