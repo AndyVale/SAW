@@ -1,4 +1,5 @@
 import { renderFooter } from "../../jsfunctions/footer.js";
+import { showLogin } from "../../jsfunctions/login.js";
 import { renderNavbar } from "../../jsfunctions/navbar.js";
 console.log(document.getElementById('imageCanvas').clientWidth);
 console.log(document.getElementById('imageCanvas').clientHeight);
@@ -7,7 +8,6 @@ var canvas=new fabric.Canvas('imageCanvas', {
     width: document.getElementById('dropZone').clientWidth,
     height: 350
 }); //creo un canvas con dimensioni iniziali, poi verrà ridimensionato in base all'immagine
-document.getElementsByClassName('canvas-container')[0].classList.add('mx-auto');
 
 function verificaRatio(width, height) {
     const ratio = width / height;
@@ -188,6 +188,8 @@ function readerShowImage(event){
     imgObj.src = event.target.result;
     imgObj.addEventListener('load',(e)=> impostaImmagineCanvas(e));
     document.getElementById('addTextButton').style.display = 'block';
+    document.getElementsByClassName('canvas-container')[0].classList.add('mx-auto');//gli elementi canvas-container e upper-canvas sono generati da Fabric.js
+    document.getElementsByClassName('upper-canvas')[0].classList.add('border', 'border-3', 'border-dark', 'rounded-3', 'shadow-lg');
 }
 
 
@@ -231,6 +233,14 @@ dropZone.addEventListener("dragleave", (e)=>{
 });
 
 document.addEventListener("DOMContentLoaded", (e)=>{
+    fetch('../../../backend/script/post_handler.php', {
+        method: 'OPTIONS'
+    }).then(response =>{
+        if(response.status == 401)
+            showLogin();
+    })
+    .catch(error => console.log(error));
+
     renderFooter();
     renderNavbar();
 });

@@ -4,29 +4,32 @@ import {renderFooter} from '../../jsfunctions/footer.js';
 
 
 function stampaDati(datiUtente) {
-  if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente) {
-  //console.log(datiUtente);
-  let NomeCognome = document.getElementById('fullname'),
-  Nome  = document.getElementById('firstname'),
-  Cognome = document.getElementById('lastname'),
-  Email = document.getElementById('email'),
-  nPost = document.getElementById('nPost'),
-  nFollower = document.getElementById('nFollowers'),
-  nFollowing = document.getElementById('nFollowing'),
-  immagineProfilo = document.getElementById('profile-image');
+  if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente && 'username' in datiUtente) {
+    //console.log(datiUtente);
+    let NomeCognome = document.getElementById('fullname'),
+    Nome  = document.getElementById('firstname'),
+    Cognome = document.getElementById('lastname'),
+    Email = document.getElementById('email'),
+    nPost = document.getElementById('nPost'),
+    nFollower = document.getElementById('nFollowers'),
+    nFollowing = document.getElementById('nFollowing'),
+    immagineProfilo = document.getElementById('profile-image'),
+    username = document.getElementById('username');
 
-  if (NomeCognome && Nome && Cognome && Email && nPost && nFollower && nFollowing && immagineProfilo) {
-  NomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
-  Nome.value = datiUtente.firstname;
-  Cognome.value = datiUtente.lastname;
-  Email.value = datiUtente.email;
-  nPost.textContent = datiUtente.nPost;
-  nFollower.textContent = datiUtente.nFollower;
-  nFollowing.textContent = datiUtente.nFollowing;
-  immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
- } else {
-  console.error("Uno o più elementi HTML non sono stati trovati.");
- }
+    if (NomeCognome && Nome && Cognome && Email && username && nPost && nFollower && nFollowing && immagineProfilo) {
+      NomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
+      Nome.value = datiUtente.firstname;
+      username.value = datiUtente.username;
+      Cognome.value = datiUtente.lastname;
+      Email.value = datiUtente.email;
+      nPost.textContent = datiUtente.nPost;
+      nFollower.textContent = datiUtente.nFollower;
+      nFollowing.textContent = datiUtente.nFollowing;
+      immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
+    }
+    else {
+      console.error("Uno o più elementi HTML non sono stati trovati.");
+    }
  } else {
   console.error("I dati ricevuti non sono nel formato atteso.");
 }
@@ -89,15 +92,15 @@ fetch('../../../backend/script/update_profile.php', {
   //  'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
   //} 
 })
-.then(response => response.json())
+.then(response => response.text())
 .then(data => {
   console.log(data);
-  //data = JSON.parse(data);
+  data = JSON.parse(data);
   if (data['result'] == "OK") {
       //console.log(data['data']);
       //non può fare cross-site scripting perchè i dati vengono salvati solo in questo caso in locale. Su un altro dispositivo vengono presi dal database (dove sono sanificati).
       console.log({"firstanem":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
-      storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
+      storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email'), 'username': dati.get('username')});
       alert("Profilo aggiornato con successo!");
       window.location.href = "../show_profile/index.html";
   } else {

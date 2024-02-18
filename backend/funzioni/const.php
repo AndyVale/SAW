@@ -9,6 +9,8 @@
     const CURRENTPASS = 'currentpass';
     const CONFIRM = 'confirm';
     const ROLE = 'role';
+    const PROFILEPICTURE = 'profilePicture';
     const REMEMBERME = 'rememberMe';
     const UPDATEREQUEST = 'updateRequest';
     const POST_PATH = '../../frontend/immagini/post/';
+    const PPICTURE_PATH = '../../frontend/immagini/profile';

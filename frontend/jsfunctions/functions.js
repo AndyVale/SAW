@@ -214,8 +214,10 @@ function renderImg(path, aspectRatio, container){
 		const ctx = outputImage.getContext('2d');
 		ctx.drawImage(inputImage, outputX, outputY);
 		outputImage.style="background-color: white; border: 1px solid black; width: 100%;";
-        
-		container.insertBefore(outputImage, container.firstChild);
+        const outputImgTag = document.createElement("img");
+        outputImgTag.src = outputImage.toDataURL();
+        outputImgTag.style="width: 100%;";
+        container.insertBefore(outputImgTag, container.firstChild);
 	}
 }
 

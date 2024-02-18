@@ -14,10 +14,11 @@
         if($conn == null) return showProfileResult::DB_ERROR;
 
         $query = "SELECT 
-                        utente.firstname, 
-                        utente.lastname, 
-                        utente.email, 
-                        utente.profilePicture,
+                        utente.".FIRSTNAME.", 
+                        utente.".LASTNAME.", 
+                        utente.".EMAIL.", 
+                        utente.".PROFILEPICTURE.",
+                        utente.".USERNAME.",
                         (SELECT COUNT(post.idUtente) FROM post WHERE post.idUtente = utente.ID) as nPost,
                         (SELECT COUNT(seguiti.idUtente) FROM seguiti WHERE seguiti.idUtenteSeguito = utente.ID) as nFollower,
                         (SELECT COUNT(seguiti.idUtenteSeguito) FROM seguiti WHERE seguiti.idUtente = utente.ID) as nFollowing

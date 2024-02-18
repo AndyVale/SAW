@@ -40,8 +40,8 @@ async function getUserPosts(){
     }else{
       switch(data['message']){
         case "ERROR_NOTLOGGED":
-          alert("Errore nella richiesta");
           removeUserData();
+          window.location.href = "../homepage";
           break;
         case "POST_NOT_FOUND":
           alert("Errore nel database");
