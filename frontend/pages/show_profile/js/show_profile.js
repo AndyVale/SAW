@@ -1,3 +1,4 @@
+//export {getUserData};
 import {cookieLogin, showLogin} from "../../../jsfunctions/login.js";
 import {renderNavbar} from "../../../jsfunctions/navbar.js";
 import {renderFooter} from "../../../jsfunctions/footer.js";
