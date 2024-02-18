@@ -10,6 +10,7 @@
         case DUPLICATE_EMAIL;
         case WRONG_EMAIL_FORMAT;
         case WRONG_IMAGE_FORMAT;
+        CASE WRONG_CREDENTIALS;
     }
 
     function update(){
@@ -157,17 +158,24 @@
     function passwordUpdate(){
         //funzione che effettua un aggiornamento della password utente dai dati mandati in POST 
         if(!isLogged()) return updateResult::ERROR_NOTLOGGED;
-        if(empty($_POST[PASS]) || empty($_POST[CONFIRM])) return updateResult::MISSING_FIELDS;
-        if($_POST[PASS] != $_POST[CONFIRM]) return updateResult::DIFFERENT_PASSWORDS;
+        if(emptyFields(CURRENTPASS, PASS, CONFIRM)) 
+            return updateResult::MISSING_FIELDS;
+        if($_POST[PASS] != $_POST[CONFIRM]) 
+            return updateResult::DIFFERENT_PASSWORDS;
 
         $conn = connect();
         if($conn == null) return updateResult::DB_ERROR;
-        
-        $query = "UPDATE Utente SET pass = ? WHERE".ID."= ?";
+
+        $query = "SELECT pass FROM Utente WHERE ID =". $_SESSION[ID];
+        $rows = standardQuery($query);
+        if($rows == -1)
+            return updateResult::ERROR_UPDATE;
+        if(!password_verify($_POST[CURRENTPASS],  $rows[0][PASS]))
+            return updateResult::WRONG_CREDENTIALS;
+
+        $query = "UPDATE Utente SET pass = ? WHERE " . ID ."= ?";
         $HshdPsw = password_hash(trim($_POST[PASS]), PASSWORD_DEFAULT);
         if(safeQuery($query, array($HshdPsw, $_SESSION[ID]), "si") == 1)//la query deve interessare una sola riga
             return updateResult::SUCCESSFUL_UPDATE;
-
         return updateResult::ERROR_UPDATE;
-        
     }

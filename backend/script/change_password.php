@@ -32,6 +32,10 @@ switch($tmp){
         $result['result'] = 'KO';
         $result['message'] = 'ERROR_UPDATE';
         break;
+    case updateResult::WRONG_CREDENTIALS:
+        $result['result'] = 'KO';
+        $result['message'] = 'WRONG_CREDENTIALS';
+        break;
     case updateResult::SUCCESSFUL_UPDATE:
         $result['result'] = 'OK';
         $result['message'] = 'SUCCESSFUL_UPDATE';

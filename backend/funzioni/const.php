@@ -6,6 +6,7 @@
     const LASTNAME = 'lastname';
     const EMAIL = 'email';
     const PASS = 'pass';
+    const CURRENTPASS = 'currentpass';
     const CONFIRM = 'confirm';
     const ROLE = 'role';
     const REMEMBERME = 'rememberMe';

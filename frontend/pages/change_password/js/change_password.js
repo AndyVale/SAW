@@ -1,13 +1,16 @@
 import {renderNavbar} from "../../../jsfunctions/navbar.js";
 import {renderFooter} from "../../../jsfunctions/footer.js";
-import {storeUserData, removeUserData} from "../../../jsfunctions/functions.js";
+import {removeUserData} from "../../../jsfunctions/functions.js";
+//import{getUserData} from "../../show_profile/js/show_profile.js";
 
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     //console.log("domcontentloaded");
     renderFooter();
     renderNavbar();
+    //getUserData();
 });
+
 
 var UpdatePass = document.getElementById("new_password");
 UpdatePass.addEventListener("submit", function(e) {
@@ -20,7 +23,7 @@ fetch('../../../backend/script/change_password.php', {
 })
 .then(response => response.json())
 .then(data => {
-  console.log(data);
+  //console.log(data);
   //data = JSON.parse(data);
   if (data['result'] == "OK") {
       //console.log(data['data']);
@@ -47,6 +50,9 @@ fetch('../../../backend/script/change_password.php', {
         break;
       case "ERROR_UPDATE":
         alert("Errore nell'aggiornare i dati. Riprovare più tardi");
+        break;   
+      case "WRONG_CREDENTIALS":
+        alert("Si è verificato un errore.");
         break;       
     }
   }
