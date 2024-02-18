@@ -8,39 +8,33 @@
     $idUtente = $_SESSION['ID'];
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){//aggiungo post
-
-        if((empty($_FILES['postImage']['name']))){
-            http_response_code(400);
-            exit;
-        }
         ////////////////////////////////////////////// Questo blocco di codice è da spostare in un'altra funzione
 
-        $img_name = $_FILES['postImage']['name'];
-        $tmp_name = $_FILES['postImage']['tmp_name'];
-        $img_error = $_FILES['postImage']['error'];
+        $imageUrlObject = file_get_contents('php://input');
+        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageUrlObject));
         
-        if($img_error === 0){
-            $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);//prendo l'estensione
-            $img_ex_to_lc = strtolower($img_ex);//in minuscolo
-            $allowed_extensions = array("jpg", "jpeg", "png");
+        if($imageData === false) {
+            throw new \Exception('base64_decode failed');
+        }
+        $filename =  uniqid($_SESSION[ID], true).'.png';
+        //file_put_contents(POST_PATH.$filename, $imageData);
+        file_put_contents('../../frontend/immagini/'.$filename, $imageData);
+        
+        //$imageInfo = getimagesize(POST_PATH.$filename);
+        $imageInfo = getimagesize('../../frontend/immagini/'.$filename);
 
-            if(in_array($img_ex_to_lc, $allowed_extensions)){
-                
-                $new_img_name = uniqid($_SESSION[ID], true) . '.' . $img_ex_to_lc;//nuovo nome univoco
-                $img_upload_path = "../../frontend/immagini/post/" . $new_img_name;//salvo il percorso
-                
-                move_uploaded_file($tmp_name, $img_upload_path);//salvo il file
-                
-            } else {
-                http_response_code(400);
-                exit;
-            }
-        }else {
-            http_response_code(500);
+        if($imageInfo['mime'] != 'image/png') {//se non era un immagine cancello il casino appena fatto
+            echo $imageInfo['mime'];
+            file_put_contents($filename, "");
+            if(unlink($filename))
+                echo 'Image deleted successfully<br>';
+            else
+                echo 'Image deletion failed<br>';
+            http_response_code(409);
             exit;
         }
         //////////////////////////////////////////////
-        $result = standardQuery("INSERT INTO post (idUtente, urlImmagine) VALUES ($idUtente, '$new_img_name')");
+        $result = standardQuery("INSERT INTO post (idUtente, urlImmagine) VALUES ($idUtente, '$filename')");
         if($result == 1){
             http_response_code(201);
             echo json_encode(array("result" => "INSERT", "message" => "Post aggiunto correttamente"));

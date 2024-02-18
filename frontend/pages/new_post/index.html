@@ -1,23 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Post</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modifica Immagini</title>
+    <!-- Includi Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Includi Fabric.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.1/fabric.min.js"></script>
+    <!--<link rel="stylesheet" href="new_post.css">-->
+    <link rel="stylesheet" href="../homepage/css/style-homepage.css">
+
+    <link rel="stylesheet" href="../../css/cssform.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <link rel="stylesheet" href="../../css/search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
 </head>
 <body>
-    <h1>Welcome to the New Post Page</h1>
+    <div id="loginFormContainer"></div>
+    <div id="registrationFormContainer"></div>
+    <div id="navbarContainer"></div>
     
-    <form action="../../../backend/script/post_handler.php" method="POST" enctype="multipart/form-data">
-        <label for="image">Image:</label>
-        <input type="file" id="image" name="postImage" accept="image/*"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    <br><br><br>
+    <div class="container">
+        <h2 class="my-2 text-center">Carica un nuovo post</h2>
+        <div class="row">
+            <div class="col-12 border border-3" id="dropZone">
+                <canvas id="imageCanvas" class=""></canvas>
 
-    
-    <input type="submit" value="Submit" id="cazzoCulo">
+            </div>
+            <div class="col-12">
+                <input type="file" id="imageLoader" name="imageLoader">
+                <div>
+                    <button id="addTextButton" class="btn btn-primary mx-auto" style="display: none;">Aggiungi Casella di Testo</button>
+                    <div id="textAreasContainer" class=""></div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-12">
+                <button id="uploadButton" class="btn btn-primary mx-auto ">Carica Post</button>
+            </div>
+        </div>
+    </div>
+    <div id="footerContainer"></div>
 
+    <!-- Includi Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="new_post.js" type="module"></script>
 </body>
 </html>

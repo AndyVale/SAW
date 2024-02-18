@@ -10,4 +10,4 @@
     const ROLE = 'role';
     const REMEMBERME = 'rememberMe';
     const UPDATEREQUEST = 'updateRequest';
-?>
+    const POST_PATH = '../../frontend/immagini/post/';
