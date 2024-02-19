@@ -2,34 +2,38 @@ body{
     background:#f9f9fb;    
   }
 
-  .view-account{
-    background:#FFFFFF; 
-    margin-top:20px;
-    margin-bottom:20px;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1;
-    color: #69707a;
-  }
+.view-account{
+  background:#FFFFFF; 
+  margin-top:20px;
+  margin-bottom:20px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #69707a;
+}
 
-  .fieldset-title {
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eaeaf1;
-    margin-bottom: 30px;
-    color: #616670;
-    font-size: 16px
-  }
+.fieldset-title {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eaeaf1;
+  margin-bottom: 30px;
+  color: #616670;
+  font-size: 16px
+}
 
-  .view-account .file-uploader {
-  margin-bottom: 15px
-  }
+.view-account .file-uploader {
+margin-bottom: 15px
+}
 
-  .view-account .title {
-  margin-bottom: 15px;
-  margin-top: 10px;
-  font-size: 18px
-  }
+.view-account .title {
+margin-bottom: 15px;
+margin-top: 10px;
+font-size: 18px
+}
 
-  hr.custom-line {
-          border-top: 1px solid #eaeaf1;
-      } 
+hr.custom-line {
+        border-top: 1px solid #eaeaf1;
+} 
+    
+.liked {
+      background-color: #ff0000 !important;
+}

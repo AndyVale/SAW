@@ -117,33 +117,35 @@
             return false; // Nessun campo vuoto
         }
 
-        function toggle_tuple(String $table, Array $attributesNames, Array $attributesValues, String $attributesTypes){
-            try{//try to add tuple
-                $query = "INSERT INTO $table";
-                $query .= " (";
-                for ($i = 0; $i < count($attributesNames) - 1; $i++){//costruisco la query
-                    $query .= $attributesNames[$i] . ", ";
-                }
-                $query .= $attributesNames[count($attributesNames) - 1] . ") VALUES (";
-                for ($i = 0; $i < count($attributesNames) - 1; $i++){//costruisco la query
-                    $query .= "?, ";
-                }
-                $query .= "?)";
-                safeQuery($query, $attributesValues, $attributesTypes);//TODO: SafeQuery qui è esagerata?
-                //echo json_encode(array("result" => "INSERT", "message" => "$query", "prova" => $params));
-                http_response_code(201);
-            }catch(mysqli_sql_exception $e){//if it's already there, delete it
-                $query = "DELETE FROM $table WHERE ";
-                for ($i = 0; $i < count($attributesNames) - 1; $i++){//costruisco la query
-                    $query .= $attributesNames[$i] . " = ? AND ";
-                }
-                $query .= $attributesNames[count($attributesNames) - 1] . " = ?";
-                //$result = 
-                safeQuery($query, $attributesValues, $attributesTypes);
-                http_response_code(200);
-            }catch(Exception $e){
-                http_response_code(500);
-                //echo json_encode(array("result" => "KO", "message" => "ERROR"));
-                exit;
-            }
+    function add_tuple(String $table, Array $attributesNames, Array $attributesValues, String $attributesTypes){
+        $query = "INSERT INTO $table";
+        $query .= " (";
+        for ($i = 0; $i < count($attributesNames) - 1; $i++){//costruisco la query
+            $query .= $attributesNames[$i] . ", ";
         }
+        $query .= $attributesNames[count($attributesNames) - 1] . ") VALUES (";
+        for ($i = 0; $i < count($attributesNames) - 1; $i++){//costruisco la query
+            $query .= "?, ";
+        }
+        $query .= "?)";
+        try{
+            safeQuery($query, $attributesValues, $attributesTypes);
+            return array("result" => "INSERT", "message" => "OK");
+        }catch(mysqli_sql_exception $e){
+            return array("result" => "KO", "message" => "ERROR");
+        }
+    }
+
+    function delete_tuple(String $table, Array $attributesNames, Array $attributesValues, String $attributesTypes){
+        $query = "DELETE FROM $table WHERE ";
+        for ($i = 0; $i < count($attributesNames) - 1; $i++){//costruisco la query
+            $query .= $attributesNames[$i] . " = ? AND ";
+        }
+        $query .= $attributesNames[count($attributesNames) - 1] . " = ?";
+        try{
+            safeQuery($query, $attributesValues, $attributesTypes);
+            return array("result" => "DELETE", "message" => "OK");
+        }catch(mysqli_sql_exception $e){
+            return array("result" => "KO", "message" => "ERROR");
+        }
+    }

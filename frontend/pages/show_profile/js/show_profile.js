@@ -2,7 +2,8 @@
 import {cookieLogin, showLogin} from "../../../jsfunctions/login.js";
 import {renderNavbar} from "../../../jsfunctions/navbar.js";
 import {renderFooter} from "../../../jsfunctions/footer.js";
-import {storeUserData, removeUserData, renderPosts} from "../../../jsfunctions/functions.js";
+import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction} from "../../../jsfunctions/functions.js";
+
 
 /**
  * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
@@ -36,7 +37,8 @@ async function getUserPosts(){
   })
   .then(data =>{
     if(data['result'] == "OK"){
-      renderPosts(data['data'], document.getElementById("postsContainer"));
+      renderPosts(data['data'], document.getElementById("postsContainer"));//sincrona, quindi sono sicuro che i post siano renderizzati prima di getLikedPosts...
+      getLikedPosts().then((postsLiked) => setLikedPosts(postsLiked));
     }else{
       switch(data['message']){
         case "ERROR_NOTLOGGED":
@@ -77,8 +79,7 @@ async function getUserData(){
         switch(data['message']){
           case "ERROR_NOTLOGGED":
             removeUserData();
-          showLogin();
-
+            showLogin();
             //window.location.href = "../homepage";
             break;
           case "DB_ERROR":
@@ -108,6 +109,17 @@ document.addEventListener('DOMContentLoaded', function() {
       getUserData();
       getUserPosts();
     });
+});
+
+document.getElementById("postsContainer").addEventListener("click", (e) =>{
+  if(e.target.id.includes("bottoneLike")){
+    console.log("LIKE");
+    postInteraction(e.target, e.target.classList.contains("liked"));
+  }
+  else if (e.target.parentNode.parentNode.id.includes("bottoneLike")){//TODO: Trovare un modo migliore per gestirlo, altrimenti cliccando sull'inconcina del cuore non funziona
+      console.log("LIKE");
+      postInteraction(e.target.parentNode.parentNode, e.target.parentNode.parentNode.classList.contains("liked"));
+  }
 });
 //var postContainer = document.getElementById("postsContainer");
 

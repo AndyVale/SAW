@@ -1,7 +1,7 @@
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {renderPosts, getLikedPosts} from "../../jsfunctions/functions.js";
-import {cookieLogin, showLogin } from "../../jsfunctions/login.js";
+import {renderPosts, getLikedPosts, setLikedPosts, postInteraction} from "../../jsfunctions/functions.js";
+import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 
 let parts = window.location.search.substring(1).split("&"),
     idUser = null,
@@ -46,18 +46,6 @@ async function getUserInfo(idUser){
 }
 
 /**
- * Funzione che permette di settare il like sui post a cui l'utente loggato ha messo like
- */
-function setLikedPosts(postsLiked){
-    console.log("setLikedPosts");
-    console.log(postsLiked);
-    if(postsLiked == null) return;
-    postsLiked.forEach(post => {
-       document.getElementById("bottoneLike"+post.ID).classList.add("liked");
-    });
-}
-
-/**
  * Funzione che permette di ottenere se l'utente loggato segue o meno l'utente visualizzato
  */
 async function getIsFollowed(){
@@ -81,43 +69,17 @@ async function getIsFollowed(){
 }
 
 /**
- * Funzione che permette di mettere o togliere un like da un post in modo asincrono
- * @param {HTMLElement} clickedButtonPost bottone del post su cui è stato cliccato
- */
-async function postInteraction(clickedButtonPost){
-    let postId=clickedButtonPost.id.substring(11);
-    //alert("postInteraction: "+postId);
-    fetch("../../../backend/script/like_post.php?idPost="+postId, {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
-        method: "GET"
-    }).then(response => {
-        if(response.ok){
-            if(clickedButtonPost.classList.contains("liked")){
-                clickedButtonPost.classList.remove("liked");
-                clickedButtonPost.childNodes[1].textContent=" "+(parseInt(clickedButtonPost.childNodes[1].textContent)-1);
-            }else{
-                clickedButtonPost.classList.add("liked");
-                clickedButtonPost.childNodes[1].textContent=" "+(parseInt(clickedButtonPost.childNodes[1].textContent)+1);
-            }
-        }
-        else{
-            console.log("Errore nel like");
-            console.log(response);
-            showLogin();
-        }
-    }).catch(error => console.log(error));
-}
-
-/**
  * Funzione che permette di seguire o smettere di seguire un utente inviando una richiesta al server
  * @param {boolean} segui true se si vuole seguire, false se si vuole smettere di seguire 
  */
 async function toggleSegui(segui){
-    let metodo = "PUT";
+    let metodo = "POST";
     if(!segui)
         metodo = "DELETE";
     fetch("../../../backend/script/follow_unfollow.php?idUtenteSeguito="+idUser, {
         method: metodo
     }).then(response => {
+        console.log(response);
         switch(response.status){
             case 200:
                 bottoneSegui.textContent = "Segui";
@@ -127,11 +89,16 @@ async function toggleSegui(segui){
                 bottoneSegui.textContent = "Seguito";
                 break;
                 //return response.json();
-            default:
+            case 204:
+                window.location.href = "https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUIcmlja3JvbGw%3D";
+                break;
+            case 401:
                 console.log("Errore nel follow");
                 showLogin();
                 console.log(response);
+                break;
         }
+        return response.text();
     }).catch(error => console.log(error));
 }
 
@@ -154,18 +121,15 @@ document.addEventListener("DOMContentLoaded", () => {
 postContainer.addEventListener("click", (e) =>{
     if(e.target.id.includes("bottoneLike")){
         console.log("LIKE");
-        postInteraction(e.target);
+        postInteraction(e.target, e.target.classList.contains("liked"));
     }
     else if (e.target.parentNode.parentNode.id.includes("bottoneLike")){//TODO: Trovare un modo migliore per gestirlo, altrimenti cliccando sull'inconcina del cuore non funziona
         console.log("LIKE");
-        postInteraction(e.target.parentNode.parentNode);
+        postInteraction(e.target.parentNode.parentNode, e.target.parentNode.parentNode.classList.contains("liked"));
     }
 });
 
 bottoneSegui.addEventListener("click", () => {
     console.log("Click su segui");
-    let b = false
-    if(bottoneSegui.textContent == "Segui")
-        b = true;
-    toggleSegui(b);
+    toggleSegui(bottoneSegui.textContent == "Segui");
 });

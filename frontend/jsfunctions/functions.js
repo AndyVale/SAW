@@ -1,4 +1,4 @@
-export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost, renderImg, getLikedPosts};
+export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost, renderImg, getLikedPosts, setLikedPosts, postInteraction};
 
 /**
  * @param {string} id - id dell'elemento da rimuovere
@@ -223,11 +223,15 @@ function renderImg(path, aspectRatio, container){
 
 /**
  * Funzione che restituisce un array contenente gli id dei post a cui l'utente ha messo like
- * @param {int} idUser - id dell'utente tra cui cercare i post likeati
+ * @param {int} idUser - id dell'utente tra cui cercare i post likeati, se non specificato viene invata una richiesta senza parametri
  * @returns {Array} - array contenente gli id dei post che l'utente ha messo like
  */
-function getLikedPosts(idUser){
-    return fetch("../../../backend/script/get_liked_posts.php?ID="+idUser, {
+async function getLikedPosts(idUser){
+    let getFields = "";
+    if(idUser != null){
+        getFields = "?ID="+idUser;
+    }
+    return fetch("../../../backend/script/like_post.php"+getFields, {
         method: "GET"
     }).then(response => {
         if(response.ok){
@@ -235,5 +239,50 @@ function getLikedPosts(idUser){
         }else{
             throw new Error("Errore nella richiesta fetch in getLikedPosts");
         }
+    }).catch(error => console.log(error));
+}
+
+/**
+ * Funzione che permette di settare il like sui post a cui l'utente loggato ha messo like
+ */
+async function setLikedPosts(postsLiked){
+    console.log("setLikedPosts");
+    console.log(postsLiked);
+    if(postsLiked == null) return;
+    postsLiked.forEach(post => {
+       document.getElementById("bottoneLike"+post.ID).classList.add("liked");
+    });
+}
+
+/**
+ * Funzione che permette di mettere o togliere un like da un post in modo asincrono
+ * @param {HTMLElement} clickedButtonPost bottone del post su cui è stato cliccato
+ * @param {boolean} alreadyLiked true se l'utente ha già messo like al post, false altrimenti
+ */
+async function postInteraction(clickedButtonPost, alreadyLiked){
+    let postId=clickedButtonPost.id.substring(11);
+    let method = "POST";
+    if(alreadyLiked){
+        method = "DELETE";
+    }
+    //alert("postInteraction: "+postId);
+    fetch("../../../backend/script/like_post.php?idPost="+postId, {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
+        method: method
+    }).then(response => {
+        if(response.ok){
+            if(clickedButtonPost.classList.contains("liked")){
+                clickedButtonPost.classList.remove("liked");
+                clickedButtonPost.childNodes[1].textContent=" "+(parseInt(clickedButtonPost.childNodes[1].textContent)-1);
+            }else{
+                clickedButtonPost.classList.add("liked");
+                clickedButtonPost.childNodes[1].textContent=" "+(parseInt(clickedButtonPost.childNodes[1].textContent)+1);
+            }
+        }
+        else{
+            console.log("Errore nel like");
+            console.log(response);
+            showLogin();
+        }
+        return response.text();
     }).catch(error => console.log(error));
 }

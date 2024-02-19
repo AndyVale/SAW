@@ -33,6 +33,14 @@ function verificaRatio(width, height) {
     return closestRatio;
 }
 
+window.addEventListener('resize', () => {
+    const deviceWidth = window.innerWidth/2;
+    const deviceHeight = window.innerHeight/2;
+    const imageWidth = canvas.width;
+    const imageHeight = canvas.height;
+    riadattaCanvas(deviceWidth, deviceHeight, imageWidth, imageHeight);
+});//non fa nulla ma serve per evitare un errore di console
+
 function riadattaCanvas(deviceWidth, deviceHeight, imageWidth, imageHeight) {
     const ratio = verificaRatio(imageWidth, imageHeight);
     const [ratioWidth, ratioHeight] = ratio.split(':').map(Number);
