@@ -173,24 +173,38 @@ function handleAddTextArea(){
 }
 
 function hadleUpload(){
-    let file = document.getElementById('imageLoader');
+    let file = document.getElementById('imageLoader'), altDescription = document.getElementById('alternativeText');
     console.log(file.files[0]);
+    if(altDescription.value == '' || altDescription.value.length > 2000){
+        altDescription.style.border = '2px solid red';
+        return;
+    }
 
     let canvasImg = document.getElementById('imageCanvas');
     canvas.discardActiveObject().renderAll();
     var imgData = canvasImg.toDataURL({
         format: 'png',
-        multiplier: 1//per avere un'immagine di 800px di larghezza quale sia la dimensione del canvas (che in base allo schermo potrebbe essere differente)
+        multiplier: 1
     });
-    fetch('../../../backend/script/post_handler.php', {
+    fetch('../../../backend/script/post_handler.php?altDescription='+altDescription.value, {
         method: 'POST',
         body:  imgData
     })
     .then(response =>{
-        if(response.status == 401)
-            showLogin()
-        if(response.status == 201)
-            window.location.href = '../show_profile/';
+        switch(response.status){
+            case 201:
+                window.location.href = '../show_profile/';
+                break;
+            case 400:
+                alert('Errore durante il caricamento dell\'immagine');
+                break;
+            case 401:
+                showLogin();
+                break;
+            default:
+                alert('Errore durante il caricamento dell\'immagine');
+                break;
+        }
     })
     .then(data => console.log(data))
     .catch(error => console.log(error));
@@ -203,6 +217,7 @@ function readerShowImage(event){
     document.getElementById('addTextButton').style.display = 'block';
     document.getElementsByClassName('canvas-container')[0].classList.add('mx-auto');//gli elementi canvas-container e upper-canvas sono generati da Fabric.js
     document.getElementsByClassName('upper-canvas')[0].classList.add('border', 'border-3', 'border-dark', 'rounded-3', 'shadow-lg');
+    document.getElementById('alternativeText').style.display = 'block';
 }
 
 
@@ -218,8 +233,6 @@ imageLoader.addEventListener('change', handleFileImageUpload, false);
 addTextButton.addEventListener('click', handleAddTextArea, false);
 
 dropZone.addEventListener("dragover", (e)=>{
-    //console.log(event.target);
-    //console.log(this);
     e.preventDefault();
     e.stopPropagation();
     dropZone.classList.remove('border', 'border-3');

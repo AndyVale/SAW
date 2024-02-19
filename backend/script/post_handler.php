@@ -9,6 +9,12 @@
     $idUtente = $_SESSION['ID'];
     if($_SERVER['REQUEST_METHOD'] == 'POST'){//aggiungo post
         ////////////////////////////////////////////// Questo blocco di codice è da spostare in un'altra funzione
+        if(empty($_GET['altDescription'])){
+            http_response_code(400);
+            echo json_encode(array("result" => "ERROR", "message" => "Missing altDescription field"));
+            exit;
+        }
+        $alt = $_GET['altDescription'];
         $imageUrlObject = file_get_contents('php://input');
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageUrlObject));
         
@@ -34,7 +40,7 @@
         }
         
         //////////////////////////////////////////////
-        $result = standardQuery("INSERT INTO post (idUtente, urlImmagine) VALUES ($idUtente, '$filename')");
+        $result = standardQuery("INSERT INTO post (idUtente, urlImmagine, altDescription) VALUES ($idUtente, '$filename','$alt')");
         if($result == 1){
             http_response_code(201);
             echo json_encode(array("result" => "INSERT", "message" => "Post aggiunto correttamente"));
