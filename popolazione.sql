@@ -14,37 +14,38 @@ INSERT INTO Utente (email, firstname, lastname, username, pass) VALUES
 ('email21@example.com', 'Marina', 'Ribaudo', 'ZiaRibba', '$2y$10$.QEw7NFCdCyjRbSUjJVnQ.98lSPRtCHMZDT8nR0mPpY...');
 
 -- Inserimento post
-INSERT INTO Post (idUtente, urlImmagine) VALUES
-(7, 'image_url11.jpg'),
-(8, 'image_url12.jpg'),
-(9, 'image_url13.jpg'),
-(1, 'image_url14.jpg'),
-(1, 'image_url15.jpg'),
-(2, 'image_url16.jpg'),
-(3, 'image_url17.jpg'),
-(4, 'image_url18.jpg'),
-(5, 'image_url19.jpg'),
-(6, 'image_url20.jpg');
+INSERT INTO Post (idUtente, urlImmagine, altDescription) VALUES
+(7, 'image_url11.jpg', 'Meme super divertente'),
+(8, 'image_url12.jpg', 'Meme super divertente'),
+(9, 'image_url13.jpg', 'Meme super divertente'),
+(1, 'image_url14.jpg', 'Meme super divertente'),
+(1, 'image_url15.jpg', 'Meme super divertente'),
+(2, 'image_url16.jpg', 'Meme super divertente'),
+(3, 'image_url17.jpg', 'Meme super divertente'),
+(4, 'image_url18.jpg', 'Meme super divertente'),
+(5, 'image_url19.jpg', 'Meme super divertente'),
+(6, 'image_url20.jpg', 'Meme super divertente');
 
-INSERT INTO post (IdUtente, oraPubblicazione, urlImmagine)
+INSERT INTO Post (IdUtente, oraPubblicazione, urlImmagine, altDescription)
 VALUES
-  (11, '2022-02-09 15:30:00', 'javascript1.jpg'),
-  (11, '2022-02-09 14:45:00', 'javascript2.png'),
-  (11, '2022-02-08 17:20:00', 'javascript3.jpg'),
-  (11, '2022-02-08 10:00:00', 'javascript6.jpg'),
-  (11, '2022-02-08 11:30:00', 'javascript7.jpg'),
-  (11, '2022-02-08 12:45:00', 'javascript4.jpg'),
-  (11, '2022-02-09 08:00:00', 'javascript5.jpg'),
-  (11, '2022-02-09 13:10:00', 'javascript8.jpg'),
-  (11, '2022-02-09 15:30:00', 'PHP1.jpg'),
-  (11, '2022-02-09 14:45:00', 'PHP2.jpg'),
-  (11, '2022-02-08 17:20:00', 'PHP3.jpg'),
-  (11, '2022-02-08 10:00:00', 'PHP4.png'),
-  (11, '2022-02-08 11:30:00', 'PHP5.png'),
-  (11, '2022-02-08 12:45:00', 'PHP6.jpg'),
-  (11, '2022-02-09 08:00:00', 'PHP7.jpg'),
-  (11, '2022-02-09 13:10:00', 'PHP8.png'),
-  (11, '2022-02-09 13:10:00', 'PHP9.jpg');
+  (11, '2022-02-09 15:30:00', 'javascript1.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 14:45:00', 'javascript2.png', 'Meme su JavaScript'),
+  (11, '2022-02-08 17:20:00', 'javascript3.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-08 10:00:00', 'javascript6.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-08 11:30:00', 'javascript7.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-08 12:45:00', 'javascript4.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 08:00:00', 'javascript5.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 13:10:00', 'javascript8.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 15:30:00', 'PHP1.jpg', 'Meme su PHP'),
+  (11, '2022-02-09 14:45:00', 'PHP2.jpg', 'Meme su PHP'),
+  (11, '2022-02-08 17:20:00', 'PHP3.jpg', 'Meme su PHP'),
+  (11, '2022-02-08 10:00:00', 'PHP4.png', 'Meme su PHP'),
+  (11, '2022-02-08 11:30:00', 'PHP5.png', 'Meme su PHP'),
+  (11, '2022-02-08 12:45:00', 'PHP6.jpg', 'Meme su PHP'),
+  (11, '2022-02-09 08:00:00', 'PHP7.jpg', 'Meme su PHP'),
+  (11, '2022-02-09 13:10:00', 'PHP8.png', 'Meme su PHP'),
+  (11, '2022-02-09 13:10:00', 'PHP9.jpg', 'Meme su PHP');
+
 
 -- Inserimento like
 INSERT INTO Liked (idUtente, idPost) VALUES
