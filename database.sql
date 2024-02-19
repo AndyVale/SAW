@@ -25,6 +25,7 @@ create table Post(
     idUtente int not null,
     oraPubblicazione timestamp not null DEFAULT CURRENT_TIMESTAMP,
     urlImmagine varchar(255) not null,
+    altDescription varchar(255) not null,
     primary key(ID),
     foreign key(idUtente) references Utente(ID) ON DELETE CASCADE
 );
@@ -42,7 +43,8 @@ create table Seguiti(
     idUtenteSeguito int not null,
     primary key(idUtente, idUtenteSeguito),
     foreign key(idUtente) references Utente(ID),
-    foreign key(idUtenteSeguito) references Utente(ID) ON DELETE CASCADE
+    foreign key(idUtenteSeguito) references Utente(ID) ON DELETE CASCADE,
+    CONSTRAINT no_autofollow CHECK (idUtente != idUtenteSeguito)
 );
 
 create table CartellaSalvati(
