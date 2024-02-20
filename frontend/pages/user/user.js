@@ -1,6 +1,6 @@
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {renderPosts, getLikedPosts, setLikedPosts, postInteraction} from "../../jsfunctions/functions.js";
+import {removeUserData, storeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
 import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 
 let parts = window.location.search.substring(1).split("&"),
@@ -46,9 +46,9 @@ async function getUserInfo(idUser){
 }
 
 /**
- * Funzione che permette di ottenere se l'utente loggato segue o meno l'utente visualizzato
+ * Funzione che stampa se l'utente loggato segue o meno l'utente visualizzato
  */
-async function getIsFollowed(){
+function getIsFollowed(bSegui){
     console.log("getIsFollowed()");
     return fetch("../../../backend/script/follow_unfollow.php?idUtenteSeguito="+idUser, {
         method: "GET"
@@ -58,11 +58,11 @@ async function getIsFollowed(){
         return {isFollowed: false};//faccio finta di niente
     })
     .then(data => {
-        console.log(data);
+        //console.log(data);
         if(data.isFollowed){
-            bottoneSegui.textContent = "Seguito";
+            bSegui.textContent = "Seguito";
         }else{
-            bottoneSegui.textContent = "Segui";
+            bSegui.textContent = "Segui";
         }
     })
     .catch(error => console.log(error));
@@ -104,17 +104,21 @@ async function toggleSegui(segui){
 
 document.addEventListener("DOMContentLoaded", () => {
     renderFooter();
-    cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
+    cookieLogin().then(()=> {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
       renderNavbar();
+
       getUserInfo(idUser).then(data => {
           console.log("DATI: "+data);
           data = JSON.parse(data);
           console.log(data); 
           stampaDatiUtenti(data['datiUtente']);
-          renderPosts(data['posts'], document.getElementById("postsContainer"));
-          getLikedPosts(idUser).then((postsLiked) => setLikedPosts(postsLiked));
-          getIsFollowed();
+          getIsFollowed(bottoneSegui);
       });
+
+      getUserPosts(idUser).then((posts) => {
+        renderPosts(posts, postContainer);
+        getLikedPosts(idUser).then((postsLiked) => setLikedPosts(postsLiked));
+      }).catch(() => document.getElementById("postsContainer").innerHTML = "<div class='h1 text-center'>Errore nel caricamento dei post</div>");
     });
 });
 

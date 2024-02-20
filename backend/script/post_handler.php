@@ -1,14 +1,55 @@
 <?php
     require_once "../funzioni/dbFunctions.php";
+
+    
+    try{
+        if($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['idUtente'])){//TODO: gestire meglio questo caso particolare
+            if(!empty($_GET['idUtente'])){
+                $query = "SELECT post.ID, post.oraPubblicazione, post.urlImmagine, post.altDescription, COUNT(liked.idUtente) as likes
+                        FROM post LEFT JOIN liked ON post.ID = liked.idPost
+                        WHERE post.idUtente = ?
+                        GROUP BY post.ID";
+                $res = safeQuery($query,array($_GET['idUtente']),"i");
+                if(!is_numeric($res)){
+                    http_response_code(200);
+                    echo json_encode($res);
+                }else{
+                    http_response_code(500);
+                    echo json_encode(array("result" => "ERROR", "message" => "Errore nella query"));
+                } 
+                exit;
+            }
+        }
+    }
+    catch(Exception $e){
+        http_response_code(500);
+        echo json_encode(array("result" => "ERROR", "message" => "Errore nella query"));
+        exit;
+    }
+
     if(!safeSessionStart()){
         http_response_code(401);
         exit;
     }
-    
+
     $idUtente = $_SESSION['ID'];
 try{
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){//aggiungo post
-        ////////////////////////////////////////////// Questo blocco di codice è da spostare in un'altra funzione
+    if($_SERVER['REQUEST_METHOD'] == "GET"){
+        $query = "SELECT post.ID, post.oraPubblicazione, post.urlImmagine, post.altDescription, COUNT(liked.idUtente) as likes
+                  FROM post LEFT JOIN liked ON post.ID = liked.idPost
+                  WHERE post.idUtente = $idUtente
+                  GROUP BY post.ID";
+        $res = standardQuery($query);
+        if(!is_numeric($res)){
+            http_response_code(200);
+            echo json_encode($res);
+        }else{
+            http_response_code(500);
+            echo json_encode(array("result" => "ERROR", "message" => "Errore nella query"));
+        }
+    }
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(empty($_GET['altDescription'])){
             http_response_code(400);
             echo json_encode(array("result" => "ERROR", "message" => "Missing altDescription field"));
@@ -70,35 +111,6 @@ try{
             echo json_encode(array("result" => "ERROR", "message" => "Errore nell'eliminazione del post"));
             http_response_code(500);
         }
-    }
-
-    if($_SERVER['REQUEST_METHOD'] == 'GET'){//prendo i post
-        /*if(!empty($_GET['idPost'])){//se mi viene fornito un post in particolare
-            $query = "SELECT * FROM post WHERE ID = ?";
-            
-            $result = safeQuery($query, array($_GET['idPost']), "i");
-            if(count($result) == 1){
-                http_response_code(200);
-                echo json_encode($result[0]);
-            }
-        }*/
-        //else{
-            if(!empty($_GET['idUtente'])){//se mi viene fornito un utente in particolare allora prendo tutti i suoi post
-                $query = "SELECT * FROM post WHERE idUtente = ?";
-                $result = safeQuery($query, array($_GET['idUtente']), "i");
-                //if(count($result) == 0){
-                //    http_response_code(404);
-                //    echo json_encode(array("result" => "ERROR", "message" => "Nessun post trovato"));
-                //}
-                //else
-                //   http_response_code(200);
-            }
-            else{//altrimenti prendo tutti i post dell'utente loggato
-                $query = "SELECT * FROM post WHERE idUtente = $idUtente";
-                $result = standardQuery($query);
-            }
-        //}
-        echo json_encode($result);
     }
 }
 catch(Exception $e){

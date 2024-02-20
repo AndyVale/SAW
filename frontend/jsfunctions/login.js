@@ -31,7 +31,7 @@ function credentialsAreWrongReport(boolWrongCredential){
 
 function cookieLogin(){
     console.log("cookieLogin()");
-    if(document.cookie.includes("PHPSESSID")) return new Promise((resolve, reject) => resolve({result: "KO"}));//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
+    if(document.cookie.includes("PHPSESSID")) return new Promise((resolve, reject) => resolve({result: "OK"}));//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
     return fetch("../../../backend/script/cookie_login.php").then((response) => {
         if(response.ok){
             return response.json();
@@ -40,7 +40,7 @@ function cookieLogin(){
         }
     }).then((res) => {
         if(res['result'] == "OK"){
-        storeUserData(res['data']);
+            storeUserData(res['data']);
         //window.location.href = "./"+window.location.search;
         }else{
             removeUserData();

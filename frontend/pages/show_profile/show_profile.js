@@ -1,8 +1,8 @@
 //export {getUserData};
-import {cookieLogin, showLogin} from "../../../jsfunctions/login.js";
-import {renderNavbar} from "../../../jsfunctions/navbar.js";
-import {renderFooter} from "../../../jsfunctions/footer.js";
-import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction} from "../../../jsfunctions/functions.js";
+import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
+import {renderNavbar} from "../../jsfunctions/navbar.js";
+import {renderFooter} from "../../jsfunctions/footer.js";
+import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
 
 
 /**
@@ -20,50 +20,6 @@ function stampaDatiUtenti(datiUtente) {
   nFollowing.textContent = datiUtente.nFollowing;
   nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
   immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
-}
-
-/**
- * Funzione che mediante fetch ottiene i post dell'utente loggato
- */
-async function getUserPosts(){
-  fetch("../../../backend/script/show_profile_posts.php", {
-    method: 'GET'
-  })
-  .then(response =>{
-    switch(response.status){
-      case 401:
-        removeUserData();
-        showLogin();
-        break;
-      case 200:
-    }
-    if(!response.ok){
-      throw new Error("Errore nella richiesta a show_profile_posts.php");
-    }
-    return response.json();
-  })
-  .then(data =>{
-    if(data['result'] == "OK"){
-      renderPosts(data['data'], document.getElementById("postsContainer"));//sincrona, quindi sono sicuro che i post siano renderizzati prima di getLikedPosts...
-      getLikedPosts().then((postsLiked) => setLikedPosts(postsLiked));
-    }else{
-      switch(data['message']){
-        case "ERROR_NOTLOGGED":
-          removeUserData();
-          window.location.href = "../homepage";
-          break;
-        case "POST_NOT_FOUND":
-          alert("Errore nel database");
-          break;
-      }
-    }
-  })
-  .catch(error => {
-    console.error('Errore:', error);
-    console.log('Nome dell\'errore:', error.name);
-    console.log('Messaggio dell\'errore:', error.message);
-    console.log('Stack dell\'errore:', error.stack);
- });
 }
 
 /**
@@ -110,35 +66,15 @@ async function getUserData(){
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     //console.log("domcontentloaded");
-    /*
+    
     renderFooter();
     cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
-     
-    });
-    */
-    console.log("cookieLogin()");
-    if(document.cookie.includes("PHPSESSID")) return new Promise((resolve, reject) => resolve({result: "KO"}));//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
-    return fetch("../../../backend/script/cookie_login.php").then((response) => {
-        if(response.ok){
-            console.log("response.ok");
-            return response.json();
-        }else{
-            throw new Error("Errore nella richiesta a cookie_login.php");
-        }
-    }).then((res) => {
-        if(res['result'] == "OK"){
-        console.log("response_decode");
-        storeUserData(res['data']);
-        renderNavbar();
-        getUserData();
-        getUserPosts();
-        //window.location.href = "./"+window.location.search;
-        }else{
-            removeUserData();
-        }
-    }) 
-    .catch((error) => {
-        console.log(error);
+      renderNavbar();
+      getUserData();
+      getUserPosts().then((posts) => {
+        renderPosts(posts, document.getElementById("postsContainer"));
+        getLikedPosts().then((postsLiked) => setLikedPosts(postsLiked));
+      }).catch(() => document.getElementById("postsContainer").innerHTML = "<div class='h1 text-center'>Errore nel caricamento dei post</div>");
     });
 });
 

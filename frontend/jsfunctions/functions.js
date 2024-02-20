@@ -1,4 +1,6 @@
-export {getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost, renderImg, getLikedPosts, setLikedPosts, postInteraction};
+export {getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport,
+        renderPosts, renderAPost, renderImg, getLikedPosts, setLikedPosts, postInteraction
+        ,getUserPosts};
 
 /*
  * @param {string} id - id dell'elemento da rimuovere
@@ -53,6 +55,7 @@ function renderSnippet(snippetHTML, where){
  * Funzione che salva i dati dell'utente nel localStorage
 */
 function storeUserData(dati){
+    console.log("Salvataggio dati utente");
     localStorage.setItem("email", dati.email);
     localStorage.setItem("firstname", dati.firstname);
     localStorage.setItem("lastname", dati.lastname);
@@ -228,6 +231,19 @@ function renderImg(path, aspectRatio, immagine){
 }
 
 /**
+ * Funzione che mediante fetch ottiene i post dell'utente specificato oppure, se non specificato, dell'utente loggato
+ * @param {int} idUser - id dell'utente di cui si vogliono ottenere i post, se non specificato viene invata una richiesta senza parametri (utente loggato)
+ */
+function getUserPosts(idUser=null){
+    let qryString = "";
+    if(idUser != null)
+        qryString = "?idUtente="+idUser;
+    return fetch("../../../backend/script/post_handler.php"+qryString, {
+        method: "GET"
+    }).then(response => response.json());
+  }
+
+/**
  * Funzione che restituisce un array contenente gli id dei post a cui l'utente ha messo like
  * @param {int} idUser - id dell'utente tra cui cercare i post likeati, se non specificato viene invata una richiesta senza parametri
  * @returns {Array} - array contenente gli id dei post che l'utente ha messo like
@@ -271,8 +287,7 @@ async function postInteraction(clickedButtonPost, alreadyLiked){
     if(alreadyLiked){
         method = "DELETE";
     }
-    //alert("postInteraction: "+postId);
-    fetch("../../../backend/script/like_post.php?idPost="+postId, {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
+    return fetch("../../../backend/script/like_post.php?idPost="+postId, {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
         method: method
     }).then(response => {
         if(response.ok){
@@ -283,11 +298,6 @@ async function postInteraction(clickedButtonPost, alreadyLiked){
                 clickedButtonPost.classList.add("liked");
                 clickedButtonPost.childNodes[1].textContent=" "+(parseInt(clickedButtonPost.childNodes[1].textContent)+1);
             }
-        }
-        else{
-            console.log("Errore nel like");
-            console.log(response);
-            showLogin();
         }
         return response.text();
     }).catch(error => console.log(error));

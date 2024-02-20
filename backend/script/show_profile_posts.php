@@ -1,5 +1,5 @@
 <?php
-    require_once("../funzioni/const.php");
+  /*  require_once("../funzioni/const.php");
     require_once("../funzioni/dbFunctions.php");
     require_once("../funzioni/showProfileFunctions.php");
 
@@ -25,4 +25,4 @@
         }
     }
     echo json_encode($result);
-        
+        */
