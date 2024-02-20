@@ -2,7 +2,7 @@
 import {cookieLogin, showLogin} from "../../../jsfunctions/login.js";
 import {renderNavbar} from "../../../jsfunctions/navbar.js";
 import {renderFooter} from "../../../jsfunctions/footer.js";
-import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction} from "../../../jsfunctions/functions.js";
+import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../../jsfunctions/functions.js";
 
 
 /**
@@ -20,50 +20,6 @@ function stampaDatiUtenti(datiUtente) {
   nFollowing.textContent = datiUtente.nFollowing;
   nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
   immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
-}
-
-/**
- * Funzione che mediante fetch ottiene i post dell'utente loggato
- */
-async function getUserPosts(){
-  fetch("../../../backend/script/show_profile_posts.php", {
-    method: 'GET'
-  })
-  .then(response =>{
-    switch(response.status){
-      case 401:
-        removeUserData();
-        showLogin();
-        break;
-      case 200:
-    }
-    if(!response.ok){
-      throw new Error("Errore nella richiesta a show_profile_posts.php");
-    }
-    return response.json();
-  })
-  .then(data =>{
-    if(data['result'] == "OK"){
-      renderPosts(data['data'], document.getElementById("postsContainer"));//sincrona, quindi sono sicuro che i post siano renderizzati prima di getLikedPosts...
-      getLikedPosts().then((postsLiked) => setLikedPosts(postsLiked));
-    }else{
-      switch(data['message']){
-        case "ERROR_NOTLOGGED":
-          removeUserData();
-          window.location.href = "../homepage";
-          break;
-        case "POST_NOT_FOUND":
-          alert("Errore nel database");
-          break;
-      }
-    }
-  })
-  .catch(error => {
-    console.error('Errore:', error);
-    console.log('Nome dell\'errore:', error.name);
-    console.log('Messaggio dell\'errore:', error.message);
-    console.log('Stack dell\'errore:', error.stack);
- });
 }
 
 /**
@@ -114,7 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
     cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
       renderNavbar();
       getUserData();
-      getUserPosts();
+      getUserPosts().then((posts) => {
+        renderPosts(posts, document.getElementById("postsContainer"));
+        getLikedPosts().then((postsLiked) => setLikedPosts(postsLiked));
+      });
     });
 });
 

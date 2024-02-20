@@ -37,7 +37,7 @@
         }
         return showProfileResult::ERROR_SHOW;
     }
-
+/*
     function show_user_posts(int $idUtente) {//TODO: DA ELIMINARE E SOSTITUIRE 
         try{
             $query = "SELECT post.ID, post.oraPubblicazione, post.urlImmagine, post.altDescription, COUNT(liked.idUtente) as likes
@@ -51,4 +51,4 @@
             $res = -1;
         }
         return $res;
-    }
+    }*/
