@@ -10,8 +10,8 @@
         //funzione che restituisce i dati del profilo utente
         //if(!isLogged()) return showProfileResult::ERROR_NOTLOGGED;
         
-        $conn = connect();
-        if($conn == null) return showProfileResult::DB_ERROR;
+        //$conn = connect();
+        //if($conn == null) return showProfileResult::DB_ERROR;
 
         $query = "SELECT 
                         utente.".FIRSTNAME.", 
@@ -27,17 +27,20 @@
                 WHERE 
                     utente.ID = ?";
 
-        $result = safeQuery($query, array($idUtente), "s");
-        if(!is_numeric($result) && count($result) == 1){
-            return $result[0];
+        try{
+            $result = safeQuery($query, array($idUtente), "s");
+            if(!is_numeric($result) && count($result) == 1){
+                return $result[0];
+            }
+        }catch(mysqli_sql_exception $ex){
+            error_log("showProfileFunctions.php/showProfile(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
         }
-        //TODO: MODIFICARE QUESTE QUERY CHE FANNO PENA
         return showProfileResult::ERROR_SHOW;
     }
 
-    function show_user_posts(int $idUtente) {
+    function show_user_posts(int $idUtente) {//TODO: DA ELIMINARE E SOSTITUIRE 
         try{
-            $query = "SELECT post.ID, post.oraPubblicazione, post.urlImmagine, COUNT(liked.idUtente) as likes
+            $query = "SELECT post.ID, post.oraPubblicazione, post.urlImmagine, post.altDescription, COUNT(liked.idUtente) as likes
                       FROM post LEFT JOIN liked ON post.ID = liked.idPost
                       WHERE post.idUtente = $idUtente
                       GROUP BY post.ID";

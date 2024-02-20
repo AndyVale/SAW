@@ -17,11 +17,12 @@
             $result['result'] = 'OK';
             $result['message'] = 'Post ottenuti con successo';
             $result['data'] = $userPosts;
+            http_response_code(200);
         }else{  
             $result['result'] = 'KO';
             $result['message'] = 'POST_NOT_FOUND';
+            http_response_code(404);
         }
     }
     echo json_encode($result);
         
-?>

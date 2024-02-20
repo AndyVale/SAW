@@ -10,9 +10,7 @@ function renderBottoniNavbar(){
     bottoniNavbarContainer.innerHTML = "";
     bottoniNavbarContainerSmall.innerHTML = "";
 
-
-
-    if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null && (new Date().getTime() - localStorage.getItem("lastupdate")) > 60*20){
+    if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null && (new Date().getTime() - localStorage.getItem("lastUpdate")) < 1000*60*60*12){
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneLogout'> Logout </button>");
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");
         bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneLogoutPiccolo'>Logout</a>");

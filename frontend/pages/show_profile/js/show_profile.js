@@ -30,6 +30,13 @@ async function getUserPosts(){
     method: 'GET'
   })
   .then(response =>{
+    switch(response.status){
+      case 401:
+        removeUserData();
+        showLogin();
+        break;
+      case 200:
+    }
     if(!response.ok){
       throw new Error("Errore nella richiesta a show_profile_posts.php");
     }

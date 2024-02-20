@@ -1,13 +1,13 @@
-export {removeNodeById, getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost, renderImg, getLikedPosts, setLikedPosts, postInteraction};
+export {getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport, renderPosts, renderAPost, renderImg, getLikedPosts, setLikedPosts, postInteraction};
 
-/**
+/*
  * @param {string} id - id dell'elemento da rimuovere
- */
+ 
 function removeNodeById(id){
     let node = document.getElementById(id);
     if(node != null)
         document.getElementById(id).parentNode.removeChild(document.getElementById(id));
-}
+}*/
 
 /**
  * Funzione che restituisce lo snippet di una pagina in modalità ASINCRONA
@@ -142,6 +142,7 @@ function renderPosts(posts, postContainer){
  * @param {HTMLElement} postContainer - Specifica in che container inserire il post
  */
 function renderAPost(post, postsContainer){
+    
 let wrapper = document.createElement("div"),
     card = document.createElement("div"),
     cardBody = document.createElement("div"),
@@ -154,6 +155,8 @@ let wrapper = document.createElement("div"),
     card.classList.add("card");
     img.classList.add("card-img-top");
     img.setAttribute("src", "../../Immagini/"+post.urlImmagine);
+    console.log("----------------------",post);
+    img.setAttribute("alt", post.altDescription);
     cardBody.classList.add("card-body");
     button.classList.add("btn", "w-100", "m-auto");
     button.style.backgroundColor = "#6FD08C";
@@ -165,11 +168,17 @@ let wrapper = document.createElement("div"),
     button.appendChild(span);
     button.appendChild(document.createTextNode(" "+post.likes+" "));
     button.id = "bottoneLike"+post.ID;
+    cardBody.appendChild(img);
     cardBody.appendChild(button);
-    renderImg("../../Immagini/"+post.urlImmagine, 1, card);
+    console.log(post.ID, Date.now());
+
+    renderImg("../../Immagini/"+post.urlImmagine, 1, img);
+    console.log(post.ID, Date.now());
+
     card.appendChild(cardBody);
     wrapper.appendChild(card);
     postsContainer.appendChild(wrapper);
+
 }
 
 /**
@@ -178,12 +187,12 @@ let wrapper = document.createElement("div"),
  * @param {number} aspectRatio - aspect ratio voluto
  * @param {HTMLElement} container - Specifica in che container inserire il canvas generato
  */
-function renderImg(path, aspectRatio, container){
+function renderImg(path, aspectRatio, immagine){
 	let inputImage = new Image();//same as document.createElement("img");
 	inputImage.src = path;
     console.log("Rendering dell'imamgine: "+path);
 	//console.log(inputImage);
-	inputImage.onload = () =>{
+	inputImage.onload = () =>{//Quando l'immagine sarà caricata (stessa cosa di un EventListener): non è molto elegante ma non ho trovato un modo migliore
 		const inputWidth = inputImage.naturalWidth;
 		const inputHeight = inputImage.naturalHeight;
 		//console.log(inputWidth, inputHeight);
@@ -198,7 +207,6 @@ function renderImg(path, aspectRatio, container){
 		} else if (inputImageAspectRatio < aspectRatio) {//devo aumentare l'altezza->spazio ai lati verticali
 			outputWidth = aspectRatio*inputHeight;
 		}
-
 		// calculate the position to draw the image at
 		const outputX = (1*outputWidth - 1*inputWidth) * .5;
 		const outputY = (1*outputHeight - 1*inputHeight) * .5;
@@ -214,10 +222,8 @@ function renderImg(path, aspectRatio, container){
 		const ctx = outputImage.getContext('2d');
 		ctx.drawImage(inputImage, outputX, outputY);
 		outputImage.style="background-color: white; border: 1px solid black; width: 100%;";
-        const outputImgTag = document.createElement("img");
-        outputImgTag.src = outputImage.toDataURL();
-        outputImgTag.style="width: 100%;";
-        container.insertBefore(outputImgTag, container.firstChild);
+        immagine.src = outputImage.toDataURL();
+        immagine.style="width: 100%;";
 	}
 }
 

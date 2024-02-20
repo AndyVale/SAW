@@ -37,5 +37,4 @@
             break;
     }
     
-    echo json_encode($result);//TODO: cambiare pagina di reindirizzamento e aggiungere dati per comunicare al frontend l'esito
-?>
+    echo json_encode($result);

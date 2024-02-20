@@ -12,11 +12,7 @@
         if (isset($_COOKIE[REMEMBERME])) {
             unset($_COOKIE[REMEMBERME]); 
             setcookie(REMEMBERME, '', -1, '/'); 
-            return true;
         }
-        return true;
     }
     logout();
-    //var_dump($_SESSION);
     echo json_encode(array('result'=>'OK', 'message'=>'Logout avvenuto con successo'));
-?>

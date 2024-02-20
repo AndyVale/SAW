@@ -39,5 +39,3 @@
     }
 
     echo json_encode($result);
-//header("Location: ./grafica/form.php?esito=$result");//TODO: cambiare pagina di reindirizzamento e aggiungere dati per comunicare al frontend l'esito
-?>

@@ -1,8 +1,9 @@
 <?php
     require_once("const.php");
     require_once("dbConfig.php");
-    //TODO: vedere se si possono levare i try catch a livello di funzione e gestirli ad un livello più alto
+
     function connect() {
+        //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         /*La funzione restituisce l'oggetto mysqli connesso al db specificato se la connessione va a buon fine, null altrimenti*/
         static $conn;//variabile statica, la prima volta che viene chiamata la funzione la variabile viene inizializzata, le volte successive viene restituito il valore della variabile
         //uso un try catch per gestire eventuali problematiche nella connessione al database
@@ -73,7 +74,6 @@
         return $nAffectedRows;
     }
 
-   
     function isLogged() {
         if(!empty($_SESSION[ID])) {
             return true;
@@ -88,21 +88,6 @@
         if(isLogged()) return true;
         return false;
     }
-   /* function select(String $query, array $params, String $paramsType, bool $repeat = false){//TODO: DA CANCELLARE?
-        //funzione che effettua una select dal db e restituisce il risultato sotto forma di array di oggetti
-        $conn = connect();
-        $stmt = $conn -> prepare($query);
-        $stmt -> bind_param($paramsType,...$params);
-        $stmt -> execute();
-
-        $rows = []; $i = 0;
-        $result = $stmt->get_result();
-        while($row = $result->fetch_object())$rows[$i++] = $row;
-        $result->close();
-        if(!$repeat)
-            $stmt->close();
-        return $rows;
-    }*/
     //funzione che restituisce true se ci sono campi vuoti inviati in $_POST
     function emptyFields() {
         //funzione che restituisce un array contenente tutti gli argomenti passati a una funzione
@@ -129,11 +114,12 @@
         }
         $query .= "?)";
         try{
-            safeQuery($query, $attributesValues, $attributesTypes);
-            return array("result" => "INSERT", "message" => "OK");
-        }catch(mysqli_sql_exception $e){
-            return array("result" => "KO", "message" => "ERROR");
+            if(safeQuery($query, $attributesValues, $attributesTypes) == 1)
+                return array("result" => "INSERT", "message" => "OK");
+        }catch(Exception $e){
+            error_log("dbFunctions.php/add_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
         }
+        return array("result" => "KO", "message" => "ERROR");
     }
 
     function delete_tuple(String $table, Array $attributesNames, Array $attributesValues, String $attributesTypes){
@@ -143,9 +129,10 @@
         }
         $query .= $attributesNames[count($attributesNames) - 1] . " = ?";
         try{
-            safeQuery($query, $attributesValues, $attributesTypes);
-            return array("result" => "DELETE", "message" => "OK");
-        }catch(mysqli_sql_exception $e){
-            return array("result" => "KO", "message" => "ERROR");
+            if(safeQuery($query, $attributesValues, $attributesTypes) >= 1);
+                return array("result" => "DELETE", "message" => "OK");
+        }catch(Exception $e){
+            error_log("dbFunctions.php/delete_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
         }
+        return array("result" => "KO", "message" => "ERROR");
     }

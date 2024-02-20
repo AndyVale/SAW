@@ -19,7 +19,14 @@ $query = "SELECT utente.username, utente.firstname, utente.lastname, utente.emai
 
 $params = array("%$search%", "%$search%", "%$search%");
 $paramsType = "sss";
-$tmp = safeQuery($query, $params, $paramsType);
-if(!is_numeric($tmp))
-    echo json_encode(safeQuery($query, $params, $paramsType));
-else echo json_encode(array());    
+
+try{
+    $tmp = safeQuery($query, $params, $paramsType);
+    if(!is_numeric($tmp))
+        echo json_encode($tmp);
+    //else echo json_encode(array());    
+}catch(Exception $e){
+    http_response_code(500);
+    echo json_encode(array("result" => "KO", "message" => "DB_ERROR"));
+    exit;
+}

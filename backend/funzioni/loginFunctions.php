@@ -10,7 +10,7 @@
     }
     function login($data, $pass, $hash){
         //funzione che effettua il login, in $data devono essere passati i campi da inserire nella sessione
-        $inSessionByDefault = array(EMAIL, FIRSTNAME, ROLE, LASTNAME, ID, USERNAME);
+        $inSessionByDefault = array(EMAIL, FIRSTNAME, LASTNAME, ID, USERNAME);
 
         if(password_verify($pass, $hash)){
             if(session_status() !== PHP_SESSION_ACTIVE)
@@ -38,7 +38,7 @@
         $campi = ID.",".EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
         $query = "SELECT $campi FROM Utente WHERE expireTime > $actualTime";
         $risultato = $conn -> query($query);
-        while($utente = $risultato -> fetch_assoc()){
+        while($utente = $risultato -> fetch_assoc()){//TODO: evitare che faccia il while e evitare il password verify fuori dal login
             if(password_verify($_COOKIE[REMEMBERME], $utente[REMEMBERME])){
                 return login($utente, $_COOKIE[REMEMBERME], $utente[REMEMBERME]);
             }
@@ -56,16 +56,20 @@
         
         $fields = ID.",".EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
         $query = "SELECT $fields FROM Utente WHERE email = ?";
-        $result = safeQuery($query, array($_POST[EMAIL]), "s");
-        
-        if(!is_numeric($result)) {//controllo che safeQuery abbia restituito un solo oggetto
-            if(count($result) != 1)
-                return loginResult::WRONG_CREDENTIALS;
-            return login($result[0], $_POST[PASS], $result[0][PASS]);
+
+        try{
+            $result = safeQuery($query, array(strtolower($_POST[EMAIL])), "s");
+            if(!is_numeric($result)) {//controllo che safeQuery abbia restituito un solo oggetto
+                if(count($result) != 1)
+                    return loginResult::WRONG_CREDENTIALS;
+                return login($result[0], $_POST[PASS], $result[0][PASS]);
+            }
+        }catch(Exception $e){
+            error_log("dbFunctions.php/credentialsLogin(): Impossibile eseguire la query \n", 3, ERROR_LOG);
         }
         return loginResult::DB_ERROR;
     }
-    function setRememberMe(){
+    function setRememberMe(){//TODO: vedi cookieLogin
         /*funzione che setta i cookie per il rememberme, funziona solo se la sessione è già stata avviata.
         Il controllo sul campo "rememberme" deve essere fatto prima di invocare la funzione.*/
 
@@ -79,11 +83,12 @@
 
         $cookieValue = password_hash($cookieValue, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
         $query = "UPDATE Utente SET rememberMe = ?, expireTime = ? WHERE email = ?";
-        
-        if(safeQuery($query, array($cookieValue, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
-            return true;//cookie settato correttamente
+        try{
+            if(safeQuery($query, array($cookieValue, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
+                return true;//cookie settato correttamente
+            }
+        }catch(Exception $e){
+            error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
         }
-        error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
         return false;//cookie non settato
     }
-?>

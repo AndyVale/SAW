@@ -21,15 +21,20 @@
     }
     
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
-        if(!empty($_GET[ID]) and is_numeric($_GET[ID])){//se in get ho un ID numerico lo uso come ID dell'utente di cui voglio sapere i post
-            echo json_encode(getLikedPosts($_SESSION[ID], $_GET[ID]));
-        }else{//altrimenti uso l'ID dell'utente loggato
-            echo json_encode(getLikedPosts($_SESSION[ID], $_SESSION[ID]));
+        try{
+            if(!empty($_GET[ID]) and is_numeric($_GET[ID])){//se in get ho un ID numerico lo uso come ID dell'utente di cui voglio sapere i post
+                echo json_encode(getLikedPosts($_SESSION[ID], $_GET[ID]));
+            }else{//altrimenti uso l'ID dell'utente loggato
+                echo json_encode(getLikedPosts($_SESSION[ID], $_SESSION[ID]));
+            }
+        }catch(Exception $e){
+            http_response_code(500);
+            echo json_encode(array("result" => "KO", "message" => "DB_ERROR"));
         }
         exit;
     }
 
-    if(empty($_GET['idPost']) || !is_numeric($_GET['idPost'])){
+    if(empty($_GET['idPost']) || !is_numeric($_GET['idPost'])){//se sono qui non era una GET TODO: controllare sia un intero
         echo json_encode(array("result" => "KO", "message" => "ERROR_NO_ID"));
         http_response_code(400);
         exit;

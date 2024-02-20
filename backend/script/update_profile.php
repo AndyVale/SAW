@@ -8,7 +8,13 @@ require_once("../funzioni/dbFunctions.php");
 header('Content-Type: application/json');
 $result['from'] = 'update_profile.php';
 
-session_start();
+if(!safeSessionStart()) {
+    $result['result'] = 'KO';
+    $result['message'] = 'ERROR_NOTLOGGED';
+    echo json_encode($result);
+    http_response_code(401);
+    exit;
+}
 
 $tmp = update();
 switch($tmp){
@@ -16,12 +22,6 @@ switch($tmp){
         $result['result'] = 'KO';
         $result['message'] = 'DB_ERROR';
         break;
-    /*
-    case updateResult::ERROR_NOTLOGGED:
-        $result['result'] = 'KO';
-        $result['message'] = 'ERROR_NOTLOGGED';
-        break;
-        */
     case updateResult::ERROR_UPDATE:
         $result['result'] = 'KO';
         $result['message'] = 'ERROR_UPDATE';

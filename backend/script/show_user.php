@@ -3,20 +3,14 @@
     require_once("../funzioni/dbFunctions.php");
     require_once("../funzioni/showProfileFunctions.php");
 
-    function getNonSesitiveData($id) : array{
-        //$result['userdata'] = showProfile();
-        //var_dump($result['userdata']);
-        
-        $risultato['posts'] = show_user_posts($id);
-        //var_dump($risultato['post']);
-        $risultato['datiUtente'] = showProfile($id);
-        return $risultato;
-    }
-
     if(empty($_GET[ID]) || !is_numeric($_GET[ID])){
         http_response_code(400);
         echo json_encode(array("result" => "KO", "message" => "ERROR_NO_ID"));
         exit;
     }
-    echo json_encode(getNonSesitiveData($_GET[ID]));
+
+    $risultato['datiUtente'] = showProfile($_GET[ID]);
+    $risultato['posts'] = show_user_posts($_GET[ID]);
+
+    echo json_encode($risultato);
 

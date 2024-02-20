@@ -14,3 +14,4 @@
     const UPDATEREQUEST = 'updateRequest';
     const POST_PATH = '../../frontend/immagini/post/';
     const PPICTURE_PATH = '../../frontend/immagini/profile';
+    const IDSEGUITO = 'idUtenteSeguito';
