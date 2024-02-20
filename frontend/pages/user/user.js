@@ -123,13 +123,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 postContainer.addEventListener("click", (e) =>{
-    if(e.target.id.includes("bottoneLike")){
+    const bottoneLike = e.target.closest("button");
+    if(bottoneLike){
         console.log("LIKE");
         postInteraction(e.target, e.target.classList.contains("liked"));
-    }
-    else if (e.target.parentNode.parentNode.id.includes("bottoneLike")){//TODO: Trovare un modo migliore per gestirlo, altrimenti cliccando sull'inconcina del cuore non funziona
-        console.log("LIKE");
-        postInteraction(e.target.parentNode.parentNode, e.target.parentNode.parentNode.classList.contains("liked"));
     }
 });
 

@@ -1,20 +1,12 @@
 export {getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport,
-        renderPosts, renderAPost, renderImg, getLikedPosts, setLikedPosts, postInteraction
+        renderPosts, renderAPost, changeRatio, getLikedPosts, setLikedPosts, postInteraction
         ,getUserPosts};
 
-/*
- * @param {string} id - id dell'elemento da rimuovere
- 
-function removeNodeById(id){
-    let node = document.getElementById(id);
-    if(node != null)
-        document.getElementById(id).parentNode.removeChild(document.getElementById(id));
-}*/
 
 /**
  * Funzione che restituisce lo snippet di una pagina in modalità ASINCRONA
  * @param {string} url -url della pagina da cui prendere lo snippet
- * @returns {string} - risultato della fetch all'url indicato o null se la fetch non va a buon fine
+ * @returns {Promise} - risultato della fetch all'url indicato o null se la fetch non va a buon fine
  */
 async function getSnippet(url){
     //let result = null;
@@ -34,7 +26,6 @@ async function getSnippet(url){
  * Funzione che renderizza codice html in un elemento DOM specificato
  * @param {string} snippetHTML - codice html dello snippet da renderizzare
  * @param {string} where - oggetto DOM in cui renderizzare lo snippet
- * @returns {string} - risultato della fetch all'url indicato o null se la fetch non va a buon fine
  */
 function renderSnippet(snippetHTML, where){
     if(!snippetHTML){
@@ -60,7 +51,7 @@ function storeUserData(dati){
     localStorage.setItem("firstname", dati.firstname);
     localStorage.setItem("lastname", dati.lastname);
     localStorage.setItem("username",dati.username);
-    localStorage.setItem("lastUpdate", new Date().getTime());
+    localStorage.setItem("lastUpdate", new Date().getTime());//TODO: Trovare un modo più elegante
 }
 
 /**
@@ -76,7 +67,7 @@ function removeUserData(){
 }
 
 /**
- * Funzione che stampa un'immmagine di errore interno del server
+ * Funzione che stampa un'immmagine di errore interno del server all'interno di un container (loginContainer o registrationContainer)
  * @param {node} container - container specifica in che container inserire il messaggio di errore 
  */
 function dbErrorReport(container){
@@ -92,12 +83,12 @@ function dbErrorReport(container){
 
     p1.setAttribute("class", "fs-6 my-0");
     p1.textContent = "Riprova più tardi ricaricando la pagina";
-    //p2.setAttribute("class", "fs-6 my-0");
     //p2.textContent = "(o non farlo, tanto non funzionerà)";//da notare che la parentesi me l'ha suggerita copilot
 
     title.setAttribute("class", "h6 bg-danger text-white rounded p-1");
     title.textContent = "Impossibile comunicare con il server";
-    container.removeChild(container.firstChild);
+    if(container.firstChild != null)
+        container.removeChild(container.firstChild);
     let exitButton = container.firstChild;//TODO: migliorare sta roba poco carina
     //console.log(exitButton);
     while(container.firstChild){
@@ -158,8 +149,9 @@ let wrapper = document.createElement("div"),
     card.classList.add("card");
     img.classList.add("card-img-top");
     img.setAttribute("src", "../../Immagini/"+post.urlImmagine);
-    console.log("----------------------",post);
+    //console.log("----------------------",post);
     img.setAttribute("alt", post.altDescription);
+    changeRatio(1, img);
     cardBody.classList.add("card-body");
     button.classList.add("btn", "w-100", "m-auto");
     button.style.backgroundColor = "#6FD08C";
@@ -175,34 +167,30 @@ let wrapper = document.createElement("div"),
     cardBody.appendChild(button);
     console.log(post.ID, Date.now());
 
-    renderImg("../../Immagini/"+post.urlImmagine, 1, img);
     console.log(post.ID, Date.now());
 
     card.appendChild(cardBody);
     wrapper.appendChild(card);
     postsContainer.appendChild(wrapper);
-
 }
 
 /**
- * Funzione che renderizza un immagine in un canvas impostando un determinato aspect ratio
- * @param {string} path - path dell'immagine da renderizzare
+ * Funzione che cambia l'aspect ration di un immagine usando un canvas
  * @param {number} aspectRatio - aspect ratio voluto
- * @param {HTMLElement} container - Specifica in che container inserire il canvas generato
+ * @param {HTMLElement} immagine - Specifica di che immagine si vuole cambiare l'aspect ratio. ATTENZIONE: Deve contenere l'attributo src dell'immagine
  */
-function renderImg(path, aspectRatio, immagine){
-	let inputImage = new Image();//same as document.createElement("img");
-	inputImage.src = path;
-    console.log("Rendering dell'imamgine: "+path);
+function changeRatio(aspectRatio, immagine){
+    //console.log("Rendering dell'imamgine: "+path);
 	//console.log(inputImage);
-	inputImage.onload = () =>{//Quando l'immagine sarà caricata (stessa cosa di un EventListener): non è molto elegante ma non ho trovato un modo migliore
-		const inputWidth = inputImage.naturalWidth;
-		const inputHeight = inputImage.naturalHeight;
-		//console.log(inputWidth, inputHeight);
-		// get the aspect ratio of the input image
+    console.log("changeRatio()");
+    let img = new Image();//serve per non innescare una reazione a catena di eventi
+    img.src = immagine.src;
+	img.addEventListener("load", ()=>{//Quando l'immagine sarà caricata (stessa cosa di un EventListener): non è molto elegante ma non ho trovato un modo migliore
+		const inputWidth = immagine.naturalWidth;
+		const inputHeight = immagine.naturalHeight;
+        
 		const inputImageAspectRatio = inputWidth / inputHeight;
 
-		// if it's bigger than our target aspect ratio
 		let outputWidth = inputWidth;
 		let outputHeight = inputHeight;
 		if (inputImageAspectRatio > aspectRatio) {//devo aumentare la larghezza->spazio ai lati orizzontali
@@ -210,50 +198,47 @@ function renderImg(path, aspectRatio, immagine){
 		} else if (inputImageAspectRatio < aspectRatio) {//devo aumentare l'altezza->spazio ai lati verticali
 			outputWidth = aspectRatio*inputHeight;
 		}
-		// calculate the position to draw the image at
+
 		const outputX = (1*outputWidth - 1*inputWidth) * .5;
 		const outputY = (1*outputHeight - 1*inputHeight) * .5;
 
-		// create a canvas that will present the output image
-		const outputImage = document.createElement('canvas');
-		//outputImage.id=path+"canvas";
-		// set it to the same size as the image
-		outputImage.width = outputWidth;
-		outputImage.height = outputHeight;
+		const tempCanvas = document.createElement('canvas');
+
+		tempCanvas.width = outputWidth;
+		tempCanvas.height = outputHeight;
 		
-		// draw our image at position 0, 0 on the canvas
-		const ctx = outputImage.getContext('2d');
-		ctx.drawImage(inputImage, outputX, outputY);
-		outputImage.style="background-color: white; border: 1px solid black; width: 100%;";
-        immagine.src = outputImage.toDataURL();
+		const ctx = tempCanvas.getContext('2d');
+		ctx.drawImage(immagine, outputX, outputY);
+        immagine.src = tempCanvas.toDataURL();
         immagine.style="width: 100%;";
-	}
+	});
 }
 
 /**
  * Funzione che mediante fetch ottiene i post dell'utente specificato oppure, se non specificato, dell'utente loggato
  * @param {int} idUser - id dell'utente di cui si vogliono ottenere i post, se non specificato viene invata una richiesta senza parametri (utente loggato)
  */
-function getUserPosts(idUser=null){
+async function getUserPosts(idUser=null){
     let qryString = "";
     if(idUser != null)
         qryString = "?idUtente="+idUser;
     return fetch("../../../backend/script/post_handler.php"+qryString, {
         method: "GET"
     }).then(response => response.json());
-  }
+}
 
 /**
- * Funzione che restituisce un array contenente gli id dei post a cui l'utente ha messo like
+ * Funzione che restituisce un array contenente gli id dei post a cui l'utente loggato ha messo like
  * @param {int} idUser - id dell'utente tra cui cercare i post likeati, se non specificato viene invata una richiesta senza parametri
  * @returns {Array} - array contenente gli id dei post che l'utente ha messo like
  */
-async function getLikedPosts(idUser){
-    let getFields = "";
+async function getLikedPosts(idUser=null){
+    let qryString = "";
     if(idUser != null){
-        getFields = "?ID="+idUser;
+        qryString = "?ID="+idUser;
     }
-    return fetch("../../../backend/script/like_post.php"+getFields, {
+
+    return fetch("../../../backend/script/like_post.php"+qryString, {
         method: "GET"
     }).then(response => {
         if(response.ok){
@@ -267,7 +252,7 @@ async function getLikedPosts(idUser){
 /**
  * Funzione che permette di settare il like sui post a cui l'utente loggato ha messo like
  */
-async function setLikedPosts(postsLiked){
+function setLikedPosts(postsLiked){
     console.log("setLikedPosts");
     console.log(postsLiked);
     if(postsLiked == null) return;

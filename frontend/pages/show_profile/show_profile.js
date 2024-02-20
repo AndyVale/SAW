@@ -15,6 +15,7 @@ function stampaDatiUtenti(datiUtente) {
       nFollower = document.getElementById("nFollowers"),
       nFollowing = document.getElementById("nFollowing"),
       immagineProfilo = document.getElementById("profile-image");
+
   nPost.textContent = datiUtente.nPost;
   nFollower.textContent = datiUtente.nFollower;
   nFollowing.textContent = datiUtente.nFollowing;
@@ -25,7 +26,7 @@ function stampaDatiUtenti(datiUtente) {
 /**
  * Funzione che mediante fetch ottiene i dati dell'utente loggato come nome, cognome ecc ecc...
  */
-async function getUserData(){
+function getUserData(){
   fetch('../../../backend/script/show_profile.php', {
     method: 'GET' //deve "ottenere" i dati
   })
@@ -64,11 +65,8 @@ async function getUserData(){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Effettua una richiesta API Fetch per ottenere i dati dell'utente
-    //console.log("domcontentloaded");
-    
     renderFooter();
-    cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
+    cookieLogin().then(() => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
       renderNavbar();
       getUserData();
       getUserPosts().then((posts) => {
@@ -80,19 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.getElementById("postsContainer").addEventListener("click", (e) =>{
-  if(e.target.id.includes("bottoneLike")){
+  const bottoneLike = e.target.closest("button");
+  if(bottoneLike){
     console.log("LIKE");
     postInteraction(e.target, e.target.classList.contains("liked"));
   }
-  else if (e.target.parentNode.parentNode.id.includes("bottoneLike")){//TODO: Trovare un modo migliore per gestirlo, altrimenti cliccando sull'inconcina del cuore non funziona
-      console.log("LIKE");
-      postInteraction(e.target.parentNode.parentNode, e.target.parentNode.parentNode.classList.contains("liked"));
-  }
 });
-//var postContainer = document.getElementById("postsContainer");
-
-//postContainer.addEventListener("click", (e) =>{
-//  if(e.target.id.includes("bottoneLike")){
-//    console.log("Ascoltato l'evento click del bottone like del post"+ e.target.id.substring(11));
-// }
-//});
