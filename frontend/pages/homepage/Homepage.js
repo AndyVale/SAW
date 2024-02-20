@@ -1,5 +1,5 @@
-import { renderFooter } from "../../../jsfunctions/footer.js";
-import { renderNavbar } from "../../../jsfunctions/navbar.js";
+import { renderFooter } from "../../jsfunctions/footer.js";
+import { renderNavbar } from "../../jsfunctions/navbar.js";
 
 window.onscroll = function() {myFunction()};
 window.addEventListener("load", (event) => {

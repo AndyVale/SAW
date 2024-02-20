@@ -3,7 +3,6 @@
 
     header('Content-Type: application/json');
     $result['from'] = 'cookie_login.php';
-    
     switch (cookieLogin()) {
         case loginResult::SUCCESSFUL_LOGIN:
             $result['result'] = 'OK';

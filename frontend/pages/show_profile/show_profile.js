@@ -1,8 +1,8 @@
 //export {getUserData};
-import {cookieLogin, showLogin} from "../../../jsfunctions/login.js";
-import {renderNavbar} from "../../../jsfunctions/navbar.js";
-import {renderFooter} from "../../../jsfunctions/footer.js";
-import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../../jsfunctions/functions.js";
+import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
+import {renderNavbar} from "../../jsfunctions/navbar.js";
+import {renderFooter} from "../../jsfunctions/footer.js";
+import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
 
 
 /**
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
       getUserPosts().then((posts) => {
         renderPosts(posts, document.getElementById("postsContainer"));
         getLikedPosts().then((postsLiked) => setLikedPosts(postsLiked));
-      });
+      }).catch(() => document.getElementById("postsContainer").innerHTML = "<div class='h1 text-center'>Errore nel caricamento dei post</div>");
     });
 });
 

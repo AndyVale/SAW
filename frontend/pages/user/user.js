@@ -1,6 +1,6 @@
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
+import {removeUserData, storeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
 import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 
 let parts = window.location.search.substring(1).split("&"),
@@ -104,7 +104,7 @@ async function toggleSegui(segui){
 
 document.addEventListener("DOMContentLoaded", () => {
     renderFooter();
-    cookieLogin().then(() => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
+    cookieLogin().then(()=> {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
       renderNavbar();
 
       getUserInfo(idUser).then(data => {

@@ -55,6 +55,7 @@ function renderSnippet(snippetHTML, where){
  * Funzione che salva i dati dell'utente nel localStorage
 */
 function storeUserData(dati){
+    console.log("Salvataggio dati utente");
     localStorage.setItem("email", dati.email);
     localStorage.setItem("firstname", dati.firstname);
     localStorage.setItem("lastname", dati.lastname);
@@ -286,7 +287,6 @@ async function postInteraction(clickedButtonPost, alreadyLiked){
     if(alreadyLiked){
         method = "DELETE";
     }
-    
     return fetch("../../../backend/script/like_post.php?idPost="+postId, {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
         method: method
     }).then(response => {

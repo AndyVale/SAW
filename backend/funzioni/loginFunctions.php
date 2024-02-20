@@ -11,7 +11,6 @@
     function login($data, $pass, $hash){
         //funzione che effettua il login, in $data devono essere passati i campi da inserire nella sessione
         $inSessionByDefault = array(EMAIL, FIRSTNAME, LASTNAME, ID, USERNAME);
-
         if(password_verify($pass, $hash)){
             if(session_status() !== PHP_SESSION_ACTIVE)
                 session_start();
@@ -30,9 +29,6 @@
         //Funzione che effettua il login tramite cookie
         if(empty($_COOKIE[REMEMBERME]))//controllo che il cookie sia settato
             return loginResult::MISSING_FIELDS;
-        $conn = connect();
-        if($conn == null)
-            return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
 
         $cookieVal = json_decode($_COOKIE[REMEMBERME]);
 
@@ -42,14 +38,14 @@
         try{
             $result = safeQuery($query, array($actualTime, $cookieVal[1]), "ii");
             if(!is_numeric($result)) {
-            if(count($result) != 1)
-                return loginResult::WRONG_CREDENTIALS;
-            return login($result[0], $cookieVal[0], $result[0][REMEMBERME]);
+                if(count($result) != 1)
+                    return loginResult::WRONG_CREDENTIALS;
+                return login($result[0], $cookieVal[0], $result[0][REMEMBERME]);
             }
         }catch(mysqli_sql_exception $ex){
             error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
-            return loginResult::DB_ERROR;
         }
+        return loginResult::DB_ERROR;
     }
     function credentialsLogin(){
         //Funzione che effettua il login tramite email e password
@@ -82,15 +78,15 @@
         if(!isLogged()) {//se la sessione non è stata avviata non posso settare il cookie
             return false;
         }
-
-        $cookieValue = json_encode([random_int(PHP_INT_MIN,PHP_INT_MAX), $_SESSION[ID]]);
+        $rndm = random_int(PHP_INT_MIN,PHP_INT_MAX);
+        $cookieValue = json_encode([$rndm, $_SESSION[ID]]);
         $expireTime = time() + 60*60*24*30;//scade dopo 30 giorni
         setcookie(REMEMBERME, $cookieValue, $expireTime, '/', null, false, true);//setto il cookie
 
-        $cookieValue = password_hash($cookieValue, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
+        $cookieToMem = password_hash($rndm, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
         $query = "UPDATE Utente SET rememberMe = ?, expireTime = ? WHERE email = ?";
         try{
-            if(safeQuery($query, array($cookieValue, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
+            if(safeQuery($query, array($cookieToMem, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
                 return true;//cookie settato correttamente
             }
         }catch(Exception $e){

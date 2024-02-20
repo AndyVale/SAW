@@ -33,7 +33,6 @@
             http_response_code(200);
             break;
     }
-    //$risultato['posts'] = show_user_posts($_GET[ID]);
 
     echo json_encode($risultato);
 
