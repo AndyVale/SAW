@@ -66,6 +66,7 @@ async function getUserData(){
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     //console.log("domcontentloaded");
+    
     renderFooter();
     cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
       renderNavbar();
@@ -76,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 });
+
 
 document.getElementById("postsContainer").addEventListener("click", (e) =>{
   if(e.target.id.includes("bottoneLike")){

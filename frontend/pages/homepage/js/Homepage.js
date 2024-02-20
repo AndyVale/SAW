@@ -14,7 +14,7 @@ function myFunction() {
       search =  document.getElementById("search"),
       plus =  document.getElementById("plus"); 
       
-  if(window.scrollY >= (like.offsetTop/4) && window.scrollY < (like.offsetTop + like.offsetHeight)){
+  if(window.scrollY >= (like.offsetTop/4) && window.scrollY < (like.offsetTop + like.offsetHeight)){ //TODO: se si ricarica la pagina in questo punto non si vede nulla, da cambiare
     document.getElementById("like").classList.add("show-name");
     profile.classList.add("show-name");
     search.classList.add("show-name");

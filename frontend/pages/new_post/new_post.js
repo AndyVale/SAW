@@ -259,13 +259,13 @@ dropZone.addEventListener("dragleave", (e)=>{
 });
 
 document.addEventListener("DOMContentLoaded", (e)=>{
-    fetch('../../../backend/script/post_handler.php', {
+    /*fetch('../../../backend/script/post_handler.php', {
         method: 'OPTIONS'
     }).then(response =>{
         if(response.status == 401)
             showLogin();
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log(error));*/
 
     renderFooter();
     renderNavbar();
