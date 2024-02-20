@@ -110,12 +110,35 @@ async function getUserData(){
 document.addEventListener('DOMContentLoaded', function() {
     // Effettua una richiesta API Fetch per ottenere i dati dell'utente
     //console.log("domcontentloaded");
-    
+    /*
     renderFooter();
     cookieLogin().then((res) => {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
-      renderNavbar();
-      getUserData();
-      getUserPosts();
+     
+    });
+    */
+    console.log("cookieLogin()");
+    if(document.cookie.includes("PHPSESSID")) return new Promise((resolve, reject) => resolve({result: "KO"}));//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
+    return fetch("../../../backend/script/cookie_login.php").then((response) => {
+        if(response.ok){
+            console.log("response.ok");
+            return response.json();
+        }else{
+            throw new Error("Errore nella richiesta a cookie_login.php");
+        }
+    }).then((res) => {
+        if(res['result'] == "OK"){
+        console.log("response_decode");
+        storeUserData(res['data']);
+        renderNavbar();
+        getUserData();
+        getUserPosts();
+        //window.location.href = "./"+window.location.search;
+        }else{
+            removeUserData();
+        }
+    }) 
+    .catch((error) => {
+        console.log(error);
     });
 });
 
