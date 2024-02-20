@@ -1,6 +1,7 @@
 <?php
     //ho iniziato solo a guardarle ma non c'è ancora niente di concreto qui
     require_once ("../funzioni/showProfileFunctions.php");
+    require_once ("../funzioni/loginFunctions.php");
 
     header('Content-Type: application/json');
     $result['from'] = 'show_profile.php';
@@ -11,6 +12,7 @@
         echo json_encode($result);
         exit();
     }
+
     //$result['debug']= $_SESSION[EMAIL];
     $tmp = showProfile($_SESSION[ID]);
     switch($tmp){

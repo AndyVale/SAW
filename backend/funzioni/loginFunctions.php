@@ -34,16 +34,22 @@
         if($conn == null)
             return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
 
+        $cookieVal = json_decode($_COOKIE[REMEMBERME]);
+
         $actualTime = time();
         $campi = ID.",".EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
-        $query = "SELECT $campi FROM Utente WHERE expireTime > $actualTime";
-        $risultato = $conn -> query($query);
-        while($utente = $risultato -> fetch_assoc()){//TODO: evitare che faccia il while e evitare il password verify fuori dal login
-            if(password_verify($_COOKIE[REMEMBERME], $utente[REMEMBERME])){
-                return login($utente, $_COOKIE[REMEMBERME], $utente[REMEMBERME]);
+        $query = "SELECT $campi FROM Utente WHERE expireTime > ? and ID = ?";
+        try{
+            $result = safeQuery($query, array($actualTime, $cookieVal[1]), "ii");
+            if(!is_numeric($result)) {
+            if(count($result) != 1)
+                return loginResult::WRONG_CREDENTIALS;
+            return login($result[0], $cookieVal[0], $result[0][REMEMBERME]);
             }
+        }catch(mysqli_sql_exception $ex){
+            error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            return loginResult::DB_ERROR;
         }
-        return loginResult::WRONG_CREDENTIALS;
     }
     function credentialsLogin(){
         //Funzione che effettua il login tramite email e password
@@ -77,7 +83,7 @@
             return false;
         }
 
-        $cookieValue = random_int(PHP_INT_MIN,PHP_INT_MAX);//genero un cookie value "random" che rilascio in chiaro al client
+        $cookieValue = json_encode([random_int(PHP_INT_MIN,PHP_INT_MAX), $_SESSION[ID]]);
         $expireTime = time() + 60*60*24*30;//scade dopo 30 giorni
         setcookie(REMEMBERME, $cookieValue, $expireTime, '/', null, false, true);//setto il cookie
 
