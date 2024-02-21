@@ -10,8 +10,7 @@ $result['from'] = 'change_password.php';
 
 session_start();
 
-$tmp = passwordUpdate();
-switch($tmp){
+switch(passwordUpdate()){
     case updateResult::DB_ERROR:
         $result['result'] = 'KO';
         $result['message'] = 'DB_ERROR';

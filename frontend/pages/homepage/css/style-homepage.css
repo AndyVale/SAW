@@ -1,3 +1,9 @@
+.custom-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .background {
     background-image: url('./Progetto senza titolo (2).png');
     height: 100vh;
@@ -53,7 +59,7 @@
     display: inline-flex;
  }
 
-  .wrapper .icon{
+  .wrapper .icon {
     margin: 0 10px;
     display: flex;
     align-items: center;
@@ -61,7 +67,6 @@
     flex-direction: column;
     position: relative;
     z-index: 2;
-    cursor: pointer;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 
@@ -96,7 +101,7 @@
   }
 
   .image{
-    transition: transform 0.3s ease-in-out; /* Aggiungi un effetto di transizione per una transizione più fluida */
+    transition: transform 0.3s ease-in-out;
   }
 
   
