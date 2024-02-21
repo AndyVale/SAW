@@ -1,6 +1,7 @@
 import {storeUserData, removeUserData} from '../../jsfunctions/functions.js';
 import {renderNavbar} from '../../jsfunctions/navbar.js';
 import {renderFooter} from '../../jsfunctions/footer.js';
+import { cookieLogin } from "../../jsfunctions/login.js";
 
 
 function stampaDati(datiUtente) {
@@ -36,48 +37,51 @@ function stampaDati(datiUtente) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    renderNavbar();
     renderFooter();
-    // Effettua una richiesta API Fetch per ottenere i dati dell'utente
-    fetch('../../../backend/script/show_profile.php', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
-      }
-    })
-    //verifica che non siano necessari altri controlli più specifici
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Errore nella richiesta.');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if(data['result'] == "OK"){
-        stampaDati(data['data']);
-      }else{
-        switch(data['message']){
-          case "ERROR_NOTLOGGED":
-            removeUserData();
-            alert("Non sei loggato!");
-            //showLogin(); potrei mostrare il login ma sarebbe più complicato da gestire a livello di sicurezza direi
-            window.location.href = "../homepage";
-            break;
-          case "DB_ERROR":
-            alert("Errore nel database");
-            break;
-          case "ERROR_SHOW":
-            alert("Errore nel mostrare i dati dell'utente");
-            break; 
+    cookieLogin().then(()=>{
+      renderNavbar();
+      fetch('../../../backend/script/show_profile.php', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
         }
-      }
-     })
-     .catch(error => {
-     console.error('Errore:', error);
-     console.log('Nome dell\'errore:', error.name);
-     console.log('Messaggio dell\'errore:', error.message);
-     console.log('Stack dell\'errore:', error.stack);
-     });
+      })
+      //verifica che non siano necessari altri controlli più specifici
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Errore nella richiesta.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if(data['result'] == "OK"){
+          stampaDati(data['data']);
+        }else{
+          switch(data['message']){
+            case "ERROR_NOTLOGGED":
+              //removeUserData(); Delegato alla homePage
+              alert("Non sei loggAAAAAAAAAAato!");
+              //showLogin(); potrei mostrare il login ma sarebbe più complicato da gestire a livello di sicurezza direi
+              window.location.href = "../homepage";
+              break;
+            case "DB_ERROR":
+              alert("Errore nel database");
+              break;
+            case "ERROR_SHOW":
+              alert("Errore nel mostrare i dati dell'utente");
+              break; 
+          }
+        }
+       })
+       .catch(error => {
+       console.error('Errore:', error);
+       console.log('Nome dell\'errore:', error.name);
+       console.log('Messaggio dell\'errore:', error.message);
+       console.log('Stack dell\'errore:', error.stack);
+       });
+    });
+    // Effettua una richiesta API Fetch per ottenere i dati dell'utente
+    
 });
 
 var UpdateForm = document.getElementById("update_form");
@@ -106,7 +110,7 @@ fetch('../../../backend/script/update_profile.php', {
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
-        removeUserData();
+        //removeUserData(); Delegato alla homePage
         window.location.href = "../../homepage/index.html";
         break;
       case "DUPLICATE_EMAIL":

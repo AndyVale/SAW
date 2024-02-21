@@ -1,5 +1,5 @@
 import { renderFooter } from "../../jsfunctions/footer.js";
-import { showLogin } from "../../jsfunctions/login.js";
+import { cookieLogin, showLogin } from "../../jsfunctions/login.js";
 import { renderNavbar } from "../../jsfunctions/navbar.js";
 console.log(document.getElementById('imageCanvas').clientWidth);
 console.log(document.getElementById('imageCanvas').clientHeight);
@@ -268,5 +268,7 @@ document.addEventListener("DOMContentLoaded", (e)=>{
     .catch(error => console.log(error));*/
 
     renderFooter();
-    renderNavbar();
+    cookieLogin().then(()=>{
+        renderNavbar();
+    });
 });

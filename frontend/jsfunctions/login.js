@@ -29,9 +29,19 @@ function credentialsAreWrongReport(boolWrongCredential){
     }
 }
 
-function cookieLogin(){
+/**
+ * Funzione che controlla se l'utente è già loggato mediante cookie, in caso positivo aggiorna l'ultimo accesso e i dati dell'utente.
+ * Se l'utente ha già interagito con il server (ha il cookie PHPSESSID), si limita a aggiornare l'ultimo accesso ma non rieffettua
+ * chiamate al server.
+ * @returns {Promise} - ritorna una promessa che si risolve quando il cookie è stato controllato
+ */
+async function cookieLogin(){
     console.log("cookieLogin()");
-    if(document.cookie.includes("PHPSESSID")) return new Promise((resolve, reject) => resolve({result: "OK"}));//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
+    if(document.cookie.includes("PHPSESSID")){
+        if(localStorage.getItem("lastUpdate"))
+            localStorage.setItem("lastUpdate", Date.now());
+        return;
+    }//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
     return fetch("../../../backend/script/cookie_login.php").then((response) => {
         if(response.ok){
             return response.json();
@@ -39,6 +49,7 @@ function cookieLogin(){
             throw new Error("Errore nella richiesta a cookie_login.php");
         }
     }).then((res) => {
+        //alert("cookieLogin():"+res);
         if(res['result'] == "OK"){
             storeUserData(res['data']);
         //window.location.href = "./"+window.location.search;

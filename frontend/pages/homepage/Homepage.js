@@ -1,4 +1,5 @@
 import { renderFooter } from "../../jsfunctions/footer.js";
+import { cookieLogin } from "../../jsfunctions/login.js";
 import { renderNavbar } from "../../jsfunctions/navbar.js";
 
 window.onscroll = function() {myFunction()};
@@ -66,5 +67,5 @@ image6.addEventListener('mouseout', ()=> gestisciEventoMouseOut("6"));
 
 document.addEventListener("DOMContentLoaded", function(){
   renderFooter();
-  renderNavbar();
+  cookieLogin().then(renderNavbar());
 });
