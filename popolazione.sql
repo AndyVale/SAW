@@ -28,14 +28,14 @@ INSERT INTO post (idUtente, urlImmagine, altDescription) VALUES
 
 INSERT INTO post (IdUtente, oraPubblicazione, urlImmagine, altDescription)
 VALUES
-  (11, '2022-02-09 15:30:00', 'javascript1.jpg', 'Meme su JavaScript'),
-  (11, '2022-02-09 14:45:00', 'javascript2.png', 'Meme su JavaScript'),
-  (11, '2022-02-08 17:20:00', 'javascript3.jpg', 'Meme su JavaScript'),
-  (11, '2022-02-08 10:00:00', 'javascript6.jpg', 'Meme su JavaScript'),
-  (11, '2022-02-08 11:30:00', 'javascript7.jpg', 'Meme su JavaScript'),
-  (11, '2022-02-08 12:45:00', 'javascript4.jpg', 'Meme su JavaScript'),
-  (11, '2022-02-09 08:00:00', 'javascript5.jpg', 'Meme su JavaScript'),
-  (11, '2022-02-09 13:10:00', 'javascript8.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 15:30:00', 'Javascript1.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 14:45:00', 'Javascript2.png', 'Meme su JavaScript'),
+  (11, '2022-02-08 17:20:00', 'Javascript3.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-08 10:00:00', 'Javascript6.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-08 11:30:00', 'Javascript7.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-08 12:45:00', 'Javascript4.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 08:00:00', 'Javascript5.jpg', 'Meme su JavaScript'),
+  (11, '2022-02-09 13:10:00', 'Javascript8.jpg', 'Meme su JavaScript'),
   (11, '2022-02-09 15:30:00', 'PHP1.jpg', 'Meme su PHP'),
   (11, '2022-02-09 14:45:00', 'PHP2.jpg', 'Meme su PHP'),
   (11, '2022-02-08 17:20:00', 'PHP3.jpg', 'Meme su PHP'),
