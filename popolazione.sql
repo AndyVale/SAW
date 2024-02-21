@@ -1,6 +1,6 @@
 -- Popolazione del database (grazie chatgpt)
 -- Inserimento utenti, le password sono la stringa: "passX" dove X è il numero dell'utente partendo da 1, per Marina Ribaudo è ziaribba
-INSERT INTO Utente (email, firstname, lastname, username, pass) VALUES
+INSERT INTO utente (email, firstname, lastname, username, pass) VALUES
 ('email11@example.com', 'Ava', 'Anderson', 'AvaSon', '$2y$10$JcHRLcAfU8jir0N5pxEI4.TJpfKAMU3Et4t6Ftr.8f3xu2CsQ0GiW'),
 ('email12@example.com', 'Liam', 'Harris', 'Lirrs', '$2y$10$H2kv66.wclNP5SxU9WyfOe2Bj4bs6B1EU60vxkTrryi.95UJRSSt6'),
 ('email13@example.com', 'Ella', 'Thompson', 'Elly', '$2y$10$UliaAmIXCE5wVvwrnGQl5.Brzb277CFja2JirQsmpWBPEORt8kHJy'),
@@ -14,7 +14,7 @@ INSERT INTO Utente (email, firstname, lastname, username, pass) VALUES
 ('email21@example.com', 'Marina', 'Ribaudo', 'ZiaRibba', '$2y$10$.QEw7NFCdCyjRbSUjJVnQ.98lSPRtCHMZDT8nR0mPpY...');
 
 -- Inserimento post
-INSERT INTO Post (idUtente, urlImmagine, altDescription) VALUES
+INSERT INTO post (idUtente, urlImmagine, altDescription) VALUES
 (7, 'image_url11.jpg', 'Meme super divertente'),
 (8, 'image_url12.jpg', 'Meme super divertente'),
 (9, 'image_url13.jpg', 'Meme super divertente'),
@@ -26,7 +26,7 @@ INSERT INTO Post (idUtente, urlImmagine, altDescription) VALUES
 (5, 'image_url19.jpg', 'Meme super divertente'),
 (6, 'image_url20.jpg', 'Meme super divertente');
 
-INSERT INTO Post (IdUtente, oraPubblicazione, urlImmagine, altDescription)
+INSERT INTO post (IdUtente, oraPubblicazione, urlImmagine, altDescription)
 VALUES
   (11, '2022-02-09 15:30:00', 'javascript1.jpg', 'Meme su JavaScript'),
   (11, '2022-02-09 14:45:00', 'javascript2.png', 'Meme su JavaScript'),
@@ -48,7 +48,7 @@ VALUES
 
 
 -- Inserimento like
-INSERT INTO Liked (idUtente, idPost) VALUES
+INSERT INTO liked (idUtente, idPost) VALUES
 (7, 8),
 (8, 9),
 (9, 1),
@@ -61,7 +61,7 @@ INSERT INTO Liked (idUtente, idPost) VALUES
 (6, 7);
 
 -- Inserimento follow
-INSERT INTO Seguiti (idUtente, idUtenteSeguito) VALUES
+INSERT INTO seguiti (idUtente, idUtenteSeguito) VALUES
 (7, 8),
 (8, 9),
 (9, 1),
@@ -74,7 +74,7 @@ INSERT INTO Seguiti (idUtente, idUtenteSeguito) VALUES
 (6, 7);
 
 -- Inserimento cartella salvati
-INSERT INTO CartellaSalvati (idUtente) VALUES
+INSERT INTO cartellaSalvati (idUtente) VALUES
 (7),
 (8),
 (9),
@@ -87,7 +87,7 @@ INSERT INTO CartellaSalvati (idUtente) VALUES
 (2);
 
 -- Inserimento post salvati
-INSERT INTO Salvati (idCartella, idPost) VALUES
+INSERT INTO salvati (idCartella, idPost) VALUES
 (7, 4),
 (8, 5),
 (9, 6),
