@@ -55,7 +55,7 @@ try{
             echo json_encode(array("result" => "ERROR", "message" => "Missing altDescription field"));
             exit;
         }
-        $alt = $_GET['altDescription'];
+        $alt = htmlentities($_GET['altDescription']);
         $imageUrlObject = file_get_contents('php://input');
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageUrlObject));
 
