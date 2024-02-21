@@ -3,6 +3,10 @@ import {getSnippet, renderSnippet} from "./functions.js";
 import {showLogin} from "./login.js";
 import {showRegistration} from "./registration.js";
 
+/**
+ * Funzione che renderizza i bottoni della navbar in base alla presenza o meno di dati utente nel localStorage, a patto che non
+ * siano passate più di 12 ore dall'ultimo aggiornamento dei dati.
+ */
 function renderBottoniNavbar(){
     console.log("renderBottoniNavbar()");
     let bottoniNavbarContainer = document.getElementById("contenitoreBottoniNavbar");
@@ -12,22 +16,28 @@ function renderBottoniNavbar(){
 
     if(localStorage.getItem("email") != null && localStorage.getItem("firstname") != null && localStorage.getItem("lastname") != null && (new Date().getTime() - localStorage.getItem("lastUpdate")) < 1000*60*60*12){
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneLogout'> Logout </button>");
-        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</span>");
-        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneLogoutPiccolo'>Logout</a>");
-        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneVisualizzaProfiloPiccolo'>"+localStorage.getItem("firstname")+"</a>");
+        bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark'style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneVisualizzaProfilo'>"+localStorage.getItem("firstname")+"</a>");
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<button type='button' class='w-100 btn btn-outline-dark me-2' style='border:0px; height: 59px; padding: 16px;' id='bottoneLogoutPiccolo'>Logout</button>");
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<button type='button' class='w-100 btn btn-outline-dark me-2' style='border:0px; height: 59px; padding: 16px;' class='w-100 btn' id='bottoneVisualizzaProfiloPiccolo'>"+localStorage.getItem("firstname")+"</a>");
     }else{
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark me-2' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneLogin'> Login </button>");
         bottoniNavbarContainer.insertAdjacentHTML("beforeend", "<button type='button' class='btn btn-outline-dark' style='border-radius: 20px; height: 59px; padding: 16px;' id='bottoneRegistration'> Registrati </button>");    
-        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneLoginPiccolo'>Login</a>");
-        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<a href='#' id='bottoneRegistrationPiccolo'>Registrati</a>");    
-      }
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<button type='button' class='w-100 btn btn-outline-dark me-2' style='border:0px; height: 59px; padding: 16px;' id='bottoneLoginPiccolo'>Login</button>");
+        bottoniNavbarContainerSmall.insertAdjacentHTML("beforeend", "<button type='button' class='w-100 btn btn-outline-dark me-2' style='border:0px; height: 59px; padding: 16px;' id='bottoneRegistrationPiccolo'>Registrati</button>");    
+    }
 }
 
+/**
+ * Funzione che renderizza la navbar nel div con id "navbarContainer" e poi renderizza i bottoni della navbar
+ */
 function renderNavbar(){
-    getSnippet("../../snippets_html/snippetNavbar.html").then(
-        (snippet) => renderSnippet(snippet, navbarContainer)).then((e)=>renderBottoniNavbar());
+    let navbarContainer = document.getElementById("navbarContainer");
+    getSnippet("../../snippets_html/snippetNavbar.html").then((snippet) => renderSnippet(snippet, navbarContainer)).then((e)=>renderBottoniNavbar());
 }
 
+/**
+ * Funzione che effettua il logout dell'utente, inviando una richiesta al server e rimuovendo i dati utente dal localStorage
+ */
 function logout(){
     fetch("../../../backend/script/logout.php").then((response) => {
       if(response.ok){
@@ -39,6 +49,9 @@ function logout(){
       if(res['result'] == "OK"){
         localStorage.clear();
         window.location.href = "./"+window.location.search;
+      }
+      else{
+        console.log("Errore nella richiesta a logout.php");
       }
     }).catch((error) => {
       console.log(error);
@@ -114,8 +127,7 @@ function displaySearchResult(data, where){
  * @param {String} userName Stringa da inviare al server (non deve essere per forza un username)
  * @returns {Promise} Restituisce una promise che contiene un array di oggetti con i dati degli utenti
  */
-
-function search_user(userName){
+async function search_user(userName){
     userName = userName.trim();
     if(userName != ""){ // Se la stringa non è vuota
         return fetch('../../../backend/script/search_engine.php?search='+userName)
@@ -123,7 +135,7 @@ function search_user(userName){
         .catch(error => console.log(error));
     }
     //altrimenti ritorna un array vuoto, e di questo fuori da search_user() ce ne si accorge nemmeno
-    return new Promise ((resolve, reject) => resolve([]));
+    return [];
 }
 
 function gestisciInputSearchEngine(event){

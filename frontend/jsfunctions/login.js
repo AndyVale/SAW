@@ -75,6 +75,11 @@ function showLogin(){
     loginFormContainer.style.display = "block";
 }
 
+/**
+ * Funzione che gestisce l'evento di click sul form di login, chiudendolo se si clicca sul bottone di chiusura.
+ * La chiusura del form, che è semplicemente un cambio dell'attributo display, comporta anche la rimozione del filtro di sfocatura dal resto della pagina.
+ * @param {Event} e - evento di click
+ */
 function gestoreEventiClickLogin(e){
     console.log("gestoreEventiClickLogin");
     if(e.target.id=="bottoneChiusuraLogin"){//non voglio dover rifare il fetch ogni volta che chiudo il form
@@ -83,6 +88,10 @@ function gestoreEventiClickLogin(e){
     }
 }
 
+/**
+ * Funzione che gestisce l'evento di submit del form di login, inviando i dati al server e gestendo la risposta.
+ * @param {Event} e - evento di submit del form di login
+ */
 function gestoreEventiSubmitLogin(e){
     e.preventDefault();
     console.log("gestoreEventiSubmitLogin");
@@ -90,21 +99,21 @@ function gestoreEventiSubmitLogin(e){
         loginContainer = document.getElementById("loginContainer"),
         dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
         
-        console.clear();
-        console.log(dataContainer)   ;
+        //console.clear();
+        console.log(dataContainer);
         console.log(dati);
         fetch("../../../backend/script/login.php",
         {
             method: "POST",//potrebbe essere GET(?)
             body: dati
-        }).then(function(response){
+        }).then((response)=>{
             if(response.ok){
                 return response.json();
             }else{
                 console.log(response);
                 throw new Error("Errore nella richiesta a login.php");
             }
-        }).then(function(res){
+        }).then((res)=>{
             console.log(res);
             if(res['result']=="OK"){
                 storeUserData(res['data']);
@@ -118,19 +127,24 @@ function gestoreEventiSubmitLogin(e){
                         dbErrorReport(loginContainer);
                         break;
                     default:
-                        alert("You did play with the code, didn't you?");
+                        alert("Errore sconosciuto...scusa :(");
                         break;
                 }
             }    
-        }).catch(function(error){
+        }).catch((error)=>{
             console.log(error);
             dbErrorReport(loginContainer);
         });
    // }
 }
 
+/**
+ * Funzione che gestisce l'evento di input dei campi del form di login, rimuovendo eventuali segnalazioni di errore.
+ * @param {Event} e - evento di input
+ */
 function gestoreEventiInputLogin(e){
     console.log("gestoreEventiInputLogin");
+    let loginEmail = document.getElementById("loginEmail"), loginPassword = document.getElementById("loginPassword");
     if(e.target === loginEmail || e.target === loginPassword){
         credentialsAreWrongReport(false);
     }

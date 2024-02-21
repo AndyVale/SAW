@@ -85,7 +85,7 @@ function gestoreEventiSubmitRegistration(e){
                     dbErrorReport(registrationContainer);
                     break;
                 default:
-                    alert("You did play with the code, didn't you?");
+                    alert("Errore sconosciuto...scusa :(");
                     break;
             }
         }
@@ -102,7 +102,7 @@ function gestoreEventiInputRegistration(e){
         emailIsUniqueReport(true);
     }
     if(e.target.id === "password" || e.target.id === "confirm"){
-        if(password.value!=confirm.value){
+        if(password.value!=confirm.value){//TODO: aspettare che l'utente finisca di scrivere la password per segnalare l'errore
             passwordsAreValidsReport(false);
         }else{
             passwordsAreValidsReport(true);

@@ -27,19 +27,12 @@ function myFunction() {
     plus.classList.remove("show-name");
   } 
 
-  if(window.scrollY >= (inspo.offsetTop/2) && window.scrollY < (inspo.offsetTop + inspo.offsetHeight)){
+  if(window.scrollY >= (inspo.offsetTop/2) && window.scrollY < (inspo.offsetTop + inspo.offsetHeight)){ //TODO: se si ricarica la pagina in questo punto non si vede nulla, da cambiare
     inspo.classList.add("show-name");
   } else {
     inspo.classList.remove("show-name");
   }
 }
-
-let image1 = document.getElementById("img1");
-let image2 = document.getElementById("img2");
-let image3 = document.getElementById("img3");
-let image4 = document.getElementById("img4");
-let image5 = document.getElementById("img5");
-let image6 = document.getElementById("img6");
 
 function gestisciEventoMouseOver(number){
   let img = document.getElementById("img"+number);
@@ -50,6 +43,13 @@ function gestisciEventoMouseOut(number) {
   let img = document.getElementById("img"+number);
   img.style.transform = 'scale(1)';
 }
+
+let image1 = document.getElementById("img1");//TODO: Da modificare usando il bubbling
+let image2 = document.getElementById("img2");
+let image3 = document.getElementById("img3");
+let image4 = document.getElementById("img4");
+let image5 = document.getElementById("img5");
+let image6 = document.getElementById("img6");
 
 image1.addEventListener('mouseover', ()=> gestisciEventoMouseOver("1"));
 image2.addEventListener('mouseover', ()=> gestisciEventoMouseOver("2"));

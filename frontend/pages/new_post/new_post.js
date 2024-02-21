@@ -1,14 +1,18 @@
 import { renderFooter } from "../../jsfunctions/footer.js";
 import { cookieLogin, showLogin } from "../../jsfunctions/login.js";
 import { renderNavbar } from "../../jsfunctions/navbar.js";
-console.log(document.getElementById('imageCanvas').clientWidth);
-console.log(document.getElementById('imageCanvas').clientHeight);
 
 var canvas=new fabric.Canvas('imageCanvas', {
     width: document.getElementById('dropZone').clientWidth,
     height: 350
 }); //creo un canvas con dimensioni iniziali, poi verrà ridimensionato in base all'immagine
 
+/**
+ * Funzione che verifica il rapporto tra larghezza e altezza dell'immagine e restituisce il rapporto più vicino a quello dell'immagine
+ * @param {Number} width 
+ * @param {Number} height 
+ * @returns 
+ */
 function verificaRatio(width, height) {
     const ratio = width / height;
     const ratios = {
@@ -33,7 +37,7 @@ function verificaRatio(width, height) {
     return closestRatio;
 }
 
-window.addEventListener('resize', () => {
+window.addEventListener('resize', () => {//TODO: Aggiungere resize immagine in automatico
     const deviceWidth = window.innerWidth/2;
     const deviceHeight = window.innerHeight/2;
     const imageWidth = canvas.width;
@@ -43,8 +47,7 @@ window.addEventListener('resize', () => {
 
 function riadattaCanvas(deviceWidth, deviceHeight, imageWidth, imageHeight) {
     const ratio = verificaRatio(imageWidth, imageHeight);
-    const [ratioWidth, ratioHeight] = ratio.split(':').map(Number);
-
+    const [ratioWidth, ratioHeight] = ratio.split(':');
     if (deviceWidth / deviceHeight > ratioWidth / ratioHeight) {
         canvas.setWidth(deviceHeight * (ratioWidth / ratioHeight));
         canvas.setHeight(deviceHeight);
@@ -71,7 +74,7 @@ function impostaImmagineCanvas(e){
     }
     canvas.clear();
     canvas.add(image);
-    canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
+    //canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
     canvas.centerObject(image);
     canvas.renderAll();
 }
@@ -83,7 +86,6 @@ function handleFileImageUpload(e){
     reader.addEventListener("load", event => readerShowImage(event));
     reader.readAsDataURL(e.target.files[0]);
 }
-
 
 function handleAddTextArea(){
     if(canvas == null){return;}
@@ -97,7 +99,7 @@ function handleAddTextArea(){
         options = ['Arial', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Comic Sans MS', 'Trebuchet MS', 'Arial Black', 'Impact', 'Lucida Console', 'Lucida Sans Unicode', 'Palatino Linotype', 'Tahoma', 'Garamond', 'Bookman Old Style'],
         removeButton = document.createElement('button');
 
-    let textInCanvas = new fabric.Text('Casella di testo ' + num, {
+    let textInCanvas = new fabric.Text('Testo ' + num, {
         fill: 'black'
     });
 
@@ -182,13 +184,13 @@ function hadleUpload(){
 
     let canvasImg = document.getElementById('imageCanvas');
     canvas.discardActiveObject().renderAll();
-    var imgData = canvasImg.toDataURL({
+    var imgData = canvasImg.toDataURL({//TODO:impedire il caricamento di immagini troppo grandi (eseguendo un resize)
         format: 'png',
         multiplier: 1
     });
     fetch('../../../backend/script/post_handler.php?altDescription='+altDescription.value, {
         method: 'POST',
-        body:  imgData
+        body: imgData
     })
     .then(response =>{
         switch(response.status){
@@ -220,7 +222,6 @@ function readerShowImage(event){
     document.getElementById('alternativeText').style.display = 'block';
 }
 
-
 var imageLoader = document.getElementById('imageLoader'),
     uploadButton = document.getElementById('uploadButton'),
     addTextButton = document.getElementById('addTextButton'),
@@ -244,7 +245,7 @@ dropZone.addEventListener("drop", (e) => {
     e.stopPropagation();
 
     let reader = new FileReader();//leggo dal drop
-    textAreasContainer.innerHTML = '';//pulisco il contenitore dei campi di testo
+    //textAreasContainer.innerHTML = '';//pulisco il contenitore dei campi di testo
     reader.addEventListener("load", event => readerShowImage(event));
     reader.readAsDataURL(e.dataTransfer.files[0]);
 
@@ -259,14 +260,6 @@ dropZone.addEventListener("dragleave", (e)=>{
 });
 
 document.addEventListener("DOMContentLoaded", (e)=>{
-    /*fetch('../../../backend/script/post_handler.php', {
-        method: 'OPTIONS'
-    }).then(response =>{
-        if(response.status == 401)
-            showLogin();
-    })
-    .catch(error => console.log(error));*/
-
     renderFooter();
     cookieLogin().then(()=>{
         renderNavbar();
