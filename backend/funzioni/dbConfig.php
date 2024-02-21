@@ -1,8 +1,8 @@
 <?php
-    /*$host = "localhost";
-    $username = "S5306194";
+    /*const DBHOST = "localhost";
+    const DBUSER = "S5306194";
     $password = "A.T.MiHaDettoDiMettereICoutNelDistruttore";
-    $dbname = "SAWPROJECT";*/
+    $dbname = "S5306194";*/
     const DBHOST = "localhost";
     const DBUSER = "utente1";
     const DBPASS = "123456789";

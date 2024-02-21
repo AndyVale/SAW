@@ -149,7 +149,7 @@ function gestisciClickSearchEngine(event) {
 
     if (userElement) {
         const userId = userElement.id.split("-")[1];
-        const profileUrl = `/SAW/frontend/pages/user/?ID=${userId}`;
+        const profileUrl = `../user/?ID=${userId}`;
         window.location.href = profileUrl;
     }
 }

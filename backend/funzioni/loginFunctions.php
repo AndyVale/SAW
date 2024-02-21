@@ -34,7 +34,7 @@
 
         $actualTime = time();
         $campi = ID.",".EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
-        $query = "SELECT $campi FROM Utente WHERE expireTime > ? and ID = ?";
+        $query = "SELECT $campi FROM utente WHERE expireTime > ? and ID = ?";
         try{
             $result = safeQuery($query, array($actualTime, $cookieVal[1]), "ii");
             if(!is_numeric($result)) {
@@ -43,7 +43,7 @@
                 return login($result[0], $cookieVal[0], $result[0][REMEMBERME]);
             }
         }catch(mysqli_sql_exception $ex){
-            error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            //error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
         }
         return loginResult::DB_ERROR;
     }
@@ -57,7 +57,7 @@
             return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
         
         $fields = ID.",".EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
-        $query = "SELECT $fields FROM Utente WHERE email = ?";
+        $query = "SELECT $fields FROM utente WHERE email = ?";
 
         try{
             $result = safeQuery($query, array(strtolower($_POST[EMAIL])), "s");
@@ -67,7 +67,7 @@
                 return login($result[0], $_POST[PASS], $result[0][PASS]);
             }
         }catch(Exception $e){
-            error_log("dbFunctions.php/credentialsLogin(): Impossibile eseguire la query \n", 3, ERROR_LOG);
+            //error_log("dbFunctions.php/credentialsLogin(): Impossibile eseguire la query \n", 3, ERROR_LOG);
         }
         return loginResult::DB_ERROR;
     }
@@ -84,13 +84,13 @@
         setcookie(REMEMBERME, $cookieValue, $expireTime, '/', null, false, true);//setto il cookie
 
         $cookieToMem = password_hash($rndm, PASSWORD_DEFAULT);//hasho il cookie per lasciarlo sul DB
-        $query = "UPDATE Utente SET rememberMe = ?, expireTime = ? WHERE email = ?";
+        $query = "UPDATE utente SET rememberMe = ?, expireTime = ? WHERE email = ?";
         try{
             if(safeQuery($query, array($cookieToMem, $expireTime, $_SESSION[EMAIL]), "sis") == 1) {
                 return true;//cookie settato correttamente
             }
         }catch(Exception $e){
-            error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
+            //error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
         }
         return false;//cookie non settato
     }

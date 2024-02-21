@@ -13,7 +13,7 @@
             return $conn;
         }
         catch(Exception $e) {
-            error_log("dbFunctions.php/Connect(): ".$e->getMessage()."\n", 3, ERROR_LOG);
+            //error_log("dbFunctions.php/Connect(): ".$e->getMessage()."\n", 3, ERROR_LOG);
             //throw $e;
             return null;
         }
@@ -117,7 +117,7 @@
             if(safeQuery($query, $attributesValues, $attributesTypes) == 1)
                 return array("result" => "INSERT", "message" => "OK");
         }catch(Exception $e){
-            error_log("dbFunctions.php/add_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
+            //error_log("dbFunctions.php/add_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
         }
         return array("result" => "KO", "message" => "ERROR");
     }
@@ -132,7 +132,7 @@
             if(safeQuery($query, $attributesValues, $attributesTypes) >= 1);
                 return array("result" => "DELETE", "message" => "OK");
         }catch(Exception $e){
-            error_log("dbFunctions.php/delete_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
+            //error_log("dbFunctions.php/delete_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
         }
         return array("result" => "KO", "message" => "ERROR");
     }
