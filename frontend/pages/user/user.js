@@ -106,9 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderFooter();
     cookieLogin().then(()=> {//prima provo a fare il login con i cookie, se va male verrà gestito dalle funzioni richiamate
       renderNavbar();
-
       getUserInfo(idUser).then(data => {
-          console.log("DATI: "+data);
+          //console.log("DATI: "+data);
           data = JSON.parse(data);
           console.log(data); 
           stampaDatiUtenti(data['datiUtente']);

@@ -136,7 +136,7 @@ function renderPosts(posts, postContainer){
  * @param {HTMLElement} postContainer - Specifica in che container inserire il post
  */
 function renderAPost(post, postsContainer){
-    
+
 let wrapper = document.createElement("div"),
     card = document.createElement("div"),
     cardBody = document.createElement("div"),
@@ -148,7 +148,7 @@ let wrapper = document.createElement("div"),
     wrapper.classList.add("col-12", "col-md-6", "col-lg-4");
     card.classList.add("card");
     img.classList.add("card-img-top");
-    img.setAttribute("src", "../../immagini/"+post.urlImmagine);
+    img.setAttribute("src", "../../immagini/post/"+post.urlImmagine);
     //console.log("----------------------",post);
     img.setAttribute("alt", post.altDescription);
     changeRatio(1, img);

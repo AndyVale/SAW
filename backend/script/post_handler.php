@@ -63,11 +63,11 @@ try{
             throw new \Exception('base64_decode failed');
         }
         $filename =  uniqid($_SESSION[ID], true).'.png';
-        //file_put_contents(POST_PATH.$filename, $imageData);
-        file_put_contents('../../frontend/immagini/'.$filename, $imageData);
+        file_put_contents(POST_PATH.$filename, $imageData);
+        //file_put_contents('../../frontend/immagini/'.$filename, $imageData);
         
-        //$imageInfo = getimagesize(POST_PATH.$filename);
-        $imageInfo = getimagesize('../../frontend/immagini/'.$filename);
+        $imageInfo = getimagesize(POST_PATH.$filename);
+        //$imageInfo = getimagesize('../../frontend/immagini/'.$filename);
 
         if($imageInfo['mime'] != 'image/png') {//se non era un immagine cancello il casino appena fatto
             echo $imageInfo['mime'];

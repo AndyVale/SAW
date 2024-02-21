@@ -37,7 +37,7 @@
                 return registerResult::SUCCESSFUL_REGISTER;
         }
         catch(mysqli_sql_exception $ex){
-            //error_log("dbFunctions.php/register(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            error_log("dbFunctions.php/register(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
             return registerResult::EMAIL_ALREADY_EXISTS;
         }
         return registerResult::DB_ERROR;

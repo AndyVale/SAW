@@ -9,6 +9,7 @@
     if(!safeSessionStart()) {
         $result['result'] = 'KO';
         $result['message'] = 'ERROR_NOTLOGGED';
+        http_response_code(401);
         echo json_encode($result);
         exit();
     }
@@ -21,7 +22,7 @@
             $result['message'] = 'DB_ERROR';
             http_response_code(500);
             break;
-        case showProfileResult::ERROR_NOTLOGGED:
+        case showProfileResult::ERROR_NOTLOGGED://non dovrebbe mai succedere (viene gestito prima dello switch)
             $result['result'] = 'KO';
             $result['message'] = 'ERROR_NOTLOGGED';
             http_response_code(401);

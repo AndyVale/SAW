@@ -27,7 +27,7 @@
                 return $result[0];
             }
         }catch(mysqli_sql_exception $ex){
-            //error_log("showProfileFunctions.php/showProfile(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            error_log("showProfileFunctions.php/showProfile(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
         }
         return showProfileResult::ERROR_SHOW;
     }

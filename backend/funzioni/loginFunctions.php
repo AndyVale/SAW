@@ -43,7 +43,7 @@
                 return login($result[0], $cookieVal[0], $result[0][REMEMBERME]);
             }
         }catch(mysqli_sql_exception $ex){
-            //error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
         }
         return loginResult::DB_ERROR;
     }
@@ -67,7 +67,7 @@
                 return login($result[0], $_POST[PASS], $result[0][PASS]);
             }
         }catch(Exception $e){
-            //error_log("dbFunctions.php/credentialsLogin(): Impossibile eseguire la query \n", 3, ERROR_LOG);
+            error_log("dbFunctions.php/credentialsLogin(): Impossibile eseguire la query \n", 3, ERROR_LOG);
         }
         return loginResult::DB_ERROR;
     }
@@ -90,7 +90,7 @@
                 return true;//cookie settato correttamente
             }
         }catch(Exception $e){
-            //error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
+            error_log("dbFunctions.php/setRememberMe(): Impossibile impostare il cookie sul db \n", 3, ERROR_LOG);
         }
         return false;//cookie non settato
     }
