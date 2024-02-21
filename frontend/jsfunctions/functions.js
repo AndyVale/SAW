@@ -136,7 +136,7 @@ function renderPosts(posts, postContainer){
  * @param {HTMLElement} postContainer - Specifica in che container inserire il post
  */
 function renderAPost(post, postsContainer){
-    
+
 let wrapper = document.createElement("div"),
     card = document.createElement("div"),
     cardBody = document.createElement("div"),

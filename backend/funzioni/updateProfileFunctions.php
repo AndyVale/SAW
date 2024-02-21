@@ -93,17 +93,17 @@
                     $_SESSION[EMAIL] = htmlentities($_POST[EMAIL]);
                     $_SESSION[FIRSTNAME] = htmlentities($_POST[FIRSTNAME]);
                     $_SESSION[LASTNAME] = htmlentities($_POST[LASTNAME]);
-                    //error_log("update-showProfileFunctions.php/update(): safeQuery"."\n", 3, ERROR_LOG);
+                    error_log("update-showProfileFunctions.php/update(): safeQuery"."\n", 3, ERROR_LOG);
                     return updateResult::SUCCESSFUL_UPDATE;
                 }
                 return updateResult::ERROR_UPDATE;
             }
             catch(mysqli_sql_exception $ex){
-                //error_log("update-showProfileFunctions.php/update(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+                error_log("update-showProfileFunctions.php/update(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
                 return updateResult::DUPLICATE_EMAIL;
             }
             catch(Exception $e){
-                //error_log("update-showProfileFunctions.php/update(): ".$e->getMessage()."\n", 3, ERROR_LOG);
+                error_log("update-showProfileFunctions.php/update(): ".$e->getMessage()."\n", 3, ERROR_LOG);
                 return updateResult::DB_ERROR;
             }
         }
@@ -126,7 +126,7 @@
                 return updateResult::WRONG_CREDENTIALS;
             
         }catch(mysqli_sql_exception $ex){
-            //error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
             return updateResult::DB_ERROR;
         }
             
@@ -137,7 +137,7 @@
             if(safeQuery($query, array($HshdPsw, $_SESSION[ID]), "si") == 1)//la query deve interessare una sola riga
                 return updateResult::SUCCESSFUL_UPDATE;
         }catch(mysqli_sql_exception $ex){
-            //error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
+            error_log("update-showProfileFunctions.php/passwordUpdate(): ".$ex->getMessage()."\n", 3, ERROR_LOG);
             return updateResult::DB_ERROR;
         }
         return updateResult::ERROR_UPDATE;
