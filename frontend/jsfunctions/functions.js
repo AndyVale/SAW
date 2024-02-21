@@ -148,7 +148,7 @@ let wrapper = document.createElement("div"),
     wrapper.classList.add("col-12", "col-md-6", "col-lg-4");
     card.classList.add("card");
     img.classList.add("card-img-top");
-    img.setAttribute("src", "../../immagini/"+post.urlImmagine);
+    img.setAttribute("src", "../../immagini/post/"+post.urlImmagine);
     //console.log("----------------------",post);
     img.setAttribute("alt", post.altDescription);
     changeRatio(1, img);
