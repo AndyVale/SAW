@@ -1,4 +1,4 @@
-import {getSnippet, renderSnippet, dbErrorReport, emailIsUniqueReport, passwordsAreValidsReport} from "./functions.js";
+import {getSnippet, renderSnippet, dbErrorReport, emailIsUniqueReport, passwordsAreValidsReport, replaceContentWithImg} from "./functions.js";
 export {showRegistration};
 
 function gestoreEventiClickRegistration(e){
@@ -35,7 +35,12 @@ function gestoreEventiSubmitRegistration(e){
         }
     }).then(function(json){
         if(json["result"]=="OK"){
-            alert("Registrazione avvenuta con successo");//TODO: gestire il caso di registrazione, ad esempio mostrando un messaggio di successo
+            alert("Registrazione avvenuta con successo");
+            let img = document.createElement("img"), container = document.getElementById("mainRow");
+            img.src = "../../immagini/success.png";
+            img.alt = "Ragazzo in smoking nel deserto che ti comunica che la registrazione avvenuta con successo";
+            console.log(img);
+            replaceContentWithImg(container, img);//TODO: gestire il caso di registrazione, ad esempio mostrando un messaggio di successo
             //window.location.href = "./"+window.location.search;
         }
         else{

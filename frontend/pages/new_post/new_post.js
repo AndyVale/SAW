@@ -1,6 +1,7 @@
 import { renderFooter } from "../../jsfunctions/footer.js";
 import { cookieLogin, showLogin } from "../../jsfunctions/login.js";
 import { renderNavbar } from "../../jsfunctions/navbar.js";
+import {replaceContentWithImg} from "../../jsfunctions/functions.js";
 
 var canvas=new fabric.Canvas('imageCanvas', {
     width: document.getElementById('dropZone').clientWidth,
@@ -14,8 +15,7 @@ function notificaErrore(){
     imgError.style.width = '60%';
     imgError.classList.add('mx-auto', 'd-block');
     imgError.alt = 'Gatto che guarda un computer con espressione stupita, ti dice che c\'è stato un errore nel caricamento dell\'immagine';
-    mR.innerHTML ='';
-    mR.appendChild(imgError);
+    replaceContentWithImg(mR, imgError);
     document.getElementById('uploadButton').style.display = 'none';
 }
 

@@ -1,6 +1,6 @@
 export {getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport,
         renderPosts, renderAPost, changeRatio, getLikedPosts, setLikedPosts, postInteraction
-        ,getUserPosts, emailIsUniqueReport, passwordsAreValidsReport};
+        ,getUserPosts, emailIsUniqueReport, passwordsAreValidsReport, replaceContentWithImg};
 
 
 /**
@@ -324,4 +324,14 @@ function passwordsAreValidsReport(areValids){
         password.setAttribute("aria-invalid", "true");
         confirm.setAttribute("aria-invalid", "true");
     }
+}
+
+/**
+ * Funzione che elimina il contenuto di un container e lo sostituisce con un immagine
+ * @param {HTMLElement} container - container contenente il contenuto da sostituire
+ * @param {HTMLElement} img - immagine da inserire al posto del contenuto
+ */
+function replaceContentWithImg(container, img){
+    container.innerHTML = "";
+    container.appendChild(img);
 }
