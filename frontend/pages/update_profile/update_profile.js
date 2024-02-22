@@ -10,19 +10,23 @@ function stampaDati(datiUtente) {
     let NomeCognome = document.getElementById('fullname'),
     Nome  = document.getElementById('firstname'),
     Cognome = document.getElementById('lastname'),
-    Email = document.getElementById('email'),
+    EmailInput = document.getElementById('email'),
+    EmailView = document.getElementById('sh_email'),
     nPost = document.getElementById('nPost'),
     nFollower = document.getElementById('nFollowers'),
     nFollowing = document.getElementById('nFollowing'),
     immagineProfilo = document.getElementById('profile-image'),
-    username = document.getElementById('username');
+    usernameInput = document.getElementById('username'),
+    usernameView = document.getElementById('sh_username');
 
-    if (NomeCognome && Nome && Cognome && Email && username && nPost && nFollower && nFollowing && immagineProfilo) {
-      NomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
+    if (NomeCognome && Nome && Cognome && EmailInput && username && nPost && nFollower && nFollowing && immagineProfilo) {
+      NomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
       Nome.value = datiUtente.firstname;
-      username.value = datiUtente.username;
+      usernameInput.value = datiUtente.username;
+      usernameView.textContent = datiUtente.username;
       Cognome.value = datiUtente.lastname;
-      Email.value = datiUtente.email;
+      EmailInput.value = datiUtente.email;
+      EmailView.textContent = datiUtente.email;
       nPost.textContent = datiUtente.nPost;
       nFollower.textContent = datiUtente.nFollower;
       nFollowing.textContent = datiUtente.nFollowing;
@@ -65,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
           switch(data['message']){
             case "ERROR_NOTLOGGED":
               //removeUserData(); Delegato alla homePage
-              //alert("Non sei loggato!");
               //showLogin(); potrei mostrare il login ma sarebbe più complicato da gestire a livello di sicurezza direi
               window.location.href = "../homepage";
               break;
