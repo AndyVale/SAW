@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
       fetch('../../../backend/script/show_profile.php', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json' // Specifica il tipo di contenuto come JSON se necessario
+          'Content-Type': 'application/json'
         }
       })
       //verifica che non siano necessari altri controlli più specifici
@@ -72,8 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
        console.log('Stack dell\'errore:', error.stack);
        });
     });
-    // Effettua una richiesta API Fetch per ottenere i dati dell'utente
-    
 });
 
 var UpdateForm = document.getElementById("update_form");
@@ -104,7 +102,6 @@ UpdateForm.addEventListener("submit", function(e) {
         case "DUPLICATE_EMAIL":
           //alert("Email già in uso");
           emailIsUniqueReport(false);
-          //scrivere email già in uso è sbagliato perchè suggerisce a un hacker un'email valida? Meglio usare 'Impossibile usare questa email'?
           break; 
         case "ERROR_MISSINGFIELDS":
           alert("Ci sono dei campi vuoti!");//non dovrebbe mai succedere se l'utente non gioca con il codice
@@ -119,7 +116,7 @@ UpdateForm.addEventListener("submit", function(e) {
           window.location.href = "./index.html";
           break;
         case "DB_ERROR":
-          //alert("OHHHH cosa fai");
+          alert("Errore nel database");
           break;
         case "ERROR_UPDATE":
           alert("Errore nell'aggiornare i dati dell'utente");
