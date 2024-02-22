@@ -70,7 +70,7 @@
         }
         
         $nAffectedRows = $conn->affected_rows;
-        //result->close();
+        
         return $nAffectedRows;
     }
 
