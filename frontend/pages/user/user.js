@@ -1,6 +1,6 @@
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {removeUserData, storeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts, changeRatio} from "../../jsfunctions/functions.js";
+import {removeUserData, storeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts,stampaDatiUtenti, changeRatio} from "../../jsfunctions/functions.js";
 import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 
 let parts = window.location.search.substring(1).split("&"),
@@ -14,28 +14,6 @@ for (let i = 0; i < parts.length && idUser == null; i++) {
     if(temp[0] == 'ID') idUser = temp[1];
 }
 console.log("ID inviato: "+idUser);
-
-
-/**
- * Funzione che permette di stampare i dati dell'utente di cui si vogliono visualizzare le informazioni
- * @param {object} datiUtente oggetto cone i dati dell'utente
- */
-function stampaDatiUtenti(datiUtente) {
-    console.log("stampaDatiUtenti: ");
-    console.log(datiUtente);
-    let nomeCognome = document.getElementById("fullname"),
-        nPost=document.getElementById("nPost"),
-        nFollower=document.getElementById("nFollowers"),
-        nFollowing=document.getElementById("nFollowing"),
-        imgProfilo = document.getElementById("profile-image");
-    nPost.textContent = datiUtente.nPost;
-    nFollower.textContent = datiUtente.nFollower;
-    nFollowing.textContent = datiUtente.nFollowing;
-    nomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
-    imgProfilo.src = "../../immagini/profile/"+datiUtente.profilePicture;
-    changeRatio(1, imgProfilo);
-    document.title = datiUtente.firstname + " " + datiUtente.lastname;
-  }
 
 /**
  * Funzione asincrona che permette di ottenere le informazioni dell'utente
