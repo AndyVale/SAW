@@ -55,14 +55,10 @@
         //Funzione che effettua il login tramite email e password
         if(emptyFields(EMAIL, PASS))//controllo che i campi non siano vuoti
             return loginResult::MISSING_FIELDS;
-    
-        $conn = connect();
-        if($conn == null)
-            return loginResult::DB_ERROR;//se la connessione non va a buon fine è un problema del DB
-        
+           
         $fields = ID.",".EMAIL.",".PASS.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
         $query = "SELECT $fields FROM utente WHERE email = ?";
-
+        
         try{
             $result = safeQuery($query, array(strtolower($_POST[EMAIL])), "s");
             if(!is_numeric($result)) {//controllo che safeQuery abbia restituito un solo oggetto
