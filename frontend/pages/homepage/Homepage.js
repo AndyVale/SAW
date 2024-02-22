@@ -16,7 +16,7 @@ function myFunction() {
       search =  document.getElementById("search"),
       plus =  document.getElementById("plus"); 
       
-  if(window.scrollY >= (like.offsetTop/4) && window.scrollY < (like.offsetTop + like.offsetHeight)){ 
+  if(window.scrollY >= (like.offsetTop/4) && window.scrollY < (like.offsetTop + like.offsetHeight)){ //TODO: bruttino, si può fare meglio
     document.getElementById("like").classList.add("show-name");
     profile.classList.add("show-name");
     search.classList.add("show-name");
@@ -28,7 +28,7 @@ function myFunction() {
     plus.classList.remove("show-name");
   } 
 
-  if(window.scrollY >= (inspo.offsetTop/2) && window.scrollY < (inspo.offsetTop + inspo.offsetHeight)){ 
+  if(window.scrollY >= (inspo.offsetTop/2) && window.scrollY < (inspo.offsetTop + inspo.offsetHeight)){ //TODO: bruttino, si può fare meglio
     inspo.classList.add("show-name");
   } else {
     inspo.classList.remove("show-name");
@@ -63,7 +63,7 @@ function randomPosts(){
           displayRandomPosts(data['data'], 6);
       }
       else{
-          console.log("upload default images");
+          console.log("default images");
       }
   }).catch(function(error){
       console.error('Errore:', error);
