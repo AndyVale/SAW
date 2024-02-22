@@ -35,7 +35,7 @@ function gestoreEventiSubmitRegistration(e){
         }
     }).then(function(json){
         if(json["result"]=="OK"){
-            alert("Registrazione avvenuta con successo");
+            //alert("Registrazione avvenuta con successo");
             let img = document.createElement("img"), container = document.getElementById("mainRow");
             img.src = "../../immagini/success.png";
             img.alt = "Baby Yoda ti ringrazia per la registrazione avvenuta con successo!";

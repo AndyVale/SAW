@@ -1,6 +1,6 @@
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {removeUserData, storeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
+import {removeUserData, storeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts, changeRatio} from "../../jsfunctions/functions.js";
 import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 
 let parts = window.location.search.substring(1).split("&"),
@@ -33,6 +33,7 @@ function stampaDatiUtenti(datiUtente) {
     nFollowing.textContent = datiUtente.nFollowing;
     nomeCognome.textContent = datiUtente.firstname + " " + datiUtente.lastname;
     imgProfilo.src = "../../immagini/profile/"+datiUtente.profilePicture;
+    changeRatio(1, imgProfilo);
     document.title = datiUtente.firstname + " " + datiUtente.lastname;
   }
 
