@@ -89,7 +89,8 @@ UpdateForm.addEventListener("submit", function(e) {
     if (data['result'] == "OK") {
         console.log({"firstanem":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
         storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email'), 'username': dati.get('username')});
-        window.location.href = "../show_profile/index.html";
+        //window.location.href = "../show_profile/index.html";
+        alertSuccess("Profilo aggiornato con successo!", document.getElementById("profileSpace"), "profileAlert");
     } else {
       switch(data['message']){
         case "ERROR_NOTLOGGED":
@@ -127,6 +128,22 @@ UpdateForm.addEventListener("submit", function(e) {
   });
 });
 
+/*
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <p>Password aggiornata con successo!</p>
+</div>
+*/
+function alertSuccess(message, parent, id){
+  let psswdAlert = document.createElement("div");
+  psswdAlert.classList.add("alert", "alert-success", "alert-dismissible", "fade", "show");
+  psswdAlert.setAttribute("role", "alert");
+  psswdAlert.setAttribute("id", id);
+  let messagePrint = document.createElement("p");
+  messagePrint.textContent = message;
+  psswdAlert.appendChild(messagePrint);
+  parent.appendChild(psswdAlert);
+}
+
 var UpdatePassForm = document.getElementById("new_password_form");
 UpdatePassForm.addEventListener("submit", function(e) {
 e.preventDefault();
@@ -139,8 +156,7 @@ fetch('../../../backend/script/change_password.php', {
 .then(response => response.json())
 .then(data => {
   if (data['result'] == "OK") {
-      //alert("Password cambiata con successo!");//TODO:notificare l'utente con un messaggio di successo
-      window.location.href = "../show_profile/index.html";
+      alertSuccess("Password aggiornata con successo!",  document.getElementById("PsswdSpace"), "psswdAlert");
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
@@ -182,7 +198,9 @@ email.addEventListener("input", function(e) {
 document.getElementById("new_password_form").addEventListener("input", function(e) {
   let new_password = document.getElementById("password"),
       confirm_password = document.getElementById("confirm"),
-      old_password = document.getElementById("currentpass");
+      old_password = document.getElementById("currentpass"),
+      psswdAlert = document.getElementById("psswdAlert");
+  if(psswdAlert != null) psswdAlert.remove();
   if (e.target.id === "password" || e.target.id === "confirm") {
     if (new_password.value != confirm_password.value) {
       passwordsAreValidsReport(false);
@@ -193,5 +211,9 @@ document.getElementById("new_password_form").addEventListener("input", function(
   if(e.target.id === "currentpass"){
     old_password.classList.remove("is-invalid");
   }
+});
+
+document.getElementById("update_form").addEventListener("input", function(e) {
+  if(profileAlert != null) profileAlert.remove();
 });
 
