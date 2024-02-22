@@ -7,6 +7,7 @@ export {showLogin, cookieLogin};
  * @param {Boolean} boolWrongCredential - boolWrongCredential specifica se le credenziali sono sicuramente errate
  */
 function credentialsAreWrongReport(boolWrongCredential){
+    console.log("credentialsAreWrongReport() " +boolWrongCredential);
     let email = document.getElementById("loginEmail"), password = document.getElementById("loginPassword"), submitButton = document.getElementById("loginSubmitButton"), loginFeedback = document.getElementById("loginFeedback");
     if(boolWrongCredential){
         email.classList.add("is-invalid");
@@ -42,6 +43,7 @@ async function cookieLogin(){
             localStorage.setItem("lastUpdate", Date.now());
         return;
     }//se c'è il cookie PHPSESSID vuol dire che l'utente ha già interagito con il server
+
     return fetch("../../../backend/script/cookie_login.php").then((response) => {
         if(response.ok){
             return response.json();
@@ -99,19 +101,20 @@ function gestoreEventiSubmitLogin(e){
         loginContainer = document.getElementById("loginContainer"),
         dati = new FormData(dataContainer);//associo i dati del form a quelli da inviare con la fetch
         
-        //console.clear();
-        console.log(dataContainer);
-        console.log(dati);
         fetch("../../../backend/script/login.php",
         {
             method: "POST",//potrebbe essere GET(?)
             body: dati
         }).then((response)=>{
-            if(response.ok){
-                return response.json();
-            }else{
-                console.log(response);
-                throw new Error("Errore nella richiesta a login.php");
+            switch(response.status){
+                case 200:
+                    return response.json();
+                case 401:
+                case 400:
+                    credentialsAreWrongReport(true);
+                    return response.json();
+                default:
+                    throw new Error("Errore nella richiesta a login.php");
             }
         }).then((res)=>{
             console.log(res);
@@ -121,7 +124,8 @@ function gestoreEventiSubmitLogin(e){
             }else{//TODO: gestire i vari casi di errore
                 switch(res["message"]){
                     case "WRONG_CREDENTIALS":
-                        credentialsAreWrongReport(true);
+                    case "MISSING_FIELDS":
+                        //credentialsAreWrongReport(true);
                         break;
                     case "DB_ERROR":
                         dbErrorReport(loginContainer);

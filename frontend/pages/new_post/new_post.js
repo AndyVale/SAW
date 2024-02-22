@@ -174,6 +174,35 @@ function handleAddTextArea(){
     canvas.renderAll();
 }
 
+/**
+ * Funzione che ridimensiona un canvas in base a una larghezza e altezza massima, senza distorcere l'immagine,
+ * ovvero mantenendo l'aspect ratio dell'immagine.
+ * @param {canvas} cnvs Canvas da ridimensionare
+ * @param {*} maxWidth larghezza massima che si vuole ottenere
+ * @param {*} maxHeight altezza massima che si vuole ottenere
+ * @returns {canvas} Canvas ridimensionato
+ */
+function resizeCanvas(cnvs, maxWidth, maxHeight, minWidth=0, minHeight=0) {
+    let tempCanvas = document.createElement('canvas'),
+        tempContext = tempCanvas.getContext('2d'),
+        aspectRatio = cnvs.width / cnvs.height;
+
+    if (cnvs.width > maxWidth) {
+        tempCanvas.width = maxWidth;
+        tempCanvas.height = maxWidth / aspectRatio;
+    } else if (cnvs.height > maxHeight) {
+        tempCanvas.height = maxHeight;
+        tempCanvas.width = maxHeight * aspectRatio;
+    } else {
+        tempCanvas.width = cnvs.width;
+        tempCanvas.height = cnvs.height;
+    }
+
+    tempContext.drawImage(cnvs, 0, 0, tempCanvas.width, tempCanvas.height);
+    return tempCanvas;
+}
+
+
 function hadleUpload(){
     let file = document.getElementById('imageLoader'), altDescription = document.getElementById('alternativeText');
     console.log(file.files[0]);
@@ -181,16 +210,20 @@ function hadleUpload(){
         altDescription.style.border = '2px solid red';
         return;
     }
-
     let canvasImg = document.getElementById('imageCanvas');
+    canvasImg = resizeCanvas(canvasImg, 1000, 1000);//per evitare di caricare immagini troppo grandi
     canvas.discardActiveObject().renderAll();
-    var imgData = canvasImg.toDataURL({//TODO:impedire il caricamento di immagini troppo grandi (eseguendo un resize)
+    let imgData = canvasImg.toDataURL({
         format: 'png',
         multiplier: 1
     });
-    fetch('../../../backend/script/post_handler.php?altDescription='+altDescription.value, {
+
+    fetch('../../../backend/script/post_handler.php', {
         method: 'POST',
-        body: imgData
+        body: JSON.stringify({
+            postImg: imgData,
+            altDescription: altDescription.value
+        })
     })
     .then(response =>{
         switch(response.status){

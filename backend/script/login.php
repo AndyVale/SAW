@@ -19,26 +19,26 @@
                     $result['rememberme'] = 'OK';
                 }
             }
-            //http_response_code(200);
+            http_response_code(200);
             break;
         case loginResult::WRONG_CREDENTIALS:
             $result['result'] = 'KO';
             $result['message'] = 'WRONG_CREDENTIALS';
-            //http_response_code(401);
+            http_response_code(401);
             break;
         case loginResult::DB_ERROR:
             $result['result'] = 'KO';
             $result['message'] = 'DB_ERROR';
-            //http_response_code(500);
+            http_response_code(500);
             break;
         case loginResult::MISSING_FIELDS:
             $result['result'] = 'KO';
             $result['message'] = 'MISSING_FIELDS';
-            //http_response_code(400);
+            http_response_code(400);
             break;
         default:
             $result['result'] = 'KO';
-            //http_response_code(500);
+            http_response_code(500);
             break;
     }
 

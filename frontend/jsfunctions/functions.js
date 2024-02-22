@@ -153,9 +153,9 @@ let wrapper = document.createElement("div"),
     img.setAttribute("alt", post.altDescription);
     changeRatio(1, img);
     cardBody.classList.add("card-body");
-    button.classList.add("btn", "w-100", "m-auto");
-    button.style.backgroundColor = "#6FD08C";
-    button.style.color = "white";
+    button.classList.add("btn", "w-100", "m-auto", "likebutton");
+    //button.style.backgroundColor = "#6FD08C";
+    //button.style.color = "white";
     span.classList.add("icon", "heart", "heart-icon");
     i.classList.add("fas", "fa-heart");
 
@@ -264,16 +264,20 @@ function setLikedPosts(postsLiked){
 /**
  * Funzione che permette di mettere o togliere un like da un post in modo asincrono
  * @param {HTMLElement} clickedButtonPost bottone del post su cui è stato cliccato
- * @param {boolean} alreadyLiked true se l'utente ha già messo like al post, false altrimenti
  */
-async function postInteraction(clickedButtonPost, alreadyLiked){
+async function postInteraction(clickedButtonPost){
     let postId=clickedButtonPost.id.substring(11);
+    let alreadyLiked = clickedButtonPost.classList.contains("liked");
+    console.log(postId, alreadyLiked);
     let method = "POST";
     if(alreadyLiked){
         method = "DELETE";
     }
-    return fetch("../../../backend/script/like_post.php?idPost="+postId, {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
-        method: method
+    return fetch("../../../backend/script/like_post.php", {//devo passare l'id del post, quello dell'utente che lo mette è implicito: se l'utente non è loggato niente like
+        method: method,
+        body : JSON.stringify({
+            idPost: postId
+        }),
     }).then(response => {
         if(response.ok){
             if(clickedButtonPost.classList.contains("liked")){

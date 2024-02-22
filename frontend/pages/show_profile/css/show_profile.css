@@ -35,5 +35,9 @@ hr.custom-line {
 } 
     
 .liked {
-      background-color: #ff0000 !important;
+      background-color: #C61000 !important;
+}
+.likebutton, .likebutton:hover{
+  background-color: #1F704E;
+  color: white;
 }

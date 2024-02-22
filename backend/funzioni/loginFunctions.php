@@ -30,8 +30,12 @@
         if(empty($_COOKIE[REMEMBERME]))//controllo che il cookie sia settato
             return loginResult::MISSING_FIELDS;
 
-        $cookieVal = json_decode($_COOKIE[REMEMBERME]);
-
+        try{
+            $cookieVal = json_decode($_COOKIE[REMEMBERME], true, 512, JSON_THROW_ON_ERROR);
+        }catch(Exception $e){
+            return loginResult::MISSING_FIELDS;
+        }
+        
         $actualTime = time();
         $campi = ID.",".EMAIL.",".REMEMBERME.",".FIRSTNAME.",".LASTNAME.",".USERNAME;//.",".ROLE;
         $query = "SELECT $campi FROM utente WHERE expireTime > ? and ID = ?";

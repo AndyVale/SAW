@@ -31,10 +31,16 @@ function getUserData(){
     method: 'GET' //deve "ottenere" i dati
   })
   .then(response => {
-    if (!response.ok) {
-      throw new Error('Errore nella richiesta.');
+    switch(response.status){
+      case 200:
+        return response.json();
+      case 401:
+          removeUserData();
+          return response.json();
+          
+      default:
+        throw new Error('Errore nella richiesta.');
     }
-    return response.json();
   })
   .then(data => {//potrei in realtà usare la memoria del browser per ottenere i dati
       if(data['result'] == "OK"){
@@ -81,6 +87,6 @@ document.getElementById("postsContainer").addEventListener("click", (e) =>{
   const bottoneLike = e.target.closest("button");
   if(bottoneLike){
     console.log("LIKE");
-    postInteraction(e.target, e.target.classList.contains("liked"));
+    postInteraction(bottoneLike);
   }
 });

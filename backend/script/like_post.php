@@ -34,14 +34,21 @@
         exit;
     }
 
-    if(empty($_GET['idPost']) || !is_numeric($_GET['idPost'])){//se sono qui non era una GET TODO: controllare sia un intero
+    try{
+        $dati = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+    }catch(Exception $e){
+        http_response_code(400);
+        echo json_encode(array("result" => "KO", "message" => "ERROR_JSON"));
+        exit;
+    }
+    if(empty($dati['idPost']) || !is_numeric($dati['idPost'])){//se sono qui non era una GET TODO: controllare sia un intero
         echo json_encode(array("result" => "KO", "message" => "ERROR_NO_ID"));
         http_response_code(400);
         exit;
     }
     
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $add = add_tuple("liked", ["idUtente", "idPost"], [$_SESSION[ID], $_GET['idPost']], "ii");
+        $add = add_tuple("liked", ["idUtente", "idPost"], [$_SESSION[ID], $dati['idPost']], "ii");
         http_response_code(201);
         if($add['result'] == "KO"){
             http_response_code(500);
@@ -51,7 +58,7 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
-        $del = delete_tuple("liked", ["idUtente", "idPost"], [$_SESSION[ID], $_GET['idPost']], "ii");
+        $del = delete_tuple("liked", ["idUtente", "idPost"], [$_SESSION[ID], $dati['idPost']], "ii");
         http_response_code(200);
         if($del['result'] == "KO"){
             http_response_code(500);

@@ -119,7 +119,7 @@
         }catch(Exception $e){
             error_log("dbFunctions.php/add_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
         }
-        return array("result" => "KO", "message" => "ERROR");
+        return array("result" => "KO", "message" => "ADD_ERROR");
     }
 
     function delete_tuple(String $table, Array $attributesNames, Array $attributesValues, String $attributesTypes){
@@ -134,5 +134,5 @@
         }catch(Exception $e){
             error_log("dbFunctions.php/delete_tuple(): ".$e->getMessage()."\n", 3, ERROR_LOG);
         }
-        return array("result" => "KO", "message" => "ERROR");
+        return array("result" => "KO", "message" => "DELETE_ERROR");
     }

@@ -6,7 +6,8 @@ import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 let parts = window.location.search.substring(1).split("&"),
     idUser = null,
     postContainer = document.getElementById("postsContainer"),
-    bottoneSegui = document.getElementById("bottoneSeguiUtente");
+    bottoneSegui = document.getElementById("bottoneSeguiUtente"),
+    nFollower = document.getElementById("nFollowers");
 
 for (let i = 0; i < parts.length && idUser == null; i++) {
     var temp = parts[i].split("=");
@@ -76,17 +77,22 @@ async function toggleSegui(segui){
     let metodo = "POST";
     if(!segui)
         metodo = "DELETE";
-    fetch("../../../backend/script/follow_unfollow.php?idUtenteSeguito="+idUser, {
-        method: metodo
+    fetch("../../../backend/script/follow_unfollow.php", {
+        method: metodo,
+        body: JSON.stringify({
+            idUtenteSeguito: idUser
+        }),
     }).then(response => {
-        console.log(response);
+        //console.log(response);
         switch(response.status){
-            case 200:
+            case 200://follow riuscito
                 bottoneSegui.textContent = "Segui";
+                nFollower.textContent = parseInt(nFollower.textContent)-1;
                 break;
                 //return response.json();
-            case 201:
+            case 201://unfollow riuscito
                 bottoneSegui.textContent = "Seguito";
+                nFollower.textContent = parseInt(nFollower.textContent)+1;
                 break;
                 //return response.json();
             case 204:
@@ -125,7 +131,7 @@ postContainer.addEventListener("click", (e) =>{
     const bottoneLike = e.target.closest("button");
     if(bottoneLike){
         console.log("LIKE");
-        postInteraction(e.target, e.target.classList.contains("liked"));
+        postInteraction(bottoneLike);
     }
 });
 
