@@ -103,23 +103,22 @@
         }
         try{
             $result = standardQuery("INSERT INTO post (idUtente, urlImmagine, altDescription) VALUES ($idUtente, '$filename','$alt')");
+            if($result == 1){
+                http_response_code(201);
+                echo json_encode(array("result" => "INSERT", "message" => "Post aggiunto correttamente"));
+            }else{
+                throw new Exception("Errore nell'aggiunta del post");
+            }
         }catch(Exception $e){
+            if(unlink(POST_PATH.$filename))
+                echo json_encode(array("result" => "ERROR", "message" => "Errore nell'aggiunta del post, immagine eliminata"));
+            else
+                echo json_encode(array("result" => "ERROR", "message" => "Errore nell'aggiunta del post"));
             http_response_code(500);
-            echo json_encode(array("result" => "ERROR", "message" => "Errore nell'aggiunta del post"));
             exit;
         }
 
-        if($result == 1){
-            http_response_code(201);
-            echo json_encode(array("result" => "INSERT", "message" => "Post aggiunto correttamente"));
-        }else{
-            if(unlink($filename))
-                echo 'Image deleted successfully<br>';
-            else
-                echo 'Image deletion failed<br>';
-            http_response_code(500);
-            echo json_encode(array("result" => "ERROR", "message" => "Errore nell'aggiunta del post"));
-        }
+       
     }
 
     //--- DELETE

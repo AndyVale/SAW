@@ -70,16 +70,13 @@ async function cookieLogin(){
 function showLogin(){
     document.getElementById("registrationFormContainer").style.display = "none";
     document.querySelectorAll("body *:not(#loginFormContainer, #loginFormContainer *)").forEach((node)=>node.style.filter="blur(5px)");//TODO: non mi piace molto questa metodologia ma non ho trovato di meglio, se qualcuno ha idee migliori sono ben accette...
+    loginFormContainer.style.display = "block";
     if(loginFormContainer.firstChild == null){
         console.log("showLogin():login fetch");
-        getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, loginFormContainer));
+        getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, loginFormContainer)).then(()=>{loginFormContainer.focus();});
+    }else{
+        loginFormContainer.focus();
     }
-    loginFormContainer.style.display = "block";
-    setTimeout(function() {
-        // Imposta il focus sull'elemento liveRegion per avviare la lettura dello screen reader
-       loginFormContainer.focus();
-      }, 100);
-    
 }
 
 /**

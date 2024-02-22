@@ -27,7 +27,7 @@ async function getSnippet(url){
  * @param {string} snippetHTML - codice html dello snippet da renderizzare
  * @param {string} where - oggetto DOM in cui renderizzare lo snippet
  */
-function renderSnippet(snippetHTML, where){
+async function renderSnippet(snippetHTML, where){
     if(!snippetHTML){
         where.insertAdjacentHTML("beforeend", "<p>Errore 404 :(</p>");
         return;
