@@ -19,8 +19,6 @@ function notificaErrore(){
     document.getElementById('uploadButton').style.display = 'none';
 }
 
-//notificaErrore();
-
 /**
  * Funzione che verifica il rapporto tra larghezza e altezza dell'immagine e restituisce il rapporto più vicino a quello dell'immagine
  * @param {Number} width 
@@ -245,6 +243,7 @@ function hadleUpload(){
         })
     })
     .then(response =>{
+        datiRicevuti = response.text();
         switch(response.status){
             case 201:
                 window.location.href = '../show_profile/';
@@ -261,7 +260,7 @@ function hadleUpload(){
         }
     })
     .then(data => console.log(data))
-    .catch(error => console.log(error));
+    .catch(error => {notificaErrore();console.log(error)});
 }
 
 function readerShowImage(event){

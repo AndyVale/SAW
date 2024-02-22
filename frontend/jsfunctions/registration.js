@@ -84,15 +84,13 @@ function gestoreEventiInputRegistration(e){
 function showRegistration(){
     loginFormContainer.style.display = "none";
     document.querySelectorAll("body *:not(#registrationFormContainer, #registrationFormContainer *)").forEach((node)=>node.style.filter="blur(5px)");//TODO: non mi piace molto questa metodologia ma non ho trovato di meglio, se qualcuno ha idee migliori sono ben accette...
+    registrationFormContainer.style.display = "block";
     if(registrationFormContainer.firstChild == null){
         console.log("showRegistration():registration fetch");
-        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, registrationFormContainer));
-    }
-    registrationFormContainer.style.display = "block";
-    setTimeout(function() {
-        // Imposta il focus sull'elemento liveRegion per avviare la lettura dello screen reader
+        getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, registrationFormContainer)).then(()=>document.getElementById("registrationForm").focus());
+    }else{
         registrationFormContainer.focus();
-      }, 100);
+    }
 }
 
 var registrationFormContainer = document.getElementById("registrationFormContainer");
