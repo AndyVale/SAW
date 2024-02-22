@@ -3,13 +3,13 @@ import { changeRatio } from "../../jsfunctions/functions.js";
 import { cookieLogin } from "../../jsfunctions/login.js";
 import { renderNavbar } from "../../jsfunctions/navbar.js";
 
-window.onscroll = function() {myFunction()};
+window.onscroll = function() {displayText()};
 window.addEventListener("load", (event) => {
   let presentation = document.getElementById("name");
   presentation.classList.add("show-name")
 });
 
-function myFunction() {      
+function displayText() {      
   let inspo = document.getElementById("ispirazione");
   let like =  document.getElementById("like"),
       profile =  document.getElementById("profile"),
