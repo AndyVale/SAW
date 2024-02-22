@@ -86,12 +86,10 @@
             //$imageInfo = getimagesize('../../frontend/immagini/'.$filename);
 
             if($imageInfo['mime'] != 'image/png') {//se non era un immagine cancello il casino appena fatto
-                echo $imageInfo['mime'];
-                file_put_contents($filename, "");
-                if(unlink($filename))
-                    echo 'Image deleted successfully<br>';
+                if(unlink(POST_PATH.$filename))
+                    echo json_encode(array("result" => "ERROR", "message" => "Immagine non in formato png, immagine eliminata"));
                 else
-                    echo 'Image deletion failed<br>';
+                    echo json_encode(array("result" => "ERROR", "message" => "Immagine non in formato png"));
                 http_response_code(400);
                 exit;
             }
@@ -102,7 +100,7 @@
             exit;
         }
         try{
-            $result = standardQuery("INSERT INTO post (idUtente, urlImmagine, altDescription) VALUES ($idUtente, '$filename','$alt')");
+            $result = safeQuery("INSERT INTO post (idUtente, urlImmagine, altDescription) VALUES (?, ?, ?)", array($idUtente, $filename,$alt), "iss");
             if($result == 1){
                 http_response_code(201);
                 echo json_encode(array("result" => "INSERT", "message" => "Post aggiunto correttamente"));
@@ -117,8 +115,6 @@
             http_response_code(500);
             exit;
         }
-
-       
     }
 
     //--- DELETE

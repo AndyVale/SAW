@@ -243,7 +243,6 @@ function hadleUpload(){
         })
     })
     .then(response =>{
-        datiRicevuti = response.text();
         switch(response.status){
             case 201:
                 window.location.href = '../show_profile/';
@@ -258,6 +257,7 @@ function hadleUpload(){
                 notificaErrore();
                 break;
         }
+        response.text();//Per debug
     })
     .then(data => console.log(data))
     .catch(error => {notificaErrore();console.log(error)});

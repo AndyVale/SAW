@@ -89,8 +89,8 @@ UpdateForm.addEventListener("submit", function(e) {
     if (data['result'] == "OK") {
         console.log({"firstanem":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
         storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email'), 'username': dati.get('username')});
-        //window.location.href = "../show_profile/index.html";
-        alertSuccess("Profilo aggiornato con successo!", document.getElementById("profileSpace"), "profileAlert");
+        alertMessage("Profilo aggiornato con successo!", document.getElementById("profileSpace"), "profileAlert");
+        stampaDatiUtenti({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email'), 'username': dati.get('username')});
     } else {
       switch(data['message']){
         case "ERROR_NOTLOGGED":
@@ -108,14 +108,14 @@ UpdateForm.addEventListener("submit", function(e) {
           window.location.href = "./index.html";
           break;
         case "ERROR_WRONGIMAGEFORMAT":
-          alert("Sono accettati solo file con estensioni: .jpg, .jpeg, .png");
+          alertMessage("Sono accettati solo file con estensioni: .jpg, .jpeg, .png",  document.getElementById("profileSpace"), "profileAlert", "alert-danger");
           window.location.href = "./index.html";
           break;
         case "DB_ERROR":
-          alert("Errore nel database");
+          alertMessage("Errore nella richiesta. Riprovare più tardi",  document.getElementById("profileSpace"), "profileAlert", "alert-danger");
           break;
         case "ERROR_UPDATE":
-          alert("Errore nell'aggiornare i dati dell'utente");
+          alertMessage("Errore nell'aggiornare i dati dell'utente",  document.getElementById("profileSpace"), "profileAlert", "alert-danger");
           break;       
       }
     }
@@ -125,6 +125,7 @@ UpdateForm.addEventListener("submit", function(e) {
     console.log('Nome dell\'errore:', error.name);
     console.log('Messaggio dell\'errore:', error.message);
     console.log('Stack dell\'errore:', error.stack);
+    alertMessage("Errore nella richiesta. Riprovare più tardi",  document.getElementById("profileSpace"), "profileAlert", "alert-danger");
   });
 });
 
@@ -133,9 +134,10 @@ UpdateForm.addEventListener("submit", function(e) {
   <p>Password aggiornata con successo!</p>
 </div>
 */
-function alertSuccess(message, parent, id){
+function alertMessage(message, parent, id, type = "alert-success"){
+  if(document.getElementById(id) != null) document.getElementById(id).remove();
   let psswdAlert = document.createElement("div");
-  psswdAlert.classList.add("alert", "alert-success", "alert-dismissible", "fade", "show");
+  psswdAlert.classList.add("alert", type, "alert-dismissible", "fade", "show");
   psswdAlert.setAttribute("role", "alert");
   psswdAlert.setAttribute("id", id);
   let messagePrint = document.createElement("p");
@@ -156,7 +158,7 @@ fetch('../../../backend/script/change_password.php', {
 .then(response => response.json())
 .then(data => {
   if (data['result'] == "OK") {
-      alertSuccess("Password aggiornata con successo!",  document.getElementById("PsswdSpace"), "psswdAlert");
+    alertMessage("Password aggiornata con successo!",  document.getElementById("PsswdSpace"), "psswdAlert");
   } else {
     switch(data['message']){
       case "ERROR_NOTLOGGED":
@@ -171,10 +173,10 @@ fetch('../../../backend/script/change_password.php', {
         alert("Ci sono dei campi vuoti!");//non dovrebbe mai succedere se l'utente non gioca con il codice
         break;
       case "DB_ERROR":
-        alert("Errore nella richiesta. Riprovare più tardi");
+        alertMessage("Errore nella richiesta. Riprovare più tardi",  document.getElementById("PsswdSpace"), "psswdAlert", "alert-danger");
         break;
       case "ERROR_UPDATE":
-        alert("Errore nell'aggiornare i dati. Riprovare più tardi");
+        alertMessage("Errore nell'aggiornare i dati. Riprovare più tardi",  document.getElementById("PsswdSpace"), "psswdAlert", "alert-danger");
         break;   
       case "WRONG_CREDENTIALS":
         document.getElementById('currentpass').classList.add("is-invalid");
@@ -214,6 +216,6 @@ document.getElementById("new_password_form").addEventListener("input", function(
 });
 
 document.getElementById("update_form").addEventListener("input", function(e) {
-  if(profileAlert != null) profileAlert.remove();
+  if(document.getElementById("profileAlert") != null) document.getElementById("profileAlert").remove();
 });
 

@@ -349,14 +349,20 @@ function stampaDatiUtenti(datiUtente) {
         email = document.getElementById("sh_email"),
         username = document.getElementById("sh_username");
   
-    if(nPost != null) nPost.textContent = datiUtente.nPost;
-    if(nFollower != null) nFollower.textContent = datiUtente.nFollower;
-    if(nFollowing != null) nFollowing.textContent = datiUtente.nFollowing;
-    if(nomeCognome != null) nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
-    if(immagineProfilo != null){
+    if(nPost != null && datiUtente.nPost != null)
+        nPost.textContent = datiUtente.nPost;
+    if(nFollower != null && datiUtente.nFollower != null)
+        nFollower.textContent = datiUtente.nFollower;
+    if(nFollowing != null && datiUtente.nFollowing != null)
+        nFollowing.textContent = datiUtente.nFollowing;
+    if(nomeCognome != null && datiUtente.lastname != null && datiUtente.firstname != null)
+        nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
+    if(immagineProfilo != null && datiUtente.profilePicture != null){
         immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
         changeRatio(1, immagineProfilo);
     }
-    if(email != null) email.textContent = datiUtente.email;
-    if(username != null) username.textContent = datiUtente.username;
+    if(email != null && datiUtente.email != null)
+        email.textContent = datiUtente.email;
+    if(username != null && datiUtente.username != null)
+        username.textContent = datiUtente.username;
   }

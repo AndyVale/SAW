@@ -40,7 +40,7 @@
         return updateResult::ERROR_UPDATE;
     }
     function update(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        //if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //variabili per la query: $data contiene i dati da inserire, $query contiene la query, $params contiene i tipi dei dati
             $data = array();
             $query = "";
@@ -70,10 +70,7 @@
             //un'immagine di default) senza che venga restituito errore
             if(isset($_FILES['update-profile-image']['name'])){
                 if (!empty($_FILES['update-profile-image']['name'])){
-                
-                
                 removeOldFile(glob(PPICTURE_PATH.'/'.$_SESSION[ID].'-*'));
-
                 //info sull'immagine caricata
                 $img_name = saveImage($_FILES['update-profile-image']['name'], $_FILES['update-profile-image']['tmp_name'], $_FILES['update-profile-image']['error'], array("jpg", "jpeg", "png"), PPICTURE_PATH);
                 if(!is_string($img_name))//in caso di errore restituisce un enum
@@ -89,7 +86,8 @@
             $params .= "i";
             $data[] = $_SESSION[ID];
             try{
-                if(safeQuery($query, $data, $params) <= 1){ // non == perchè potrebbe essere 0 se non è stato modificato niente
+                $tmp = safeQuery($query, $data, $params);
+                if($tmp == 1 || $tmp == 0){ // non == perchè potrebbe essere 0 se non è stato modificato niente
                     $_SESSION[EMAIL] = htmlentities($_POST[EMAIL]);
                     $_SESSION[FIRSTNAME] = htmlentities($_POST[FIRSTNAME]);
                     $_SESSION[LASTNAME] = htmlentities($_POST[LASTNAME]);
@@ -106,7 +104,7 @@
                 error_log("update-showProfileFunctions.php/update(): ".$e->getMessage()."\n", 3, ERROR_LOG);
                 return updateResult::DB_ERROR;
             }
-        }
+        //}
     }
 
     function passwordUpdate(){

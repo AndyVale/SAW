@@ -105,7 +105,7 @@
                   <div class="form-group">
                     <label for="email" class="col-md-2  col-sm-3 col-xs-12 mb-1">Email</label>
                     <div class="col-md-12 col-sm-9 col-xs-12">
-                      <input type="email" id="email" name="email" class="form-control" required>
+                      <input type="email" id="email" name="email" class="form-control" pattern="[a-z0-9A-Z._%+\-]+@[a-z0-9A-Z.\-]+\.[a-zA-Z]{2,}$" required>
                       <div id="emailFeedback" class="feedback invalid-feedback">Inserisci la tua email</div>
                     </div>
                     <p class="form-text text-muted mb-3">eg. info@meme-bank.com </p>
