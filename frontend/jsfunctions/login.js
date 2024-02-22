@@ -75,6 +75,11 @@ function showLogin(){
         getSnippet("../../snippets_html/snippetLogin.html").then((snippet) => renderSnippet(snippet, loginFormContainer));
     }
     loginFormContainer.style.display = "block";
+    setTimeout(function() {
+        // Imposta il focus sull'elemento liveRegion per avviare la lettura dello screen reader
+       loginFormContainer.focus();
+      }, 100);
+    
 }
 
 /**

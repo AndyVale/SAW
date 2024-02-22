@@ -89,6 +89,10 @@ function showRegistration(){
         getSnippet("../../snippets_html/snippetRegistration.html").then((snippet) => renderSnippet(snippet, registrationFormContainer));
     }
     registrationFormContainer.style.display = "block";
+    setTimeout(function() {
+        // Imposta il focus sull'elemento liveRegion per avviare la lettura dello screen reader
+        registrationFormContainer.focus();
+      }, 100);
 }
 
 var registrationFormContainer = document.getElementById("registrationFormContainer");

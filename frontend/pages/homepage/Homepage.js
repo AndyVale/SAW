@@ -41,6 +41,7 @@ function displayRandomPosts(data, number){
   for(let i=0; i < number; i++){
     document.getElementById("img"+i).src = "../../immagini/post/"+data[i]["urlImmagine"];
     document.getElementById("img"+i).alt = data[i]["altDescription"];
+    console.log("Alt description:", data[i]["altDescription"]);
     document.getElementById("author"+i).innerText = data[i]["username"];
     document.getElementById("link"+i).href = `../user/?ID=${data[i]["idUtente"]}`;
      changeRatio(1,  document.getElementById("img"+i));
