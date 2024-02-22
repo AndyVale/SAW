@@ -1,4 +1,4 @@
-import {storeUserData, removeUserData, changeRatio} from '../../jsfunctions/functions.js';
+import {storeUserData, removeUserData, changeRatio, emailIsUniqueReport, passwordsAreValidsReport} from '../../jsfunctions/functions.js';
 import {renderNavbar} from '../../jsfunctions/navbar.js';
 import {renderFooter} from '../../jsfunctions/footer.js';
 import { cookieLogin } from "../../jsfunctions/login.js";
@@ -116,15 +116,16 @@ UpdateForm.addEventListener("submit", function(e) {
           window.location.href = "../../homepage/index.html";
           break;
         case "DUPLICATE_EMAIL":
-          alert("Email già in uso");
+          //alert("Email già in uso");
+          emailIsUniqueReport(false);
           //scrivere email già in uso è sbagliato perchè suggerisce a un hacker un'email valida? Meglio usare 'Impossibile usare questa email'?
           break; 
         case "ERROR_MISSINGFIELDS":
-          alert("Ci sono dei campi vuoti!");
+          alert("Ci sono dei campi vuoti!");//non dovrebbe mai succedere se l'utente non gioca con il codice
           window.location.href = "./index.html";
           break;
         case "ERROR_WRONGEMAILFORMAT":
-          alert("L'email non è nel formato corretto!");
+          alert("L'email non è nel formato corretto!");//non dovrebbe mai succedere se l'utente non gioca con il codice
           window.location.href = "./index.html";
           break;
         case "ERROR_WRONGIMAGEFORMAT":
@@ -132,7 +133,7 @@ UpdateForm.addEventListener("submit", function(e) {
           window.location.href = "./index.html";
           break;
         case "DB_ERROR":
-          alert("OHHHH cosa fai");
+          //alert("OHHHH cosa fai");
           break;
         case "ERROR_UPDATE":
           alert("Errore nell'aggiornare i dati dell'utente");
@@ -163,7 +164,7 @@ fetch('../../../backend/script/change_password.php', {
   //data = JSON.parse(data);
   if (data['result'] == "OK") {
       //console.log(data['data']);
-      alert("Password cambiata con successo!");
+      //alert("Password cambiata con successo!");//TODO:notificare l'utente con un messaggio di successo
       window.location.href = "../show_profile/index.html";
   } else {
     switch(data['message']){
@@ -173,9 +174,10 @@ fetch('../../../backend/script/change_password.php', {
         break;
       case "DIFFERENT_PASSWORDS":
         alert("Le password inserite sono diverse.");
+        passwordsAreValidsReport(false);
         break; 
       case "ERROR_MISSINGFIELDS":
-        alert("Ci sono dei campi vuoti!");
+        alert("Ci sono dei campi vuoti!");//non dovrebbe mai succedere se l'utente non gioca con il codice
         break;
       case "DB_ERROR":
         alert("Errore nella richiesta. Riprovare più tardi");
@@ -184,7 +186,8 @@ fetch('../../../backend/script/change_password.php', {
         alert("Errore nell'aggiornare i dati. Riprovare più tardi");
         break;   
       case "WRONG_CREDENTIALS":
-        alert("Si è verificato un errore.");
+        document.getElementById('currentpass').classList.add("is-invalid");
+        document.getElementById('currPasswordFeedback').textContent = "Password errata";
         break;       
     }
   }
@@ -197,4 +200,23 @@ fetch('../../../backend/script/change_password.php', {
 });
 });
 
+email.addEventListener("input", function(e) {
+  emailIsUniqueReport(true);
+});
+
+document.getElementById("new_password_form").addEventListener("input", function(e) {
+  let new_password = document.getElementById("password"),
+      confirm_password = document.getElementById("confirm"),
+      old_password = document.getElementById("currentpass");
+  if (e.target.id === "password" || e.target.id === "confirm") {
+    if (new_password.value != confirm_password.value) {
+      passwordsAreValidsReport(false);
+    } else {
+      passwordsAreValidsReport(true);
+    }
+  }
+  if(e.target.id === "currentpass"){
+    old_password.classList.remove("is-invalid");
+  }
+});
 

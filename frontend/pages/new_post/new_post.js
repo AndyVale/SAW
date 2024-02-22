@@ -7,6 +7,20 @@ var canvas=new fabric.Canvas('imageCanvas', {
     height: 350
 }); //creo un canvas con dimensioni iniziali, poi verrà ridimensionato in base all'immagine
 
+function notificaErrore(){
+    let mR = document.getElementById('mainRow');
+    let imgError = document.createElement('img');
+    imgError.src = '../../immagini/new_post_error.png';
+    imgError.style.width = '60%';
+    imgError.classList.add('mx-auto', 'd-block');
+    imgError.alt = 'Gatto che guarda un computer con espressione stupita, ti dice che c\'è stato un errore nel caricamento dell\'immagine';
+    mR.innerHTML ='';
+    mR.appendChild(imgError);
+    document.getElementById('uploadButton').style.display = 'none';
+}
+
+//notificaErrore();
+
 /**
  * Funzione che verifica il rapporto tra larghezza e altezza dell'immagine e restituisce il rapporto più vicino a quello dell'immagine
  * @param {Number} width 
@@ -87,6 +101,11 @@ function handleFileImageUpload(e){
     reader.readAsDataURL(e.target.files[0]);
 }
 
+/**
+ * Funzione che aggiunge un campo di testo al canvasFabric e aggiunge al DOM gli input per modificare il testo, il colore e il font, e
+ * un bottone per rimuovere il campo di testo.
+ * Aggiunge anche gli eventi neccessari all'interazione tra Fabric e gli elementi del DOM.
+ */
 function handleAddTextArea(){
     if(canvas == null){return;}
 
@@ -211,8 +230,8 @@ function hadleUpload(){
         return;
     }
     let canvasImg = document.getElementById('imageCanvas');
-    canvasImg = resizeCanvas(canvasImg, 1000, 1000);//per evitare di caricare immagini troppo grandi
     canvas.discardActiveObject().renderAll();
+    canvasImg = resizeCanvas(canvasImg, 1000, 1000);//per evitare di caricare immagini troppo grandi
     let imgData = canvasImg.toDataURL({
         format: 'png',
         multiplier: 1
@@ -231,13 +250,13 @@ function hadleUpload(){
                 window.location.href = '../show_profile/';
                 break;
             case 400:
-                alert('Errore durante il caricamento dell\'immagine');
+                notificaErrore();
                 break;
             case 401:
                 showLogin();
                 break;
             default:
-                alert('Errore durante il caricamento dell\'immagine');
+                notificaErrore();
                 break;
         }
     })

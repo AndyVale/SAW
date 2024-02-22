@@ -1,42 +1,5 @@
-import {getSnippet, renderSnippet, dbErrorReport} from "./functions.js";
+import {getSnippet, renderSnippet, dbErrorReport, emailIsUniqueReport, passwordsAreValidsReport} from "./functions.js";
 export {showRegistration};
-/**
- * @param {Boolean} areValids - areValids specifica se le password sono uguali o no
- */
-function passwordsAreValidsReport(areValids){
-    let password = document.getElementById("password");
-    let confirm = document.getElementById("confirm");
-
-    if(areValids){
-        password.classList.remove("is-invalid");
-        confirm.classList.remove("is-invalid");
-        confirmFeedback.textContent="Conferma la tua password";
-        password.setAttribute("aria-invalid", "false");
-        confirm.setAttribute("aria-invalid", "false");
-    }else{
-        password.classList.add("is-invalid");
-        confirm.classList.add("is-invalid");
-        confirmFeedback.textContent="Le password non coincidono";
-        password.setAttribute("aria-invalid", "true");
-        confirm.setAttribute("aria-invalid", "true");
-    }
-}
-
-/**
- * @param {Boolean} possiblyUnique - possiblyUnique specifica se la mail può essere univoca o no. Il valore falso indica che la mail è sicuramente in uso
- */
-function emailIsUniqueReport(possiblyUnique){
-    let email = document.getElementById("email");
-    if(possiblyUnique){
-        email.classList.remove("is-invalid");
-        emailFeedback.textContent="Inserisci la tua email";
-        email.setAttribute("aria-invalid", "false");
-    }else{
-        email.classList.add("is-invalid");
-        emailFeedback.textContent="Email già in uso";
-        email.setAttribute("aria-invalid", "true");
-    }
-}
 
 function gestoreEventiClickRegistration(e){
     if(e.target.id == "bottoneChiusuraRegistration"){
