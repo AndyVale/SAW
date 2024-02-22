@@ -87,24 +87,19 @@ UpdateForm.addEventListener("submit", function(e) {
   .then(data => {
     console.log(data);
     if (data['result'] == "OK") {
-        //console.log(data['data']);
-        //non può fare cross-site scripting perchè i dati vengono salvati solo in questo caso in locale. Su un altro dispositivo vengono presi dal database (dove sono sanificati).
         console.log({"firstanem":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
         storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email'), 'username': dati.get('username')});
-        //alert("Profilo aggiornato con successo!");
         window.location.href = "../show_profile/index.html";
     } else {
       switch(data['message']){
         case "ERROR_NOTLOGGED":
-          //removeUserData(); Delegato alla homePage
           window.location.href = "../../homepage/index.html";
           break;
         case "DUPLICATE_EMAIL":
-          //alert("Email già in uso");
           emailIsUniqueReport(false);
           break; 
         case "ERROR_MISSINGFIELDS":
-          alert("Ci sono dei campi vuoti!");//non dovrebbe mai succedere se l'utente non gioca con il codice
+          alert("Ci sono dei campi vuoti!");//non dovrebbe mai succedere se l'utente non gioca con il codice (required html)
           window.location.href = "./index.html";
           break;
         case "ERROR_WRONGEMAILFORMAT":
