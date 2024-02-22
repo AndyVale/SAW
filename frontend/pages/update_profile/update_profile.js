@@ -1,37 +1,20 @@
-import {storeUserData, removeUserData, changeRatio, emailIsUniqueReport, passwordsAreValidsReport} from '../../jsfunctions/functions.js';
+import {storeUserData, removeUserData, stampaDatiUtenti, emailIsUniqueReport, passwordsAreValidsReport} from '../../jsfunctions/functions.js';
 import {renderNavbar} from '../../jsfunctions/navbar.js';
 import {renderFooter} from '../../jsfunctions/footer.js';
-import { cookieLogin } from "../../jsfunctions/login.js";
+import {cookieLogin} from "../../jsfunctions/login.js";
 
-
-function stampaDati(datiUtente) {
+function stampaDatiForm(datiUtente) {
   if ('firstname' in datiUtente && 'lastname' in datiUtente && 'email' in datiUtente && 'username' in datiUtente) {
-    //console.log(datiUtente);
-    let NomeCognome = document.getElementById('fullname'),
-    Nome  = document.getElementById('firstname'),
+    let Nome  = document.getElementById('firstname'),
     Cognome = document.getElementById('lastname'),
     EmailInput = document.getElementById('email'),
-    EmailView = document.getElementById('sh_email'),
-    nPost = document.getElementById('nPost'),
-    nFollower = document.getElementById('nFollowers'),
-    nFollowing = document.getElementById('nFollowing'),
-    immagineProfilo = document.getElementById('profile-image'),
-    usernameInput = document.getElementById('username'),
-    usernameView = document.getElementById('sh_username');
+    usernameInput = document.getElementById('username');
 
-    if (NomeCognome && Nome && Cognome && EmailInput && username && nPost && nFollower && nFollowing && immagineProfilo) {
-      NomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
+    if (Nome && Cognome && EmailInput && usernameInput) {
       Nome.value = datiUtente.firstname;
-      usernameInput.value = datiUtente.username;
-      usernameView.textContent = datiUtente.username;
       Cognome.value = datiUtente.lastname;
+      usernameInput.value = datiUtente.username;
       EmailInput.value = datiUtente.email;
-      EmailView.textContent = datiUtente.email;
-      nPost.textContent = datiUtente.nPost;
-      nFollower.textContent = datiUtente.nFollower;
-      nFollowing.textContent = datiUtente.nFollowing;
-      immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
-      changeRatio(1, immagineProfilo);
     }
     else {
       console.error("Uno o più elementi HTML non sono stati trovati.");
@@ -64,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(data => {
         if(data['result'] == "OK"){
-          stampaDati(data['data']);
+          stampaDatiUtenti(data['data']);
+          stampaDatiForm(data['data']);
         }else{
           switch(data['message']){
             case "ERROR_NOTLOGGED":
@@ -104,7 +88,6 @@ UpdateForm.addEventListener("submit", function(e) {
   .then(response => response.json())
   .then(data => {
     console.log(data);
-    //data = JSON.parse(data);
     if (data['result'] == "OK") {
         //console.log(data['data']);
         //non può fare cross-site scripting perchè i dati vengono salvati solo in questo caso in locale. Su un altro dispositivo vengono presi dal database (dove sono sanificati).
@@ -163,10 +146,7 @@ fetch('../../../backend/script/change_password.php', {
 })
 .then(response => response.json())
 .then(data => {
-  //console.log(data);
-  //data = JSON.parse(data);
   if (data['result'] == "OK") {
-      //console.log(data['data']);
       //alert("Password cambiata con successo!");//TODO:notificare l'utente con un messaggio di successo
       window.location.href = "../show_profile/index.html";
   } else {

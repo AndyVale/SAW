@@ -1,6 +1,6 @@
 export {getSnippet, renderSnippet, storeUserData, removeUserData, dbErrorReport,
         renderPosts, renderAPost, changeRatio, getLikedPosts, setLikedPosts, postInteraction
-        ,getUserPosts, emailIsUniqueReport, passwordsAreValidsReport, replaceContentWithImg};
+        ,getUserPosts, emailIsUniqueReport, passwordsAreValidsReport, replaceContentWithImg, stampaDatiUtenti};
 
 
 /**
@@ -335,3 +335,26 @@ function replaceContentWithImg(container, img){
     container.innerHTML = "";
     container.appendChild(img);
 }
+
+/**
+ * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
+ */
+function stampaDatiUtenti(datiUtente) {
+    //console.log(datiUtente);
+    let nomeCognome = document.getElementById("fullname"),
+        nPost = document.getElementById("nPost"),
+        nFollower = document.getElementById("nFollowers"),
+        nFollowing = document.getElementById("nFollowing"),
+        immagineProfilo = document.getElementById("profile-image"),
+        email = document.getElementById("sh_email"),
+        username = document.getElementById("sh_username");
+  
+    nPost.textContent = datiUtente.nPost;
+    nFollower.textContent = datiUtente.nFollower;
+    nFollowing.textContent = datiUtente.nFollowing;
+    nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
+    immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
+    email.textContent = datiUtente.email;
+    username.textContent = datiUtente.username;
+    changeRatio(1, immagineProfilo);
+  }

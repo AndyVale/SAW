@@ -2,31 +2,8 @@
 import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts, changeRatio} from "../../jsfunctions/functions.js";
+import {storeUserData, stampaDatiUtenti, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts, changeRatio} from "../../jsfunctions/functions.js";
 
-
-/**
- * @param {Object} datiUtente - oggetto contenenente i dati dell'utente con campi con lo stesso nome del database
- */
-function stampaDatiUtenti(datiUtente) {
-  //console.log(datiUtente);
-  let nomeCognome = document.getElementById("fullname"),
-      nPost = document.getElementById("nPost"),
-      nFollower = document.getElementById("nFollowers"),
-      nFollowing = document.getElementById("nFollowing"),
-      immagineProfilo = document.getElementById("profile-image"),
-      email = document.getElementById("sh_email"),
-      username = document.getElementById("sh_username");
-
-  nPost.textContent = datiUtente.nPost;
-  nFollower.textContent = datiUtente.nFollower;
-  nFollowing.textContent = datiUtente.nFollowing;
-  nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
-  immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
-  email.textContent = datiUtente.email;
-  username.textContent = datiUtente.username;
-  changeRatio(1, immagineProfilo);
-}
 
 /**
  * Funzione che mediante fetch ottiene i dati dell'utente loggato come nome, cognome ecc ecc...
