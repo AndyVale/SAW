@@ -2,7 +2,7 @@
 import {cookieLogin, showLogin} from "../../jsfunctions/login.js";
 import {renderNavbar} from "../../jsfunctions/navbar.js";
 import {renderFooter} from "../../jsfunctions/footer.js";
-import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts} from "../../jsfunctions/functions.js";
+import {storeUserData, removeUserData, renderPosts, getLikedPosts, setLikedPosts, postInteraction, getUserPosts, changeRatio} from "../../jsfunctions/functions.js";
 
 
 /**
@@ -21,6 +21,7 @@ function stampaDatiUtenti(datiUtente) {
   nFollowing.textContent = datiUtente.nFollowing;
   nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
   immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
+  changeRatio(1, immagineProfilo);
 }
 
 /**

@@ -1,5 +1,5 @@
 export {renderNavbar, renderBottoniNavbar};
-import {getSnippet, renderSnippet} from "./functions.js";
+import {changeRatio, getSnippet, renderSnippet} from "./functions.js";
 import {showLogin} from "./login.js";
 import {showRegistration} from "./registration.js";
 
@@ -105,14 +105,40 @@ function displaySearchResult(data, where){
     let n = data.length;
     for(let i=0; i < n; i++){
         console.log(i);
-        where.insertAdjacentHTML("beforeend",
-        `<div class="user" id="usersearch-${data[i].id}">
-            <img class="rounded-circle img-thumbnail img-fluid" src="../../immagini/profile/${data[i].profilePicture}" alt="../immagini/profile/${data[i].profilePicture}" width ='50px'">
-            <div class="user-info">
-                <div class="searchvisiblename">${data[i].firstname} ${data[i].lastname}</div>
-                <p class="searchvisibleusername"> @${data[i].username}</p>
-            </div>
-        </div>`);
+        let divUser = document.createElement("div");
+        divUser.className = "user";
+        divUser.id = `usersearch-${data[i].id}`;
+
+        let divWidth = document.createElement("div");
+        divWidth.style.width = "50px";
+
+        let img = document.createElement("img");
+        img.id = `usersearch-pp-${data[i].id}`;
+        img.className = "rounded-circle img-thumbnail img-fluid";
+        img.src = `../../immagini/profile/${data[i].profilePicture}`;
+        img.alt = `../immagini/profile/${data[i].profilePicture}`;
+        changeRatio(1, img);
+
+        divWidth.appendChild(img);
+
+        let divUserInfo = document.createElement("div");
+        divUserInfo.className = "user-info";
+
+        let divName = document.createElement("div");
+        divName.className = "searchvisiblename";
+        divName.textContent = `${data[i].firstname} ${data[i].lastname}`;
+
+        let pUsername = document.createElement("p");
+        pUsername.className = "searchvisibleusername";
+        pUsername.textContent = `@${data[i].username}`;
+
+        divUserInfo.appendChild(divName);
+        divUserInfo.appendChild(pUsername);
+
+        divUser.appendChild(divWidth);
+        divUser.appendChild(divUserInfo);
+
+        where.appendChild(divUser);
     }
     if(n>0){
         document.getElementById(`usersearch-${data[n-1].id}`).classList.remove("user");

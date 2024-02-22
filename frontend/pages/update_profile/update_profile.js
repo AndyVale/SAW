@@ -1,4 +1,4 @@
-import {storeUserData, removeUserData} from '../../jsfunctions/functions.js';
+import {storeUserData, removeUserData, changeRatio} from '../../jsfunctions/functions.js';
 import {renderNavbar} from '../../jsfunctions/navbar.js';
 import {renderFooter} from '../../jsfunctions/footer.js';
 import { cookieLogin } from "../../jsfunctions/login.js";
@@ -27,6 +27,7 @@ function stampaDati(datiUtente) {
       nFollower.textContent = datiUtente.nFollower;
       nFollowing.textContent = datiUtente.nFollowing;
       immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
+      changeRatio(1, immagineProfilo);
     }
     else {
       console.error("Uno o più elementi HTML non sono stati trovati.");

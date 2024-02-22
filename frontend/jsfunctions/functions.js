@@ -149,13 +149,10 @@ let wrapper = document.createElement("div"),
     card.classList.add("card");
     img.classList.add("card-img-top");
     img.setAttribute("src", "../../immagini/post/"+post.urlImmagine);
-    //console.log("----------------------",post);
     img.setAttribute("alt", post.altDescription);
     changeRatio(1, img);
     cardBody.classList.add("card-body");
     button.classList.add("btn", "w-100", "m-auto", "likebutton");
-    //button.style.backgroundColor = "#6FD08C";
-    //button.style.color = "white";
     span.classList.add("icon", "heart", "heart-icon");
     i.classList.add("fas", "fa-heart");
 
@@ -165,9 +162,6 @@ let wrapper = document.createElement("div"),
     button.id = "bottoneLike"+post.ID;
     cardBody.appendChild(img);
     cardBody.appendChild(button);
-    console.log(post.ID, Date.now());
-
-    console.log(post.ID, Date.now());
 
     card.appendChild(cardBody);
     wrapper.appendChild(card);
