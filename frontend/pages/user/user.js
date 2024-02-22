@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
           data = JSON.parse(data);
           console.log(data); 
           stampaDatiUtenti(data['datiUtente']);
+          document.title = data['datiUtente'].firstname + " " + data['datiUtente'].lastname;
           getIsFollowed(bottoneSegui);
       });
 
