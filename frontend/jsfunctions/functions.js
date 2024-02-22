@@ -349,12 +349,14 @@ function stampaDatiUtenti(datiUtente) {
         email = document.getElementById("sh_email"),
         username = document.getElementById("sh_username");
   
-    nPost.textContent = datiUtente.nPost;
-    nFollower.textContent = datiUtente.nFollower;
-    nFollowing.textContent = datiUtente.nFollowing;
-    nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
-    immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
-    email.textContent = datiUtente.email;
-    username.textContent = datiUtente.username;
-    changeRatio(1, immagineProfilo);
+    if(nPost != null) nPost.textContent = datiUtente.nPost;
+    if(nFollower != null) nFollower.textContent = datiUtente.nFollower;
+    if(nFollowing != null) nFollowing.textContent = datiUtente.nFollowing;
+    if(nomeCognome != null) nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
+    if(immagineProfilo != null){
+        immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
+        changeRatio(1, immagineProfilo);
+    }
+    if(email != null) email.textContent = datiUtente.email;
+    if(username != null) username.textContent = datiUtente.username;
   }
