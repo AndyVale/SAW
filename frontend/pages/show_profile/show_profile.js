@@ -14,13 +14,17 @@ function stampaDatiUtenti(datiUtente) {
       nPost = document.getElementById("nPost"),
       nFollower = document.getElementById("nFollowers"),
       nFollowing = document.getElementById("nFollowing"),
-      immagineProfilo = document.getElementById("profile-image");
+      immagineProfilo = document.getElementById("profile-image"),
+      email = document.getElementById("sh_email"),
+      username = document.getElementById("sh_username");
 
   nPost.textContent = datiUtente.nPost;
   nFollower.textContent = datiUtente.nFollower;
   nFollowing.textContent = datiUtente.nFollowing;
   nomeCognome.textContent = datiUtente.lastname + " " + datiUtente.firstname;
   immagineProfilo.src = "../../immagini/profile/" + datiUtente.profilePicture;
+  email.textContent = datiUtente.email;
+  username.textContent = datiUtente.username;
   changeRatio(1, immagineProfilo);
 }
 

@@ -38,7 +38,7 @@ function gestoreEventiSubmitRegistration(e){
             alert("Registrazione avvenuta con successo");
             let img = document.createElement("img"), container = document.getElementById("mainRow");
             img.src = "../../immagini/success.png";
-            img.alt = "Ragazzo in smoking nel deserto che ti comunica che la registrazione avvenuta con successo";
+            img.alt = "Baby Yoda ti ringrazia per la registrazione avvenuta con successo!";
             console.log(img);
             replaceContentWithImg(container, img);//TODO: gestire il caso di registrazione, ad esempio mostrando un messaggio di successo
             //window.location.href = "./"+window.location.search;

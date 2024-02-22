@@ -107,7 +107,7 @@ UpdateForm.addEventListener("submit", function(e) {
         //non può fare cross-site scripting perchè i dati vengono salvati solo in questo caso in locale. Su un altro dispositivo vengono presi dal database (dove sono sanificati).
         console.log({"firstanem":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email')});
         storeUserData({"firstname":dati.get('firstname'), 'lastname':dati.get('lastname'),'email': dati.get('email'), 'username': dati.get('username')});
-        alert("Profilo aggiornato con successo!");
+        //alert("Profilo aggiornato con successo!");
         window.location.href = "../show_profile/index.html";
     } else {
       switch(data['message']){
