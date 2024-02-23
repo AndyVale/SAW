@@ -7,7 +7,8 @@ let parts = window.location.search.substring(1).split("&"),
     idUser = null,
     postContainer = document.getElementById("postsContainer"),
     bottoneSegui = document.getElementById("bottoneSeguiUtente"),
-    nFollower = document.getElementById("nFollowers");
+    nFollower = document.getElementById("nFollowers"),
+    bottoneMessaggiaUtente = document.getElementById("bottoneMessaggiaUtente");
 
 for (let i = 0; i < parts.length && idUser == null; i++) {
     var temp = parts[i].split("=");
@@ -118,4 +119,8 @@ postContainer.addEventListener("click", (e) =>{
 bottoneSegui.addEventListener("click", () => {
     console.log("Click su segui");
     toggleSegui(bottoneSegui.textContent == "Segui");
+});
+
+bottoneMessaggiaUtente.addEventListener("click", () => {
+    window.location.href = "../workinprogress/";
 });
